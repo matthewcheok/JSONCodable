@@ -105,7 +105,31 @@ print("\(user)")
 
 Result:
 ```
-User(id: 24, name: "John Appleseed", email: Optional("john@appleseed.com"), company: Optional(Company(name: "Apple", address: Optional("1 Infinite Loop, Cupertino, CA"))), friends: [User(id: 27, name: "Bob Jefferson", email: nil, company: nil, friends: []), User(id: 29, name: "Jen Jackson", email: nil, company: nil, friends: [])])
+User(
+  id: 24,
+  name: "John Appleseed",
+  email: Optional("john@appleseed.com"),
+  company: Optional(Company(
+    name: "Apple",
+    address: Optional("1 Infinite Loop, Cupertino, CA")
+  )),
+  friends: [
+    User(
+      id: 27,
+      name: "Bob Jefferson",
+      email: nil,
+      company: nil,
+      friends: []
+    ),
+    User(
+      id: 29,
+      name: "Jen Jackson",
+      email: nil,
+      company: nil,
+      friends: []
+    )
+  ]
+)
 ```
 
 The convenience initializer `init(JSONDictionary: [String: AnyObject])` is provided.
