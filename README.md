@@ -1,150 +1,196 @@
-#JSONCodable
-Hassle-free JSON encoding and decoding in Swift
+import Foundation
 
-**Swift 2.0 required**
-This project uses a variety of Swift features including *Protocol Extensions* and *Error Handling* available in Swift 2.0
+// convenience protocol
 
-`JSONCodable` is made of two separate protocols `JSONEncodable` and `JSONDecodable`.
-`JSONEncodable` allows your structs and classes to generate `NSDictionary` or `[String: AnyObject]` equivalents for use with `NSJSONSerialization`.
-`JSONDecodable` allows you to generate structs from `NSDictionary` coming in from a network request for example.
+public protocol JSONCodable: JSONEncodable, JSONDecodable {}
 
-We'll use the following models in this example:
-```
-struct User {
-    var id: Int = 0
-    var name: String = ""
-    var email: String?
-    var company: Company?
-    var friends: [User] = []
+// error types
+
+public enum JSONEncodableError: ErrorType {
+    case IncompatibleTypeError(type: Any)
+    case ArrayIncompatibleTypeError(elementType: Any)
+    case ChildIncompatibleTypeError(label: String, elementType: Any)
 }
 
-struct Company {
-    var name: String = ""
-    var address: String?
+// optional handling
+
+private protocol JSONOptional {
+    var wrapped: Any? { get }
 }
-```
 
-## Using JSONEncodable
+extension Optional : JSONOptional {
+    var wrapped: Any? { return self }
+}
 
-Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
+// JSONCompatible - valid types in JSON
 
-```
-extension User: JSONEncodable {
+public protocol JSONCompatible: JSONEncodable {}
+extension JSONCompatible {
+    public func JSONEncode() throws -> AnyObject {
+        return self as! AnyObject
+    }
+}
+
+extension String: JSONCompatible {}
+extension Double: JSONCompatible {}
+extension Float: JSONCompatible {}
+extension Bool: JSONCompatible {}
+extension Int: JSONCompatible {}
+
+// JSONArchive - Dictionary convenience methods
+
+public protocol JSONArchive {}
+extension Dictionary: JSONArchive {
+    public mutating func archive(valueMaybe: Any, key: Key) throws {
+        let value: Any
+
+        // unwrap optionals
+        if let v = valueMaybe as? JSONOptional {
+            guard let unwrapped = v.wrapped else {
+                return
+            }
+            value = unwrapped
+        }
+        else {
+            value = valueMaybe
+        }
+
+        // test for compatible type
+        if let value = value as? JSONEncodable {
+            let result = try value.JSONEncode()
+            self[key] = (result as! Value)
+        }
+
+        // incompatible type
+        else {
+            throw JSONEncodableError.ChildIncompatibleTypeError(label: key as! String, elementType: value.dynamicType)
+        }
+    }
+
+    public func restore<T: JSONDecodable>(inout array: [T]?, key: Key) {
+        if let json = self[key] as? [[String: AnyObject]] {
+            array = json.map {T(JSONDictionary: $0)}
+        }
+    }
+
+    public func restore<T: JSONDecodable>(inout array: [T], key: Key) {
+        if let json = self[key] as? [[String: AnyObject]] {
+            array = json.map {T(JSONDictionary: $0)}
+        }
+    }
+
+    public func restore<T: JSONDecodable>(inout thing: T?, key: Key) {
+        if let x = self[key] as? [String: AnyObject] {
+            thing = T(JSONDictionary: x)
+        }
+    }
+
+    public func restore<T: JSONDecodable>(inout thing: T, key: Key) {
+        if let x = self[key] as? [String: AnyObject] {
+            thing = T(JSONDictionary: x)
+        }
+    }
+
+    public func restore<T: JSONCompatible>(inout value: T?, key: Key) {
+        if let x = self[key] as? T {
+            value = x
+        }
+    }
+
+    public func restore<T: JSONCompatible>(inout value: T, key: Key) {
+        if let x = self[key] as? T {
+            value = x
+        }
+    }
+}
+
+// JSONEncodable: Struct -> Dictionary
+
+public protocol JSONEncodable {
+    func JSONEncode() throws -> AnyObject
+    func JSONString() throws -> String
+}
+
+extension Array: JSONEncodable {
+    private var wrapped: [Any] { return self.map{$0} }
+
+    public func JSONEncode() throws -> AnyObject {
+        var results: [AnyObject] = []
+        for item in self.wrapped {
+            if let item = item as? JSONEncodable {
+                results.append(try item.JSONEncode())
+            }
+            else {
+                throw JSONEncodableError.ArrayIncompatibleTypeError(elementType: item.dynamicType)
+            }
+        }
+        return results
+    }
+}
+
+public extension JSONEncodable {
     func JSONEncode() throws -> AnyObject {
+        let mirror = Mirror(reflecting: self)
+
+        guard let style = mirror.displayStyle where style == .Struct || style == .Class else {
+            throw JSONEncodableError.IncompatibleTypeError(type: self.dynamicType)
+        }
+
+        // loop through all properties (instance variables)
         var result: [String: AnyObject] = [:]
-        try result.archive(id, key: "id")
-        try result.archive(name, key: "full_name")
-        try result.archive(email, key: "email")
-        try result.archive(company, key: "company")
-        try result.archive(friends, key: "friends")
+        for (labelMaybe, valueMaybe) in mirror.children {
+            guard let label = labelMaybe else {
+                continue
+            }
+
+            try result.archive(valueMaybe, key: label)
+        }
+
         return result
     }
-}
 
-extension Company: JSONEncodable {}
-```
-
-The default implementation of `func JSONEncode()` inspects the properties of your type using reflection (see `Company`.) If you need a different mapping, you can provide your own implementation (see `User`.)
-
-Instantiate your struct, then use the `func JSONEncode()` method to obtain a equivalent form suitable for use with `NSJSONSerialization`:
-```
-let dict = try user.JSONEncode()
-print("dict: \(dict)")
-```
-
-Result:
-```
-[full_name: John Appleseed, id: 24, email: john@appleseed.com, company: {
-    address = "1 Infinite Loop, Cupertino, CA";
-    name = Apple;
-}, friends: (
-        {
-        friends =         (
-        );
-        "full_name" = "Bob Jefferson";
-        id = 27;
-    },
-        {
-        friends =         (
-        );
-        "full_name" = "Jen Jackson";
-        id = 29;
-    }
-)]
-```
-
-##Using JSONDecodable
-
-Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
-```
-extension User: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&id, key: "id")
-        JSONDictionary.restore(&name, key: "full_name")
-        JSONDictionary.restore(&email, key: "email")
-        JSONDictionary.restore(&company, key: "company")
-        JSONDictionary.restore(&friends, key: "friends")
+    public func JSONString() throws -> String {
+        let json = try JSONEncode()
+        let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions(rawValue: 0))
+        guard let string = NSString(data: data, encoding: NSUTF8StringEncoding) else {
+            return ""
+        }
+        return string as String
     }
 }
 
-extension Company: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&name, key: "name")
-        JSONDictionary.restore(&address, key: "address")
+// JSONDecodable: Dictionary -> Struct
+
+public protocol JSONDecodable {
+    init()
+    init(JSONDictionary: [String: AnyObject])
+    init?(JSONString: String)
+
+    mutating func JSONDecode(JSONDictionary: [String: AnyObject])
+}
+
+public extension JSONDecodable {
+    init(JSONDictionary: [String: AnyObject]) {
+        self.init()
+        JSONDecode(JSONDictionary)
+    }
+
+    init?(JSONString: String) {
+        guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
+            return nil
+        }
+
+        let result: AnyObject
+        do {
+            result = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+        }
+        catch {
+            return nil
+        }
+
+        guard let converted = result as? [String: AnyObject] else {
+            return nil
+        }
+        self.init(JSONDictionary: converted)
     }
 }
-```
-
-Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`.
-As before you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
-
-```
-let user = User(JSONDictionary: JSON)
-print("\(user)")
-```
-
-Result:
-```
-User(
-  id: 24,
-  name: "John Appleseed",
-  email: Optional("john@appleseed.com"),
-  company: Optional(Company(
-    name: "Apple",
-    address: Optional("1 Infinite Loop, Cupertino, CA")
-  )),
-  friends: [
-    User(
-      id: 27,
-      name: "Bob Jefferson",
-      email: nil,
-      company: nil,
-      friends: []
-    ),
-    User(
-      id: 29,
-      name: "Jen Jackson",
-      email: nil,
-      company: nil,
-      friends: []
-    )
-  ]
-)
-```
-
-The convenience initializer `init(JSONDictionary: [String: AnyObject])` is provided.
-
-
-**Limitations**
-
-1. Your types must be initializable without any parameters, i.e. implement `init()`. You can do this by either providing a default value for all your properties or implement `init()` directly and configuring your properties at initialization.
-
-2. You must use `var` instead of `let` when declaring properties.
-
-`JSONDecodable` needs to be able to create new instances of your types and set their values thereafter.
-
-Refer to the included playground for more information.
-
-## License
-
-`JSONCodable` is under the MIT license.

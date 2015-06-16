@@ -61,7 +61,7 @@ extension Dictionary: JSONArchive {
             self[key] = (result as! Value)
         }
 
-            // incompatible type
+        // incompatible type
         else {
             throw JSONEncodableError.ChildIncompatibleTypeError(label: key as! String, elementType: value.dynamicType)
         }
