@@ -68,24 +68,14 @@ extension Dictionary: JSONArchive {
     }
 
     public func restore<T: JSONDecodable>(inout array: [T]?, key: Key) {
-        if let x = self[key] as? [[String: AnyObject]] {
-            var results: [T] = []
-            for item in x {
-                let thing = T(JSONDictionary: item)
-                results.append(thing)
-            }
-            array = results
+        if let json = self[key] as? [[String: AnyObject]] {
+            array = json.map {T(JSONDictionary: $0)}
         }
     }
 
     public func restore<T: JSONDecodable>(inout array: [T], key: Key) {
-        if let x = self[key] as? [[String: AnyObject]] {
-            var results: [T] = []
-            for item in x {
-                let thing = T(JSONDictionary: item)
-                results.append(thing)
-            }
-            array = results
+        if let json = self[key] as? [[String: AnyObject]] {
+            array = json.map {T(JSONDictionary: $0)}
         }
     }
 
@@ -118,6 +108,7 @@ extension Dictionary: JSONArchive {
 
 public protocol JSONEncodable {
     func JSONEncode() throws -> AnyObject
+    func JSONString() throws -> String
 }
 
 extension Array: JSONEncodable {
@@ -157,6 +148,15 @@ public extension JSONEncodable {
 
         return result
     }
+
+    public func JSONString() throws -> String {
+        let json = try JSONEncode()
+        let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions(rawValue: 0))
+        guard let string = NSString(data: data, encoding: NSUTF8StringEncoding) else {
+            return ""
+        }
+        return string as String
+    }
 }
 
 // JSONDecodable: Dictionary -> Struct
@@ -164,6 +164,8 @@ public extension JSONEncodable {
 public protocol JSONDecodable {
     init()
     init(JSONDictionary: [String: AnyObject])
+    init?(JSONString: String)
+
     mutating func JSONDecode(JSONDictionary: [String: AnyObject])
 }
 
@@ -171,5 +173,24 @@ public extension JSONDecodable {
     init(JSONDictionary: [String: AnyObject]) {
         self.init()
         JSONDecode(JSONDictionary)
+    }
+
+    init?(JSONString: String) {
+        guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
+            return nil
+        }
+
+        let result: AnyObject
+        do {
+            result = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+        }
+        catch {
+            return nil
+        }
+
+        guard let converted = result as? [String: AnyObject] else {
+            return nil
+        }
+        self.init(JSONDictionary: converted)
     }
 }
