@@ -43,7 +43,7 @@ public protocol JSONArchive {}
 extension Dictionary: JSONArchive {
     public mutating func archive(valueMaybe: Any, key: Key) throws {
         let value: Any
-
+        
         // unwrap optionals
         if let v = valueMaybe as? JSONOptional {
             guard let unwrapped = v.wrapped else {
@@ -54,49 +54,51 @@ extension Dictionary: JSONArchive {
         else {
             value = valueMaybe
         }
-
+        
         // test for compatible type
         if let value = value as? JSONEncodable {
             let result = try value.JSONEncode()
             self[key] = (result as! Value)
         }
-
-        // incompatible type
+            
+            // incompatible type
         else {
             throw JSONEncodableError.ChildIncompatibleTypeError(label: key as! String, elementType: value.dynamicType)
         }
     }
 
+    
     public func restore<T: JSONDecodable>(inout array: [T]?, key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {
             array = json.map {T(JSONDictionary: $0)}
         }
     }
 
+    
     public func restore<T: JSONDecodable>(inout array: [T], key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {
             array = json.map {T(JSONDictionary: $0)}
         }
     }
-
+    
     public func restore<T: JSONDecodable>(inout thing: T?, key: Key) {
         if let x = self[key] as? [String: AnyObject] {
             thing = T(JSONDictionary: x)
         }
     }
-
+    
     public func restore<T: JSONDecodable>(inout thing: T, key: Key) {
         if let x = self[key] as? [String: AnyObject] {
             thing = T(JSONDictionary: x)
         }
     }
-
+    
     public func restore<T: JSONCompatible>(inout value: T?, key: Key) {
         if let x = self[key] as? T {
             value = x
         }
     }
-
+    
     public func restore<T: JSONCompatible>(inout value: T, key: Key) {
         if let x = self[key] as? T {
             value = x
@@ -108,12 +110,12 @@ extension Dictionary: JSONArchive {
 
 public protocol JSONEncodable {
     func JSONEncode() throws -> AnyObject
-    func JSONString() throws -> String    
+    func JSONString() throws -> String
 }
 
 extension Array: JSONEncodable {
     private var wrapped: [Any] { return self.map{$0} }
-
+    
     public func JSONEncode() throws -> AnyObject {
         var results: [AnyObject] = []
         for item in self.wrapped {
@@ -131,21 +133,21 @@ extension Array: JSONEncodable {
 public extension JSONEncodable {
     func JSONEncode() throws -> AnyObject {
         let mirror = Mirror(reflecting: self)
-
+        
         guard let style = mirror.displayStyle where style == .Struct || style == .Class else {
             throw JSONEncodableError.IncompatibleTypeError(type: self.dynamicType)
         }
-
+        
         // loop through all properties (instance variables)
         var result: [String: AnyObject] = [:]
         for (labelMaybe, valueMaybe) in mirror.children {
             guard let label = labelMaybe else {
                 continue
             }
-
+            
             try result.archive(valueMaybe, key: label)
         }
-
+        
         return result
     }
     
@@ -166,14 +168,11 @@ public protocol JSONDecodable {
     init(JSONDictionary: [String: AnyObject])
     init?(JSONString: String)
     
-    mutating func JSONDecode(JSONDictionary: [String: AnyObject])
+    //mutating func JSONDecode(JSONDictionary: [String: AnyObject])
 }
 
 public extension JSONDecodable {
-    init(JSONDictionary: [String: AnyObject]) {
-        self.init()
-        JSONDecode(JSONDictionary)
-    }
+    
     
     init?(JSONString: String) {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
