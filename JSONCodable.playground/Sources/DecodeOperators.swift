@@ -31,16 +31,9 @@ public func ~~ <T:JSONDecodable>(d:(jsonDType, String), f:T) -> T{
         return res;
     }
 }
+infix operator ?|<| { associativity left precedence 140 }
 
-infix operator ?<<  { associativity left precedence 140 }
-
-//public func ?<< <T, U>(inout f:T, optional: U?){
-//    if let x = optional where ((x as? T) != nil){
-//        f = (x as? T)!;
-//    }
-//}
-
-public func ?<< <T:JSONDecodable>(inout f:T,d:(jsonDType, String)){
+public func ?|<| <T:JSONDecodable>(inout f:T,d:(jsonDType, String)){
     let js = d.0
     let key = d.1
     let optional = js[key];
@@ -51,8 +44,89 @@ public func ?<< <T:JSONDecodable>(inout f:T,d:(jsonDType, String)){
     }
 }
 
+public func ?|<| <T:JSONDecodable>(inout f:T?,d:(jsonDType, String)){
+    let js = d.0
+    let key = d.1
+    let optional = js[key];
+    if let x = optional where ((x as? T) != nil){
+        var res = (x as? T);
+        js.restore(&res, key: key)
+        f = res
+    }
+}
+
+public func ?|<| <T:JSONDecodable>(inout f:[T], d:(jsonDType, String)){
+    let js = d.0
+    let key = d.1
+    let optional = js[key];
+    if let x = optional where ((x as? [T]) != nil){
+        var res = (x as! [T]);
+        js.restore(&res, key: key)
+        f = res
+    }
+}
+
+public func ?|<| <T:JSONDecodable>(inout f:[T]?, d:(jsonDType, String)){
+    let js = d.0
+    let key = d.1
+    let optional = js[key];
+    if let x = optional {
+        var res = x as? [T]
+        js.restore(&res, key: key)
+        f = res
+    }
+}
+
+infix operator ?<<  { associativity left precedence 140 }
+
+
+
+
+public func ?<< <T:JSONDecodable>(inout f:T,d:(jsonDType, String)){
+    
+    let js = d.0
+    let key = d.1
+    var res:T = T()
+    js.restore(&res, key: key)
+    f = res;
+    
+}
+
+
+public func ?<< <T:JSONDecodable>(inout f:T?,d:(jsonDType, String)){
+
+    let js = d.0
+    let key = d.1
+        var res:T? = T()
+        js.restore(&res, key: key)
+        f = res;
+
+}
+
+
+
+public func ?<< <T:JSONDecodable>(inout f:[T],d:(jsonDType, String)){
+    
+    let js = d.0
+    let key = d.1
+    var res:[T] = []
+    js.restore(&res, key: key)
+    f = res
+}
+
+
+public func ?<< <T:JSONDecodable>(inout f:[T]?,d:(jsonDType, String)){
+    
+    let js = d.0
+    let key = d.1
+    var res:[T]? = []
+    js.restore(&res, key: key)
+    f = res
+}
+
 
 public func ?<< <T>(inout f:T,d:(jsonDType, String)){
+
     let js = d.0
     let key = d.1
     let optional = js[key];
@@ -61,20 +135,18 @@ public func ?<< <T>(inout f:T,d:(jsonDType, String)){
     }
 }
 
+public func ?<< <T>(inout f:T?,d:(jsonDType, String)){
 
-//public func ?<< <T, U>(inout f:T, optional: U?){
-//    if let x = optional where ((x as? T) != nil){
-//        f = (x as? T)!;
-//    }
-//}
-//
-//
-//
-//public func ?<< <T, U>( inout f:T,x: U){
-//    if (x as? T) != nil{
-//        f = (x as? T)!;
-//    }
-//}
+    let js = d.0
+    let key = d.1
+    let optional = js[key];
+    if let x = optional where ((x as? T) != nil){
+        f = (x as? T);
+    }
+}
+
+
+
 
 
 

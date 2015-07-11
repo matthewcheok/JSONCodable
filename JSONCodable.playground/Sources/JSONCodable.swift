@@ -66,12 +66,14 @@ extension Dictionary: JSONArchive {
             throw JSONEncodableError.ChildIncompatibleTypeError(label: key as! String, elementType: value.dynamicType)
         }
     }
+
     
     public func restore<T: JSONDecodable>(inout array: [T]?, key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {
             array = json.map {T(JSONDictionary: $0)}
         }
     }
+
     
     public func restore<T: JSONDecodable>(inout array: [T], key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {

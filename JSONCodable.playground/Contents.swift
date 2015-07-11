@@ -77,7 +77,7 @@ extension User: JSONEncodable {
         return result
     }
 }
-
+//extension Company: JSONEncodable {}
 
 
 
@@ -93,7 +93,7 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 extension User: JSONDecodable {
     
     init(JSONDictionary js:[String: AnyObject]){
-        
+//        print("DECODE JS: \(js)")
         //let values
         test     =  (js, "test")  ~~ 0
         test2    =  (js, "test2") ~~ "none"
