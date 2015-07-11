@@ -30,14 +30,16 @@ struct User {
     var id: Int = 0
     var name: String = ""
     var email: String?
-    var company: Company?
-    var friends: [User] = []
+    let company: Company
+    let friends: [User]
     let test:Int
     let test2:String
     let test3:Float
     
     
     init(){
+        friends = []
+        company = Company()
         test  = 0
         test2 = ""
         test3 = 3.3
@@ -98,13 +100,15 @@ extension User: JSONDecodable {
         test     =  (js, "test")  ~~ 0
         test2    =  (js, "test2") ~~ "none"
         test3    =  (js, "test3") ~~ 0.0
+        friends  =  (js,"friends") ~~ []
+        company  =  (js,"company") ~~ Company()
         
         //var values
         id      ?<< (js, "id")//js["id"]
         name    ?<< (js,"full_name")
         email   ?<< (js,"email")
-        company ?<< (js,"company")
-        friends ?<< (js,"friends")
+
+
     }
     
 }
