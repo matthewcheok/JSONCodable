@@ -1,3 +1,5 @@
+
+
 /*:
 # JSONCodable
 
@@ -12,23 +14,54 @@ Hassle-free JSON encoding and decoding in Swift
 Here's some data models we'll use as an example:
 */
 
+
+struct Company {
+    let id:Int
+    var name: String = ""
+    var address: String?
+    
+    init(){
+        id = 0
+    }
+}
+
+
 struct User {
     var id: Int = 0
     var name: String = ""
     var email: String?
     var company: Company?
     var friends: [User] = []
+    let test:Int
+    let test2:String
+    let test3:Float
+    
+    
+    init(){
+        test  = 0
+        test2 = ""
+        test3 = 3.3
+    }
+    
 }
 
-struct Company {
-    var name: String = ""
-    var address: String?
-}
+
+
+
 
 /*:
 ## JSONEncodable
 We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONCodable`.
 */
+extension Company: JSONEncodable {
+    func JSONEncode() throws -> AnyObject {
+        var result: [String: AnyObject] = [:]
+        try result.archive(address, key: "address")
+        try result.archive(name, key: "name")
+        
+        return result
+    }
+}
 
 extension User: JSONEncodable {
     func JSONEncode() throws -> AnyObject {
@@ -38,11 +71,15 @@ extension User: JSONEncodable {
         try result.archive(email, key: "email")
         try result.archive(company, key: "company")
         try result.archive(friends, key: "friends")
+        try result.archive(test, key: "test")
+        try result.archive(test2, key: "test2")
+        try result.archive(test3, key: "test3")
         return result
     }
 }
 
-extension Company: JSONEncodable {}
+
+
 
 /*:
 The default implementation of `func JSONEncode()` inspects the properties of your type using reflection. (Like in `Company`.) If you need a different mapping, you can provide your own implementation (like in `User`.)
@@ -54,19 +91,31 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&id, key: "id")
-        JSONDictionary.restore(&name, key: "full_name")
-        JSONDictionary.restore(&email, key: "email")
-        JSONDictionary.restore(&company, key: "company")
-        JSONDictionary.restore(&friends, key: "friends")
+    
+    init(JSONDictionary js:[String: AnyObject]){
+        
+        //let values
+        test     =  (js, "test")  ~~ 0
+        test2    =  (js, "test2") ~~ "none"
+        test3    =  (js, "test3") ~~ 0.0
+        
+        //var values
+        id      ?<< (js, "id")//js["id"]
+        name    ?<< (js,"full_name")
+        email   ?<< (js,"email")
+        company ?<< (js,"company")
+        friends ?<< (js,"friends")
     }
+    
 }
 
 extension Company: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&name, key: "name")
-        JSONDictionary.restore(&address, key: "address")
+    init(JSONDictionary js:[String: AnyObject]){
+        
+        id      =   (js, "id")  ~~ 0
+        name    ?<< (js,"full_name")
+        address ?<< (js,"address")
+        
     }
 }
 
@@ -102,8 +151,15 @@ let JSON = [
     "friends": [
         ["id": 27, "full_name": "Bob Jefferson"],
         ["id": 29, "full_name": "Jen Jackson"]
-    ]
+    ],
+    "test"  : 1985,
+    "test2" : "test case 2!",
+    "test3" : 3.14
 ]
+
+//test  = 0
+//test2 = ""
+//test3 = 3.3
 
 print("Initial JSON:\n\(JSON)\n\n")
 
@@ -125,8 +181,11 @@ And encode it to JSON using one of the provided methods:
 
 do {
     let dict = try user.JSONEncode()
-    print("Encoded: \n\(dict as! [String: AnyObject])\n\n")    
+    print("Encoded: \n\(dict as! [String: AnyObject])\n\n")
 }
 catch {
     print("Error: \(error)")
 }
+
+
+
