@@ -177,9 +177,9 @@ public protocol JSONDecodable {
 
 
 public extension JSONDecodable {
-//    init(){
-//        self.init()
-//    }
+    init(){
+        self.init()
+    }
     
     init?(JSONString: String) {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
