@@ -161,18 +161,25 @@ public extension JSONEncodable {
     }
 }
 
+
+
 // JSONDecodable: Dictionary -> Struct
+
+
 
 public protocol JSONDecodable {
     init()
     init(JSONDictionary: [String: AnyObject])
+//    init(tryJSONDictionary: [String: AnyObject]) throws
     init?(JSONString: String)
-    
-    //mutating func JSONDecode(JSONDictionary: [String: AnyObject])
 }
 
+
+
 public extension JSONDecodable {
-    
+//    init(){
+//        self.init()
+//    }
     
     init?(JSONString: String) {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {

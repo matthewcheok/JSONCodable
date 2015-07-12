@@ -13,6 +13,7 @@ Hassle-free JSON encoding and decoding in Swift
 /*:
 Here's some data models we'll use as an example:
 */
+let emptyDict:() -> [String:AnyObject] = {[String:AnyObject]()}
 
 
 struct Company {
@@ -20,8 +21,11 @@ struct Company {
     var name: String = ""
     var address: String?
     
-    init(){
-        id = 0
+    init(JSONDictionary js:[String: AnyObject] = emptyDict()){
+        
+        id      =   (js, "id")  ~~ 0
+        name    ?<< (js,"full_name")
+        address ?<< (js,"address")
     }
 }
 
@@ -35,16 +39,6 @@ struct User {
     let test:Int
     let test2:String
     let test3:Float
-    
-    
-    init(){
-        friends = []
-        company = Company()
-        test  = 0
-        test2 = ""
-        test3 = 3.3
-    }
-    
 }
 
 
@@ -113,15 +107,15 @@ extension User: JSONDecodable {
     
 }
 
-extension Company: JSONDecodable {
-    init(JSONDictionary js:[String: AnyObject]){
-        
-        id      =   (js, "id")  ~~ 0
-        name    ?<< (js,"full_name")
-        address ?<< (js,"address")
-        
-    }
-}
+//extension Company: JSONDecodable {
+//    init(JSONDictionary js:[String: AnyObject]){
+//        
+//        id      =   (js, "id")  ~~ 0
+//        name    ?<< (js,"full_name")
+//        address ?<< (js,"address")
+//        
+//    }
+//}
 
 /*:
 Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
