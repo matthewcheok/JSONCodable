@@ -10,7 +10,7 @@ infix operator ~~  { associativity left precedence 140 }
 
 
 public func reqLet <T:JSONDecodable>(js:jsonDType, _ key:String) throws -> T{
-
+    
     let f = T()
     var res:T?
     js.restore(&res, key: key)
@@ -23,7 +23,7 @@ public func reqLet <T:JSONDecodable>(js:jsonDType, _ key:String) throws -> T{
 }
 
 public func reqLet <T>(js:jsonDType, _ key:String) throws -> T{
-
+    
     let optional = js[key];
     if let x = optional where ((x as? T) != nil){
         return (x as? T)!

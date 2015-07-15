@@ -91,7 +91,7 @@ extension User: JSONDecodable {
     
     
     init?(JSONDictionary js:[String: AnyObject]){
-        
+
         do{
             test2   = try reqLet(js, "test2")
             test3   = try reqLet(js, "test3")
@@ -154,7 +154,7 @@ let JSON = [
     "id": 24,
     "full_name": "John Appleseed",
     "email": "john@appleseed.com",
-    "company": [ // throws error b/c id required
+    "company": [
         "name": "Apple",
         "address": "1 Infinite Loop, Cupertino, CA"
     ],
