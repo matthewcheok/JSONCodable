@@ -10,6 +10,9 @@ public enum JSONEncodableError: ErrorType {
     case IncompatibleTypeError(type: Any)
     case ArrayIncompatibleTypeError(elementType: Any)
     case ChildIncompatibleTypeError(label: String, elementType: Any)
+}
+
+public enum JSONDecodableError: ErrorType {
     case MissingLetValueError(label:String, elementType: Any)
 }
 

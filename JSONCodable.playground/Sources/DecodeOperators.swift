@@ -17,8 +17,7 @@ public func reqLet <T:JSONDecodable>(js:jsonDType, _ key:String) throws -> T{
     if let r = res{
         return r;
     }else{
-        throw JSONEncodableError.MissingLetValueError(label: key, elementType: f.dynamicType);
-        
+        throw JSONDecodableError.MissingLetValueError(label: key, elementType: f.dynamicType);
     }
 }
 
@@ -28,7 +27,7 @@ public func reqLet <T>(js:jsonDType, _ key:String) throws -> T{
     if let x = optional where ((x as? T) != nil){
         return (x as? T)!
     }else{
-        throw JSONEncodableError.MissingLetValueError(label: key, elementType: T.self)
+        throw JSONDecodableError.MissingLetValueError(label: key, elementType: T.self)
     }
 }
 
