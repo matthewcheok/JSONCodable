@@ -186,6 +186,12 @@ public extension JSONDecodable {
         self.init()
     }
     
+    init?(JSONDictionary: [String: AnyObject]){
+        self.init()
+        assert(false, "missing init?(JSONDictionary:)")
+        return nil;
+    }
+    
     init?(JSONString: String) {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
             return nil
