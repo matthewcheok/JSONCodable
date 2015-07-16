@@ -71,7 +71,7 @@ extension Dictionary: JSONArchive {
             throw JSONEncodableError.ChildIncompatibleTypeError(label: key as! String, elementType: value.dynamicType)
         }
     }
-    
+
     
     public func restore<T: JSONDecodable>(inout array: [T]?, key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {
@@ -79,7 +79,7 @@ extension Dictionary: JSONArchive {
             array = filtered.map {T(JSONDictionary: $0)!}
         }
     }
-    
+
     
     public func restore<T: JSONDecodable>(inout array: [T], key: Key) {
         if let json = self[key] as? [[String: AnyObject]] {
@@ -187,7 +187,7 @@ public protocol JSONDecodable {
 public extension JSONDecodable {
     init?(){
         print("missing required init() JSONDecodable conformance method")
-        //  assert(false, "missing required init() JSONDecodable conformance method")
+      //  assert(false, "missing required init() JSONDecodable conformance method")
         return nil;
     }
     

@@ -75,24 +75,31 @@ Result:
 
 ##Using JSONDecodable
 
-Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
+Add conformance to `JSONDecodable` (or to `JSONCodable`) and create the custom init? method below:
+1)Use **do/catch** with let values that have required values along with **try reqLet(dict, key)**
+2)Use **~~** instead if you prefer to use a default value for **let**, instead of throwing an error.
+3)Use  **?<<** for var properties.
 ```
 extension User: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&id, key: "id")
-        JSONDictionary.restore(&name, key: "full_name")
-        JSONDictionary.restore(&email, key: "email")
-        JSONDictionary.restore(&company, key: "company")
-        JSONDictionary.restore(&friends, key: "friends")
+    init?(JSONDictionary js:[String: AnyObject]){
+        do{
+            test2   = try reqLet(js, "test2")
+            test3   = try reqLet(js, "test3")
+            test    = (js, "test")  ~~ 0
+            friends = (js,"friends") ~~ []
+            company = (js,"company") ~~ Company()
+        }
+        catch{
+            print("During Init Error: \(error)")
+            return nil;
+        }
+        //var values
+        id      ?<< (js, "id")
+        name    ?<< (js,"full_name")
+        email   ?<< (js,"email")
     }
 }
 
-extension Company: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&name, key: "name")
-        JSONDictionary.restore(&address, key: "address")
-    }
-}
 ```
 
 Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`.
