@@ -13,15 +13,15 @@ Here's some data models we'll use as an example:
 */
 
 struct User {
-    var id: Int = 0
-    var name: String = ""
+    let id: Int
+    let name: String
     var email: String?
     var company: Company?
     var friends: [User] = []
 }
 
 struct Company {
-    var name: String = ""
+    let name: String
     var address: String?
 }
 
@@ -32,7 +32,7 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 
 extension User: JSONEncodable {
     func JSONEncode() throws -> AnyObject {
-        var result: [String: AnyObject] = [:]
+        var result = [String: AnyObject]()
         try result.archive(id, key: "id")
         try result.archive(name, key: "full_name")
         try result.archive(email, key: "email")
@@ -54,34 +54,34 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&id, key: "id")
-        JSONDictionary.restore(&name, key: "full_name")
-        JSONDictionary.restore(&email, key: "email")
-        JSONDictionary.restore(&company, key: "company")
-        JSONDictionary.restore(&friends, key: "friends")
+    init?(JSONDictionary: [String:AnyObject]) {
+        do {
+            id = try JSONDictionary.restore("id")
+            name = try JSONDictionary.restore("full_name")
+            email = try JSONDictionary.restore("email")
+            company = try JSONDictionary.restore("company")
+            friends = try JSONDictionary.restore("friends")
+        }
+        catch {
+            return nil
+        }
     }
 }
 
 extension Company: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&name, key: "name")
-        JSONDictionary.restore(&address, key: "address")
+    init?(JSONDictionary: [String:AnyObject]) {
+        do {
+            name = try JSONDictionary.restore("name")
+            address = try JSONDictionary.restore("address")
+        }
+        catch {
+            return nil
+        }
     }
 }
 
 /*:
-Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
-*/
-
-/*:
-**Limitations**
-
-1. Your types must be initializable without any parameters, i.e. implement `init()`. You can do this by either providing a default value for all your properties or implement `init()` directly and configuring your properties at initialization.
-
-2. You must use `var` instead of `let` when declaring properties.
-
-`JSONDecodable` needs to be able to create new instances of your types and set their values thereafter.
+Simply provide the implementations for `init?(JSONDictionary: [String:AnyObject])`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
 */
 
 /*:
@@ -113,7 +113,7 @@ We can instantiate `User` using one of provided initializers:
 - `init?(JSONString: String)`
 */
 
-let user = User(JSONDictionary: JSON)
+let user = User(JSONDictionary: JSON)!
 
 print("Decoded: \n\(user)\n\n")
 
@@ -130,3 +130,13 @@ do {
 catch {
     print("Error: \(error)")
 }
+
+//do {
+//    let string = try user.JSONString()
+//    print(string)
+//    
+//    let userAgain = User(JSONString: string)
+//    print(userAgain)
+//} catch {
+//    print("Error: \(error)")
+//}

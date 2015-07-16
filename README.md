@@ -1,8 +1,13 @@
 #JSONCodable
 Hassle-free JSON encoding and decoding in Swift
 
-**Swift 2.0 required**
+**Swift 2.0 Required**
 This project uses a variety of Swift features including *Protocol Extensions* and *Error Handling* available in Swift 2.0
+
+**Breaking Change**
+`JSONCodable` now supports `let` properties. You now implement `init?(JSONDictionary: [String:AnyObject])` instead of `func JSONDecode()`.
+
+---
 
 `JSONCodable` is made of two separate protocols `JSONEncodable` and `JSONDecodable`.
 `JSONEncodable` allows your structs and classes to generate `NSDictionary` or `[String: AnyObject]` equivalents for use with `NSJSONSerialization`.
@@ -11,15 +16,15 @@ This project uses a variety of Swift features including *Protocol Extensions* an
 We'll use the following models in this example:
 ```
 struct User {
-    var id: Int = 0
-    var name: String = ""
+    let id: Int
+    let name: String
     var email: String?
     var company: Company?
     var friends: [User] = []
 }
 
 struct Company {
-    var name: String = ""
+    let name: String
     var address: String?
 }
 ```
@@ -78,24 +83,34 @@ Result:
 Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
 ```
 extension User: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&id, key: "id")
-        JSONDictionary.restore(&name, key: "full_name")
-        JSONDictionary.restore(&email, key: "email")
-        JSONDictionary.restore(&company, key: "company")
-        JSONDictionary.restore(&friends, key: "friends")
+    init?(JSONDictionary: [String:AnyObject]) {
+        do {
+            id = try JSONDictionary.restore("id")
+            name = try JSONDictionary.restore("full_name")
+            email = try JSONDictionary.restore("email")
+            company = try JSONDictionary.restore("company")
+            friends = try JSONDictionary.restore("friends")
+        }
+        catch {
+            return nil
+        }
     }
 }
 
 extension Company: JSONDecodable {
-    mutating func JSONDecode(JSONDictionary: [String : AnyObject]) {
-        JSONDictionary.restore(&name, key: "name")
-        JSONDictionary.restore(&address, key: "address")
+    init?(JSONDictionary: [String:AnyObject]) {
+        do {
+            name = try JSONDictionary.restore("name")
+            address = try JSONDictionary.restore("address")
+        }
+        catch {
+            return nil
+        }
     }
 }
 ```
 
-Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`.
+Simply provide the implementations for `init?(JSONDictionary: [String:AnyObject])`.
 As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
 
 ```
@@ -132,16 +147,8 @@ User(
 )
 ```
 
-The convenience initializer `init(JSONDictionary: [String: AnyObject])` is provided.
-
-
-**Limitations**
-
-1. Your types must be initializable without any parameters, i.e. implement `init()`. You can do this by either providing a default value for all your properties or implement `init()` directly and configuring your properties at initialization.
-
-2. You must use `var` instead of `let` when declaring properties.
-
-`JSONDecodable` needs to be able to create new instances of your types and set their values thereafter.
+## Working with JSON Strings
+The convenience initializer `init?(JSONString: String)` is provided on `JSONDecodable`. You may also use `func JSONString() throws -> String` to obtain a string equivalent of your types.
 
 Refer to the included playground for more information.
 
