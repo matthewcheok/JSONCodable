@@ -14,29 +14,20 @@ Hassle-free JSON encoding and decoding in Swift
 Here's some data models we'll use as an example:
 */
 
-
-let emptyDict:() -> [String:AnyObject] = {[String:AnyObject]()}
-
-
 struct Company {
     let id:Int
     var name: String = ""
     var address: String?
-    
 }
 
 
 struct User {
-    var id: Int = 0
+    var id: Int
     var name: String = ""
     var email: String?
     let company: Company?
     let friends: [User]
-    let test:Int
-    let test2:String
-    let test3:Float
 }
-
 
 
 /*:
@@ -45,11 +36,11 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 */
 
 
-
 extension Company: JSONEncodable {
     func JSONEncode() throws -> AnyObject {
         var result: [String: AnyObject] = [:]
         try result.archive(address, key: "address")
+        try result.archive(id, key: "id")
         try result.archive(name, key: "name")
         
         return result
@@ -64,13 +55,9 @@ extension User: JSONEncodable {
         try result.archive(email, key: "email")
         try result.archive(company, key: "company")
         try result.archive(friends, key: "friends")
-        try result.archive(test, key: "test")
-        try result.archive(test2, key: "test2")
-        try result.archive(test3, key: "test3")
         return result
     }
 }
-
 
 
 //extension Company: JSONEncodable {}
@@ -87,46 +74,45 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 */
 
 
-extension User: JSONDecodable {
-    
-    
-    init?(JSONDictionary js:[String: AnyObject]){
-        
+extension Company: JSONDecodable {
+    init?(JSONDictionary js:[String: AnyObject] = emptyDict()){
         do{
-            test2   = try reqLet(js, "test2")
-            test3   = try reqLet(js, "test3")
-            test    = (js, "test")  ~~ 0
-            friends = (js,"friends") ~~ []
-            company = (js,"company") ~~ Company()
+            //let required
+            try id = mustLet(js, "id")
         }
         catch{
-            print("During Init Error: \(error)")
+            print("Error: \(error)")
+            return nil;
+        }
+        //var
+        name    ?<< (js,"name")
+        address ?<< (js,"address")
+    }
+}
+
+
+extension User: JSONDecodable {
+    init?(JSONDictionary js:[String: AnyObject]){
+        do{
+            //let required
+            id      = try mustLet(js, "id")
+            company = try mustLet(js,"company")
+        }
+        catch{
+            print("Error: \(error)")
             return nil;
         }
         
-        //var values
-        id      ?<< (js, "id")//js["id"]
+        //let w/ defaults
+        friends = (js,"friends") ~~ []
+        
+        //var
         name    ?<< (js,"full_name")
         email   ?<< (js,"email")
     }
     
 }
 
-extension Company: JSONDecodable {
-    init?(JSONDictionary js:[String: AnyObject] = emptyDict()){
-        
-        do{
-            try id = reqLet(js, "id")
-        }
-        catch{
-            print("During Init Error: \(error)")
-            return nil;
-        }
-        
-        name    ?<< (js,"full_name")
-        address ?<< (js,"address")
-    }
-}
 
 /*:
 Unlike in `JSONEncodable`, you **must** provide the implementations for `func JSONDecode()`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
@@ -155,23 +141,17 @@ let JSON = [
     "id": 24,
     "full_name": "John Appleseed",
     "email": "john@appleseed.com",
-    "company": [ // throws error b/c id required
+    "company": [
+        "id" : 1, //required
         "name": "Apple",
         "address": "1 Infinite Loop, Cupertino, CA"
     ],
     "friends": [
-        ["id": 27, "full_name": "Bob Jefferson", "test2" : "test case 2!",
-            "test3" : 3.14],
-        ["id": 29, "full_name": "Jen Jackson"] //this friend throws erros b/c test2/test3 are required
+        ["id": 27, "full_name": "Bob Jefferson","company":["id" : 2, "name" : "Dropbox"]],
+        ["id": 29, "full_name": "Jen Jackson"], //should fail **missing company
+        [/*"id": 27,*/ "full_name": "Pluto"]    //should fail **missing company
     ],
-    "test"  : 1985,
-    "test2" : "test case 2!",
-    "test3" : 3.14
 ]
-
-//test  = 0
-//test2 = ""
-//test3 = 3.3
 
 print("Initial JSON:\n\(JSON)\n\n")
 

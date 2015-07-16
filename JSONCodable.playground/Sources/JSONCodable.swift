@@ -1,6 +1,7 @@
 import Foundation
 
 // convenience protocol
+public let emptyDict:() -> [String:AnyObject] = {[String:AnyObject]()}
 
 public protocol JSONCodable: JSONEncodable, JSONDecodable {}
 
@@ -176,17 +177,18 @@ public extension JSONEncodable {
 
 
 public protocol JSONDecodable {
-    init()
+    init?()
     init?(JSONDictionary: [String: AnyObject])
-    //    init(tryJSONDictionary: [String: AnyObject]) throws
     init?(JSONString: String)
 }
 
 
 
 public extension JSONDecodable {
-    init(){
-        self.init()
+    init?(){
+        print("missing required init() JSONDecodable conformance method")
+        //  assert(false, "missing required init() JSONDecodable conformance method")
+        return nil;
     }
     
     init?(JSONDictionary: [String: AnyObject]){
