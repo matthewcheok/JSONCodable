@@ -12,6 +12,9 @@ public enum JSONEncodableError: ErrorType, CustomStringConvertible {
     case IncompatibleTypeError(elementType: Any.Type)
     case ArrayIncompatibleTypeError(elementType: Any.Type)
     case ChildIncompatibleTypeError(key: String, elementType: Any.Type)
+    case TransformerFailedError(
+        key: String
+    )
     
     public var description: String {
         switch self {
@@ -21,6 +24,8 @@ public enum JSONEncodableError: ErrorType, CustomStringConvertible {
             return "JSONEncodableError: Got an array of incompatible type \(elementType)"
         case let .ChildIncompatibleTypeError(key: key, elementType: elementType):
             return "JSONEncodableError: Got incompatible type \(elementType) for key \(key)"
+        case let .TransformerFailedError(key: key):
+            return "JSONEncodableError: Transformer failed for key \(key)"
         }
     }
 }
@@ -118,7 +123,10 @@ public extension Dictionary where Value: AnyObject {
     
     // required transformable
     public mutating func encode<EncodedType, DecodedType>(value: DecodedType, key: Key, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
-        let encodedValue = transformer.encoding(value)
+        guard let encodedValue = transformer.encoding(value) else {
+            throw JSONEncodableError.TransformerFailedError(key: key as! String)
+        }
+        
         try encode(encodedValue, key: key)
     }
 }

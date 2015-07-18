@@ -16,8 +16,6 @@
 		9EDB39481B59D0AF00C63019 /* JSONEncodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393E1B59D0AF00C63019 /* JSONEncodable.swift */; };
 		9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
 		9EDB394A1B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
-		9EDB394B1B59D0AF00C63019 /* JSONOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39401B59D0AF00C63019 /* JSONOperators.swift */; };
-		9EDB394C1B59D0AF00C63019 /* JSONOperators.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39401B59D0AF00C63019 /* JSONOperators.swift */; };
 		9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394E1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
@@ -34,7 +32,6 @@
 		9EDB393D1B59D0AF00C63019 /* JSONDecodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONDecodable.swift; sourceTree = "<group>"; };
 		9EDB393E1B59D0AF00C63019 /* JSONEncodable.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONEncodable.swift; sourceTree = "<group>"; };
 		9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelpers.swift; sourceTree = "<group>"; };
-		9EDB39401B59D0AF00C63019 /* JSONOperators.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONOperators.swift; sourceTree = "<group>"; };
 		9EDB39411B59D0AF00C63019 /* JSONString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONString.swift; sourceTree = "<group>"; };
 		9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTransformer.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -82,7 +79,6 @@
 				9EDB393D1B59D0AF00C63019 /* JSONDecodable.swift */,
 				9EDB393E1B59D0AF00C63019 /* JSONEncodable.swift */,
 				9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */,
-				9EDB39401B59D0AF00C63019 /* JSONOperators.swift */,
 				9EDB39411B59D0AF00C63019 /* JSONString.swift */,
 				9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */,
 			);
@@ -216,7 +212,6 @@
 				9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */,
 				9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */,
 				9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */,
-				9EDB394B1B59D0AF00C63019 /* JSONOperators.swift in Sources */,
 				9EDB39451B59D0AF00C63019 /* JSONDecodable.swift in Sources */,
 				9EDB39471B59D0AF00C63019 /* JSONEncodable.swift in Sources */,
 			);
@@ -230,7 +225,6 @@
 				9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */,
 				9EDB394A1B59D0AF00C63019 /* JSONHelpers.swift in Sources */,
 				9EDB394E1B59D0AF00C63019 /* JSONString.swift in Sources */,
-				9EDB394C1B59D0AF00C63019 /* JSONOperators.swift in Sources */,
 				9EDB39461B59D0AF00C63019 /* JSONDecodable.swift in Sources */,
 				9EDB39481B59D0AF00C63019 /* JSONEncodable.swift in Sources */,
 			);

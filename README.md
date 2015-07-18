@@ -150,6 +150,50 @@ User(
 ## Working with JSON Strings
 The convenience initializer `init?(JSONString: String)` is provided on `JSONDecodable`. You may also use `func toJSONString() throws -> String` to obtain a string equivalent of your types.
 
+## Transforming values
+
+To transform values, create an instance of `JSONTransformer`:
+
+```
+let JSONTransformerStringToNSURL = JSONTransformer<String, NSURL>(
+        decoding: {NSURL(string: $0)},
+        encoding: {$0.absoluteString})
+```
+
+A `JSONTransformer` converts between 2 types, in this case, `String` and `NSURL`. It takes a closure for decoding and another for encoding, and in each case, you return an optional value of the corresponding type given an input type (you can return `nil` if a transformation is not possible).
+
+Next, use the overloaded versions of `func encode()` and `func decode()` to supply the transformer:
+
+```
+struct User {
+  ...
+  var website: NSURL?
+}
+
+init?(JSONDictionary: [String : AnyObject]) {
+    do {
+        ...
+        website = try JSONDictionary.decode("website", transformer: JSONTransformerStringToNSURL)
+    }
+    ...
+}
+
+func toJSON() throws -> AnyObject {
+    var result = [String: AnyObject]()
+    ...
+    try result.encode(website, key: "website", transformer: JSONTransformerStringToNSURL)
+    return result
+}
+```
+
+The following transformers are provided by default:
+
+`JSONTransformers.StringToNSURL`: `String <-> NSURL`
+
+Feel free to suggest more!
+
+## Example code
+
 Refer to the `Demo` project in the workspace for more information.
 You might experience issues executing the playground in Xcode 7.0 Beta.
 
