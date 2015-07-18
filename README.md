@@ -5,7 +5,7 @@ Hassle-free JSON encoding and decoding in Swift
 This project uses a variety of Swift features including *Protocol Extensions* and *Error Handling* available in Swift 2.0
 
 **Breaking Change**
-`JSONCodable` now supports `let` properties. You now implement `init?(JSONDictionary: [String:AnyObject])` instead of `func JSONDecode()`.
+`JSONCodable` now supports `let` properties. You now implement `init?(JSONDictionary: [String:AnyObject])` instead of `func JSONDecode()` and `func toJSON()` instead of `func JSONEncode()`.
 
 ---
 
@@ -37,11 +37,11 @@ Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 extension User: JSONEncodable {
     func JSONEncode() throws -> AnyObject {
         var result: [String: AnyObject] = [:]
-        try result.archive(id, key: "id")
-        try result.archive(name, key: "full_name")
-        try result.archive(email, key: "email")
-        try result.archive(company, key: "company")
-        try result.archive(friends, key: "friends")
+        try result.encode(id, key: "id")
+        try result.encode(name, key: "full_name")
+        try result.encode(email, key: "email")
+        try result.encode(company, key: "company")
+        try result.encode(friends, key: "friends")
         return result
     }
 }
@@ -49,11 +49,11 @@ extension User: JSONEncodable {
 extension Company: JSONEncodable {}
 ```
 
-The default implementation of `func JSONEncode()` inspects the properties of your type using reflection (see `Company`.) If you need a different mapping, you can provide your own implementation (see `User`.)
+The default implementation of `func toJSON()` inspects the properties of your type using reflection (see `Company`.) If you need a different mapping, you can provide your own implementation (see `User`.)
 
-Instantiate your struct, then use the `func JSONEncode()` method to obtain a equivalent form suitable for use with `NSJSONSerialization`:
+Instantiate your struct, then use the `func toJSON()` method to obtain a equivalent form suitable for use with `NSJSONSerialization`:
 ```
-let dict = try user.JSONEncode()
+let dict = try user.toJSON()
 print("dict: \(dict)")
 ```
 
@@ -85,11 +85,11 @@ Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
 extension User: JSONDecodable {
     init?(JSONDictionary: [String:AnyObject]) {
         do {
-            id = try JSONDictionary.restore("id")
-            name = try JSONDictionary.restore("full_name")
-            email = try JSONDictionary.restore("email")
-            company = try JSONDictionary.restore("company")
-            friends = try JSONDictionary.restore("friends")
+            id = try JSONDictionary.decode("id")
+            name = try JSONDictionary.decode("full_name")
+            email = try JSONDictionary.decode("email")
+            company = try JSONDictionary.decode("company")
+            friends = try JSONDictionary.decode("friends")
         }
         catch {
             return nil
@@ -100,8 +100,8 @@ extension User: JSONDecodable {
 extension Company: JSONDecodable {
     init?(JSONDictionary: [String:AnyObject]) {
         do {
-            name = try JSONDictionary.restore("name")
-            address = try JSONDictionary.restore("address")
+            name = try JSONDictionary.decode("name")
+            address = try JSONDictionary.decode("address")
         }
         catch {
             return nil
@@ -148,9 +148,10 @@ User(
 ```
 
 ## Working with JSON Strings
-The convenience initializer `init?(JSONString: String)` is provided on `JSONDecodable`. You may also use `func JSONString() throws -> String` to obtain a string equivalent of your types.
+The convenience initializer `init?(JSONString: String)` is provided on `JSONDecodable`. You may also use `func toJSONString() throws -> String` to obtain a string equivalent of your types.
 
-Refer to the included playground for more information.
+Refer to the `Demo` project in the workspace for more information.
+You might experience issues executing the playground in Xcode 7.0 Beta.
 
 ## License
 

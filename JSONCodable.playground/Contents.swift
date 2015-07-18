@@ -7,7 +7,7 @@ Hassle-free JSON encoding and decoding in Swift
 
 `JSONEncodable` generates `Dictionary`s (compatible with `NSJSONSerialization`) and `String`s from your types while `JSONDecodable` creates structs (or classes) from compatible `Dictionary`s (from an incoming network request for instance)
 */
-
+import JSONCodable
 /*:
 Here's some data models we'll use as an example:
 */
@@ -33,11 +33,11 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 extension User: JSONEncodable {
     func JSONEncode() throws -> AnyObject {
         var result = [String: AnyObject]()
-        try result.archive(id, key: "id")
-        try result.archive(name, key: "full_name")
-        try result.archive(email, key: "email")
-        try result.archive(company, key: "company")
-        try result.archive(friends, key: "friends")
+        try result.encode(id, key: "id")
+        try result.encode(name, key: "full_name")
+        try result.encode(email, key: "email")
+        try result.encode(company, key: "company")
+        try result.encode(friends, key: "friends")
         return result
     }
 }
@@ -56,11 +56,11 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 extension User: JSONDecodable {
     init?(JSONDictionary: [String:AnyObject]) {
         do {
-            id = try JSONDictionary.restore("id")
-            name = try JSONDictionary.restore("full_name")
-            email = try JSONDictionary.restore("email")
-            company = try JSONDictionary.restore("company")
-            friends = try JSONDictionary.restore("friends")
+            id = try JSONDictionary.decode("id")
+            name = try JSONDictionary.decode("full_name")
+            email = try JSONDictionary.decode("email")
+            company = try JSONDictionary.decode("company")
+            friends = try JSONDictionary.decode("friends")
         }
         catch {
             return nil
@@ -71,8 +71,8 @@ extension User: JSONDecodable {
 extension Company: JSONDecodable {
     init?(JSONDictionary: [String:AnyObject]) {
         do {
-            name = try JSONDictionary.restore("name")
-            address = try JSONDictionary.restore("address")
+            name = try JSONDictionary.decode("name")
+            address = try JSONDictionary.decode("address")
         }
         catch {
             return nil
@@ -124,8 +124,8 @@ And encode it to JSON using one of the provided methods:
 */
 
 do {
-    let dict = try user.JSONEncode()
-    print("Encoded: \n\(dict as! [String: AnyObject])\n\n")    
+    let dict = try user.toJSON()
+    print("Encoded: \n\(dict as! [String: AnyObject])\n\n")
 }
 catch {
     print("Error: \(error)")
@@ -134,7 +134,7 @@ catch {
 //do {
 //    let string = try user.JSONString()
 //    print(string)
-//    
+//
 //    let userAgain = User(JSONString: string)
 //    print(userAgain)
 //} catch {
