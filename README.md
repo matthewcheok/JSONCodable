@@ -188,8 +188,8 @@ func toJSON() throws -> AnyObject {
 
 The following transformers are provided by default:
 
-`JSONTransformers.StringToNSURL`: `String <-> NSURL`
-`JSONTransformers.StringToNSDate`: `String <-> NSDate` ISO format
+- `JSONTransformers.StringToNSURL`: `String <-> NSURL`
+- `JSONTransformers.StringToNSDate`: `String <-> NSDate` ISO format
 
 Feel free to suggest more!
 
