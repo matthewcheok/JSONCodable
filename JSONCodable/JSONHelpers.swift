@@ -1,6 +1,6 @@
 //
 //  JSONHelpers.swift
-//  project20
+//  JSONCodable
 //
 //  Created by Matthew Cheok on 17/7/15.
 //  Copyright © 2015 matthewcheok. All rights reserved.

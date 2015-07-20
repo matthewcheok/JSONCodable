@@ -7,7 +7,7 @@ Pod::Spec.new do |s|
   s.summary = 'Hassle-free JSON encoding and decoding in Swift'
   s.homepage = 'https://github.com/matthewcheok/JSONCodable'
   s.authors = { 'Matthew Cheok' => 'hello@matthewcheok.com' }
-  s.source = { :git => 'https://github.com/MHaroonBaig/MotionKit.git', :tag => s.version }
+  s.source = { :git => 'https://github.com/matthewcheok/JSONCodable.git', :tag => s.version }
   s.source_files = 'JSONCodable/*.swift'
   s.requires_arc = true
 end
