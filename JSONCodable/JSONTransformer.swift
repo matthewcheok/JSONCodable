@@ -24,8 +24,21 @@ public struct JSONTransformer<EncodedType, DecodedType>: CustomStringConvertible
 }
 
 import Foundation
+private let dateTimeFormatter: NSDateFormatter = {
+    let formatter = NSDateFormatter()
+    formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+    formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
+    formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    return formatter
+}()
+
 public struct JSONTransformers {
     public static let StringToNSURL = JSONTransformer<String, NSURL>(
         decoding: {NSURL(string: $0)},
         encoding: {$0.absoluteString})
+
+    public static let StringToNSDate = JSONTransformer<String, NSDate>(
+        decoding: {dateTimeFormatter.dateFromString($0)},
+        encoding: {dateTimeFormatter.stringFromDate($0)})
+
 }
