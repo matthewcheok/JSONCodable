@@ -78,22 +78,22 @@ public extension Array {//where Element: JSONEncodable {
 // Dictionary convenience methods
 
 public extension Dictionary where Value: AnyObject {
-    public mutating func encode(valueMaybe: Any, key: Key) throws {
-        let value: Any
+    public mutating func encode(value: Any, key: Key) throws {
+        let actualValue: Any
         
         // unwrap optionals
-        if let v = valueMaybe as? JSONOptional {
+        if let v = value as? JSONOptional {
             guard let unwrapped = v.wrapped else {
                 return
             }
-            value = unwrapped
+            actualValue = unwrapped
         }
         else {
-            value = valueMaybe
+            actualValue = value
         }
         
         // test for array
-        if let array = value as? JSONArray {
+        if let array = actualValue as? JSONArray {
             if array.count > 0 && array.elementsAreJSONEncodable() {
                 let encodableArray = array.elementsMadeJSONEncodable()
                 let result = try encodableArray.toJSON()
@@ -102,14 +102,14 @@ public extension Dictionary where Value: AnyObject {
         }
             
         // test for compatible type
-        else if let compatible = value as? JSONEncodable {
+        else if let compatible = actualValue as? JSONEncodable {
             let result = try compatible.toJSON()
             self[key] = (result as! Value)
         }
             
         // incompatible type
         else {
-            throw JSONEncodableError.ChildIncompatibleTypeError(key: key as! String, elementType: value.dynamicType)
+            throw JSONEncodableError.ChildIncompatibleTypeError(key: key as! String, elementType: actualValue.dynamicType)
         }
     }
     
