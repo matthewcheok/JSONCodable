@@ -7,7 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
-#import <JSONCodable/JSONCodable-Swift.h>
+//#import <JSONCodable/JSONCodable-Swift.h>
 
 //! Project version number for JSONCodable.
 FOUNDATION_EXPORT double JSONCodable_VersionNumber;
