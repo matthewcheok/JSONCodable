@@ -1,5 +1,14 @@
-#JSONCodable
+#JSONCodable [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
 Hassle-free JSON encoding and decoding in Swift
+
+### Installation
+
+Simply add the following to your `Cartfile`:
+```
+github "matthewcheok/JSONCodable"
+```
+
+and then run `carthage update`
 
 **Swift 2.0 Required**
 This project uses a variety of Swift features including *Protocol Extensions* and *Error Handling* available in Swift 2.0
