@@ -44,7 +44,7 @@ Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 
 ```
 extension User: JSONEncodable {
-    func JSONEncode() throws -> AnyObject {
+    func toJSON() throws -> AnyObject {
         var result: [String: AnyObject] = [:]
         try result.encode(id, key: "id")
         try result.encode(name, key: "full_name")
@@ -101,6 +101,7 @@ extension User: JSONDecodable {
             friends = try JSONDictionary.decode("friends")
         }
         catch {
+            print(error)
             return nil
         }
     }
@@ -113,6 +114,7 @@ extension Company: JSONDecodable {
             address = try JSONDictionary.decode("address")
         }
         catch {
+            print(error)
             return nil
         }
     }
