@@ -1,4 +1,23 @@
-#JSONCodable [![Carthage compatible](https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat)](https://github.com/Carthage/Carthage)
+<p align="center">
+    <img src="https://github.com/matthewcheok/JSONCodable/raw/master/logo.png" alt="Logo" width="418" height="50">
+</p>
+<p align="center">
+    <img src="https://img.shields.io/cocoapods/p/JSONCodable.svg" alt="Platform">
+    <img src="https://img.shields.io/badge/language-swift-orange.svg"
+         alt="Language">
+    <a href="https://cocoapods.org/pods/JSONCodable">
+        <img src="https://img.shields.io/cocoapods/v/JSONCodable.svg"
+             alt="CocoaPods">
+    </a>
+    <a href="https://github.com/Carthage/Carthage">
+        <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"
+             alt="Carthage">
+    </a>
+    <img src="https://img.shields.io/badge/license-MIT-000000.svg"
+         alt="License">
+</p>
+
+#JSONCodable
 Hassle-free JSON encoding and decoding in Swift
 
 ### Installation
