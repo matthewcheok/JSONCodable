@@ -26,7 +26,8 @@ class ViewController: UIViewController {
             "friends": [
                 ["id": 27, "full_name": "Bob Jefferson"],
                 ["id": 29, "full_name": "Jen Jackson"]
-            ]
+            ],
+            "website": ["url": "http://johnappleseed.com"]
         ]
         
         print("Initial JSON:\n\(JSON)\n\n")

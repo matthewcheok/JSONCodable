@@ -26,7 +26,7 @@ extension User: JSONCodable {
             email = try JSONDictionary.decode("email")
             company = try JSONDictionary.decode("company")
             friends = try JSONDictionary.decode("friends")
-            website = try JSONDictionary.decode("website", transformer: JSONTransformers.StringToNSURL)
+            website = try JSONDictionary.decode("website.url", transformer: JSONTransformers.StringToNSURL)
         }
         catch {
             print(error)

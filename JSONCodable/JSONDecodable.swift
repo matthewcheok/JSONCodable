@@ -65,10 +65,27 @@ public extension Array where Element: JSONDecodable {
 // Dictionary convenience methods
 
 public extension Dictionary where Value: AnyObject {
+    private func get(key: Key) -> AnyObject? {
+        guard let keyString = key as? String else {
+            return nil
+        }
+        let keys = keyString.componentsSeparatedByString(".")
+        
+        return keys.reduce(self as? AnyObject) {
+            value, key in
+            
+            guard let dict = value as? [String: AnyObject] else {
+                return nil
+            }
+            
+            return dict[key]
+        }
+    }
+    
     // TODO: validate array elements
     // optional array of decodables
     public func decode<Element: JSONDecodable>(key: Key) throws -> [Element]? {
-        if let y = self[key] {
+        if let y = get(key) ?? self[key] {
             guard let x = y as? [[String : AnyObject]] else {
                 throw JSONDecodableError.ArrayTypeExpectedError(key: key as! String, elementType: y.dynamicType)
             }
@@ -79,7 +96,7 @@ public extension Dictionary where Value: AnyObject {
     
     // required array of decodables
     public func decode<Element: JSONDecodable>(key: Key) throws -> [Element] {
-        guard let y = self[key] else {
+        guard let y = get(key) ?? self[key] else {
             return []
         }
         guard let x = y as? [[String : AnyObject]] else {
@@ -90,7 +107,7 @@ public extension Dictionary where Value: AnyObject {
     
     // optional array of scalars
     public func decode<Element: JSONCompatible>(key: Key) throws -> [Element]? {
-        if let y = self[key] {
+        if let y = get(key) ?? self[key] {
             guard let x = y as? [Element] else {
                 throw JSONDecodableError.IncompatibleTypeError(key: key as! String, elementType: y.dynamicType, expectedType: [Element].self)
             }
@@ -101,7 +118,7 @@ public extension Dictionary where Value: AnyObject {
     
     // required array of scalars
     public func decode<Element: JSONCompatible>(key: Key) throws -> [Element] {
-        guard let y = self[key] else {
+        guard let y = get(key) ?? self[key] else {
             throw JSONDecodableError.MissingTypeError(key: key as! String)
         }
         guard let x = y as? [Element] else {
@@ -112,7 +129,7 @@ public extension Dictionary where Value: AnyObject {
     
     // optional decodable
     public func decode<Type: JSONDecodable>(key: Key) throws -> Type? {
-        if let y = self[key] {
+        if let y = get(key) ?? self[key] {
             guard let x = y as? [String : AnyObject] else {
                 throw JSONDecodableError.DictionaryTypeExpectedError(key: key as! String, elementType: y.dynamicType)
             }
@@ -123,7 +140,7 @@ public extension Dictionary where Value: AnyObject {
     
     // required decodable
     public func decode<Type: JSONDecodable>(key: Key) throws -> Type {
-        guard let y = self[key] else {
+        guard let y = get(key) ?? self[key] else {
             throw JSONDecodableError.MissingTypeError(key: key as! String)
         }
         guard let x = y as? [String : AnyObject] else {
@@ -137,12 +154,12 @@ public extension Dictionary where Value: AnyObject {
     
     // optional scalar
     public func decode<Type: JSONCompatible>(key: Key) throws -> Type? {
-        return self[key] as? Type
+        return (get(key) ?? self[key]) as? Type
     }
     
     // required scalar
     public func decode<Type: JSONCompatible>(key: Key) throws -> Type {
-        guard let y = self[key] else {
+        guard let y = get(key) ?? self[key] else {
             throw JSONDecodableError.MissingTypeError(key: key as! String)
         }
         guard let x = y as? Type else {
@@ -153,7 +170,7 @@ public extension Dictionary where Value: AnyObject {
     
     // optional transformable
     public func decode<DecodedType, EncodedType>(key: Key, transformer: JSONTransformer<EncodedType, DecodedType>) throws -> DecodedType? {
-        if let y = self[key] {
+        if let y = get(key) ?? self[key] {
             guard let x = y as? EncodedType else {
                 throw JSONDecodableError.IncompatibleTypeError(key: key as! String, elementType: y.dynamicType, expectedType: EncodedType.self)
             }
@@ -168,7 +185,7 @@ public extension Dictionary where Value: AnyObject {
     
     // required transformable
     public func decode<DecodedType, EncodedType>(key: Key, transformer: JSONTransformer<EncodedType, DecodedType>) throws -> DecodedType {
-        guard let y = self[key] else {
+        guard let y = get(key) ?? self[key] else {
             throw JSONDecodableError.MissingTypeError(key: key as! String)
         }
         guard let x = y as? EncodedType else {
