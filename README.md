@@ -42,7 +42,7 @@ This project uses a variety of Swift features including *Protocol Extensions* an
 `JSONDecodable` allows you to generate structs from `NSDictionary` coming in from a network request for example.
 
 We'll use the following models in this example:
-```
+```swift
 struct User {
     let id: Int
     let name: String
@@ -61,7 +61,7 @@ struct Company {
 
 Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 
-```
+```swift
 extension User: JSONEncodable {
     func toJSON() throws -> AnyObject {
         var result: [String: AnyObject] = [:]
@@ -80,13 +80,13 @@ extension Company: JSONEncodable {}
 The default implementation of `func toJSON()` inspects the properties of your type using reflection (see `Company`.) If you need a different mapping, you can provide your own implementation (see `User`.)
 
 Instantiate your struct, then use the `func toJSON()` method to obtain a equivalent form suitable for use with `NSJSONSerialization`:
-```
+```swift
 let dict = try user.toJSON()
 print("dict: \(dict)")
 ```
 
 Result:
-```
+```swift
 [full_name: John Appleseed, id: 24, email: john@appleseed.com, company: {
     address = "1 Infinite Loop, Cupertino, CA";
     name = Apple;
@@ -109,7 +109,7 @@ Result:
 ##Using JSONDecodable
 
 Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
-```
+```swift
 extension User: JSONDecodable {
     init?(JSONDictionary: [String:AnyObject]) {
         do {
@@ -143,13 +143,13 @@ extension Company: JSONDecodable {
 Simply provide the implementations for `init?(JSONDictionary: [String:AnyObject])`.
 As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
 
-```
+```swift
 let user = User(JSONDictionary: JSON)
 print("\(user)")
 ```
 
 Result:
-```
+```swift
 User(
   id: 24,
   name: "John Appleseed",
@@ -184,7 +184,7 @@ The convenience initializer `init?(JSONString: String)` is provided on `JSONDeco
 
 To transform values, create an instance of `JSONTransformer`:
 
-```
+```swift
 let JSONTransformerStringToNSURL = JSONTransformer<String, NSURL>(
         decoding: {NSURL(string: $0)},
         encoding: {$0.absoluteString})
@@ -194,7 +194,7 @@ A `JSONTransformer` converts between 2 types, in this case, `String` and `NSURL`
 
 Next, use the overloaded versions of `func encode()` and `func decode()` to supply the transformer:
 
-```
+```swift
 struct User {
   ...
   var website: NSURL?
