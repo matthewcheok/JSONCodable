@@ -152,6 +152,9 @@ public extension Dictionary where Value: AnyObject {
     // optional decodable
     public func decode<Type: JSONDecodable>(key: Key) throws -> Type? {
         if let y = get(key) ?? self[key] {
+            if y is NSNull {
+                return nil
+            }
             guard let x = y as? [String : AnyObject] else {
                 throw JSONDecodableError.DictionaryTypeExpectedError(key: key as! String, elementType: y.dynamicType)
             }
