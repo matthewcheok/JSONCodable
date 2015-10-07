@@ -82,6 +82,28 @@ public extension Dictionary where Value: AnyObject {
         }
     }
     
+    // optional array of scalars
+    public func decode<Value: JSONCompatible>(key: Key) throws -> [String: Value]? {
+        if let y = get(key) ?? self[key] {
+            guard let x = y as? [String: Value] else {
+                throw JSONDecodableError.IncompatibleTypeError(key: key as! String, elementType: y.dynamicType, expectedType: [String: Value].self)
+            }
+            return x
+        }
+        return nil
+    }
+    
+    // required dictionary of scalars
+    public func decode<Value: JSONCompatible>(key: Key) throws -> [String: Value] {
+        guard let y = get(key) ?? self[key] else {
+            throw JSONDecodableError.MissingTypeError(key: key as! String)
+        }
+        guard let x = y as? [String: Value] else {
+            throw JSONDecodableError.IncompatibleTypeError(key: key as! String, elementType: y.dynamicType, expectedType: [String: Value].self)
+        }
+        return x
+    }
+    
     // TODO: validate array elements
     // optional array of decodables
     public func decode<Element: JSONDecodable>(key: Key) throws -> [Element]? {
@@ -130,6 +152,9 @@ public extension Dictionary where Value: AnyObject {
     // optional decodable
     public func decode<Type: JSONDecodable>(key: Key) throws -> Type? {
         if let y = get(key) ?? self[key] {
+            if y is NSNull {
+                return nil
+            }
             guard let x = y as? [String : AnyObject] else {
                 throw JSONDecodableError.DictionaryTypeExpectedError(key: key as! String, elementType: y.dynamicType)
             }

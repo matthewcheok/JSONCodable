@@ -16,6 +16,7 @@ struct User {
     var company: Company?
     var friends: [User] = []
     var website: NSURL?
+    var props: [String: String] = [:]
 }
 
 extension User: JSONCodable {
@@ -27,6 +28,7 @@ extension User: JSONCodable {
             company = try JSONDictionary.decode("company")
             friends = try JSONDictionary.decode("friends")
             website = try JSONDictionary.decode("website.url", transformer: JSONTransformers.StringToNSURL)
+            props = try JSONDictionary.decode("props")
         }
         catch {
             print(error)
@@ -42,6 +44,7 @@ extension User: JSONCodable {
         try result.encode(company, key: "company")
         try result.encode(friends, key: "friends")
         try result.encode(website, key: "website", transformer: JSONTransformers.StringToNSURL)
+        try result.encode(props, key: "props")
         return result
     }
 }

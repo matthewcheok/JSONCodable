@@ -11,6 +11,7 @@
 public enum JSONEncodableError: ErrorType, CustomStringConvertible {
     case IncompatibleTypeError(elementType: Any.Type)
     case ArrayIncompatibleTypeError(elementType: Any.Type)
+    case DictionaryIncompatibleTypeError(elementType: Any.Type)
     case ChildIncompatibleTypeError(key: String, elementType: Any.Type)
     case TransformerFailedError(
         key: String
@@ -22,6 +23,8 @@ public enum JSONEncodableError: ErrorType, CustomStringConvertible {
             return "JSONEncodableError: Incompatible type \(elementType)"
         case let .ArrayIncompatibleTypeError(elementType: elementType):
             return "JSONEncodableError: Got an array of incompatible type \(elementType)"
+        case let .DictionaryIncompatibleTypeError(elementType: elementType):
+            return "JSONEncodableError: Got an dictionary of incompatible type \(elementType)"
         case let .ChildIncompatibleTypeError(key: key, elementType: elementType):
             return "JSONEncodableError: Got incompatible type \(elementType) for key \(key)"
         case let .TransformerFailedError(key: key):
@@ -77,6 +80,21 @@ public extension Array {//where Element: JSONEncodable {
 
 // Dictionary convenience methods
 
+public extension Dictionary {//where Key: String, Value: JSONEncodable {
+    public func toJSON() throws -> AnyObject {
+        var result: [String: AnyObject] = [:]
+        for (k, item) in self {
+            if let item = item as? JSONEncodable {
+                result[String(k)] = try item.toJSON()
+            }
+            else {
+                throw JSONEncodableError.DictionaryIncompatibleTypeError(elementType: item.dynamicType)
+            }
+        }
+        return result
+    }
+}
+
 public extension Dictionary where Value: AnyObject {
     public mutating func encode(value: Any, key: Key) throws {
         let actualValue: Any
@@ -105,6 +123,15 @@ public extension Dictionary where Value: AnyObject {
         else if let compatible = actualValue as? JSONEncodable {
             let result = try compatible.toJSON()
             self[key] = (result as! Value)
+        }
+            
+        // test for dictionary
+        else if let dict = actualValue as? JSONDictionary {
+            if dict.dictionaryIsJSONEncodable() {
+                let encodableDict = dict.dictionaryMadeJSONEncodable()
+                let result = try encodableDict.toJSON()
+                self[key] = (result as! Value)
+            }
         }
             
         // incompatible type

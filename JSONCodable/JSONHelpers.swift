@@ -6,6 +6,27 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
+// Dictionary handling
+
+protocol JSONDictionary {
+    func dictionaryIsJSONEncodable() -> Bool
+    func dictionaryMadeJSONEncodable() -> [String: JSONEncodable]
+}
+
+extension Dictionary : JSONDictionary {
+    func dictionaryIsJSONEncodable() -> Bool {
+        return Key.self is String.Type && Value.self is JSONEncodable.Type
+    }
+    
+    func dictionaryMadeJSONEncodable() -> [String: JSONEncodable] {
+        var dict: [String: JSONEncodable] = [:]
+        for (k, v) in self {
+            dict[String(k)] = v as? JSONEncodable
+        }
+        return dict
+    }
+}
+
 // Array handling
 
 protocol JSONArray {
