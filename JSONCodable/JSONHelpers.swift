@@ -15,7 +15,7 @@ protocol JSONDictionary {
 
 extension Dictionary : JSONDictionary {
     func dictionaryIsJSONEncodable() -> Bool {
-        return Key.self is String.Type && Value.self is JSONEncodable.Type
+		return Key.self is String.Type && (Value.self is JSONEncodable.Type || Value.self is JSONEncodable.Protocol)
     }
     
     func dictionaryMadeJSONEncodable() -> [String: JSONEncodable] {
@@ -37,7 +37,7 @@ protocol JSONArray {
 
 extension Array: JSONArray {
     func elementsAreJSONEncodable() -> Bool {
-        return Element.self is JSONEncodable.Type
+		return Element.self is JSONEncodable.Type || Element.self is JSONEncodable.Protocol
     }
     
     func elementsMadeJSONEncodable() -> [JSONEncodable] {
