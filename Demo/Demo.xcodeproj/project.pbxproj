@@ -50,7 +50,7 @@
 		9ED87AE61B5A493A001CA154 /* DemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ED87AEA1B5A493A001CA154 /* DemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DemoUITests.swift; sourceTree = "<group>"; };
 		9ED87AEC1B5A493A001CA154 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		9ED87AF81B5A4A22001CA154 /* JSONCodable.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JSONCodable.framework; path = "../../../../Library/Developer/Xcode/DerivedData/JSONCodable-ffvabopizslykkercglcmocrvhlr/Build/Products/Debug/JSONCodable.framework"; sourceTree = "<group>"; };
+		9ED87AF81B5A4A22001CA154 /* JSONCodable.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = JSONCodable.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		9ED87AFA1B5A4A6B001CA154 /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		9ED87AFC1B5A4B24001CA154 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
