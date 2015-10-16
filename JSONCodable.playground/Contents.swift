@@ -31,7 +31,7 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONEncodable {
-    func JSONEncode() throws -> AnyObject {
+    func toJSON() throws -> AnyObject {
         var result = [String: AnyObject]()
         try result.encode(id, key: "id")
         try result.encode(name, key: "full_name")

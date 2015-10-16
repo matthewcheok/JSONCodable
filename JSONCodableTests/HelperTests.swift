@@ -9,21 +9,11 @@
 import XCTest
 @testable import JSONCodable
 
-class JSONCodableTests: XCTestCase {
-    
-    override func setUp() {
-        super.setUp()
-        // Put setup code here. This method is called before the invocation of each test method in the class.
-    }
-    
-    override func tearDown() {
-        // Put teardown code here. This method is called after the invocation of each test method in the class.
-        super.tearDown()
-    }
+struct NotEncodable {
+}
 
-	struct NotEncodable {
-	}
-
+class HelperTests: XCTestCase {
+    
     func testArrayElementsAreEncodable() {
 		let intArray:[Int] = [1,2,3]
 		XCTAssert(intArray.elementsAreJSONEncodable(), "Array of type [Int] should be encodable")
@@ -37,16 +27,14 @@ class JSONCodableTests: XCTestCase {
 
 	func testDictionaryIsEncodable() {
 		let intDict:[String:Int] = ["a":1,"b":2,"c":3]
-		XCTAssert(intDict.dictionaryIsJSONEncodable(), "Dictionary of type [String:Int] should be encodable")
+		XCTAssert(intDict.valuesAreJSONEncodable(), "Dictionary of type [String:Int] should be encodable")
 
 		let encodableDict:[String:JSONEncodable] = ["a":1,"b":2,"c":3]
-		XCTAssert(encodableDict.dictionaryIsJSONEncodable(), "Dictionary of type [String:JSONEncodable] should be encodable")
+		XCTAssert(encodableDict.valuesAreJSONEncodable(), "Dictionary of type [String:JSONEncodable] should be encodable")
 
 		let notEncodableDict:[String:NotEncodable] = ["a":NotEncodable()]
-		XCTAssert(!notEncodableDict.dictionaryIsJSONEncodable(), "Dictionary of type [String:NotEncodable] should not be encodable")
+		XCTAssert(!notEncodableDict.valuesAreJSONEncodable(), "Dictionary of type [String:NotEncodable] should not be encodable")
 
 	}
-
-
     
 }
