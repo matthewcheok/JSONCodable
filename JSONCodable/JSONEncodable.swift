@@ -6,13 +6,22 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
-// Error type
+// Encoding Errors
 
 public enum JSONEncodableError: ErrorType, CustomStringConvertible {
-    case IncompatibleTypeError(elementType: Any.Type)
-    case ArrayIncompatibleTypeError(elementType: Any.Type)
-    case DictionaryIncompatibleTypeError(elementType: Any.Type)
-    case ChildIncompatibleTypeError(key: String, elementType: Any.Type)
+    case IncompatibleTypeError(
+        elementType: Any.Type
+    )
+    case ArrayIncompatibleTypeError(
+        elementType: Any.Type
+    )
+    case DictionaryIncompatibleTypeError(
+        elementType: Any.Type
+    )
+    case ChildIncompatibleTypeError(
+        key: String,
+        elementType: Any.Type
+    )
     case TransformerFailedError(
         key: String
     )
@@ -47,17 +56,38 @@ public extension JSONEncodable {
             throw JSONEncodableError.IncompatibleTypeError(elementType: self.dynamicType)
         }
         
-        // loop through all properties (instance variables)
-        var result: [String: AnyObject] = [:]
-        for (labelMaybe, valueMaybe) in mirror.children {
-            guard let label = labelMaybe else {
-                continue
+        return try JSONEncoder.create({ (encoder) -> Void in
+            // loop through all properties (instance variables)
+            for (labelMaybe, valueMaybe) in mirror.children {
+                guard let label = labelMaybe else {
+                    continue
+                }
+                
+                let value: Any
+                
+                // unwrap optionals
+                if let v = valueMaybe as? JSONOptional {
+                    guard let unwrapped = v.wrapped else {
+                        continue
+                    }
+                    value = unwrapped
+                }
+                else {
+                    value = valueMaybe
+                }
+                
+                switch (value) {
+                case let value as JSONEncodable:
+                    try encoder.encode(value, key: label)
+                case let value as JSONArray:
+                    try encoder.encode(value, key: label)
+                case let value as JSONDictionary:
+                    try encoder.encode(value, key: label)
+                default:
+                    throw JSONEncodableError.ChildIncompatibleTypeError(key: label, elementType: value.dynamicType)
+                }
             }
-            
-            try result.encode(valueMaybe, key: label)
-        }
-        
-        return result
+        })
     }
 }
 
@@ -95,65 +125,164 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
     }
 }
 
-public extension Dictionary where Value: AnyObject {
-    public mutating func encode(value: Any, key: Key) throws {
-        let actualValue: Any
-        
-        // unwrap optionals
-        if let v = value as? JSONOptional {
-            guard let unwrapped = v.wrapped else {
-                return
-            }
-            actualValue = unwrapped
-        }
-        else {
-            actualValue = value
-        }
-        
-        // test for array
-        if let array = actualValue as? JSONArray {
-            if array.count > 0 && array.elementsAreJSONEncodable() {
-                let encodableArray = array.elementsMadeJSONEncodable()
-                let result = try encodableArray.toJSON()
-                self[key] = (result as! Value)
-            }
-        }
-            
-        // test for compatible type
-        else if let compatible = actualValue as? JSONEncodable {
-            let result = try compatible.toJSON()
-            self[key] = (result as! Value)
-        }
-            
-        // test for dictionary
-        else if let dict = actualValue as? JSONDictionary {
-            if dict.dictionaryIsJSONEncodable() {
-                let encodableDict = dict.dictionaryMadeJSONEncodable()
-                let result = try encodableDict.toJSON()
-                self[key] = (result as! Value)
-            }
-        }
-            
-        // incompatible type
-        else {
-            throw JSONEncodableError.ChildIncompatibleTypeError(key: key as! String, elementType: actualValue.dynamicType)
-        }
+// JSONEncoder - provides utility methods for encoding
+
+public class JSONEncoder {
+    var object = JSONObject()
+    
+    public static func create(@noescape setup: (encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
+        let encoder = JSONEncoder()
+        try setup(encoder: encoder)
+        return encoder.object
     }
     
-    // optional transformable
-    public mutating func encode<EncodedType, DecodedType>(value: DecodedType?, key: Key, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
-        if let value = value {
-            let encodedValue = transformer.encoding(value)
-            try encode(encodedValue, key: key)
+    /* 
+    Note:
+    There is some duplication because methods with generic constraints need to
+    take a concrete type conforming to the constraint are unable to take a parameter
+    typed to the protocol. Hence we need non-generic versions so we can cast from 
+    Any to JSONEncodable in the default implementation for toJSON().
+    */
+    
+    // JSONEncodable
+    public func encode<Encodable: JSONEncodable>(value: Encodable, key: String) throws {
+        let result = try value.toJSON()
+        object[key] = result
+    }
+    private func encode(value: JSONEncodable, key: String) throws {
+        let result = try value.toJSON()
+        object[key] = result
+    }
+
+    // JSONEncodable?
+    public func encode<Encodable: JSONEncodable>(value: Encodable?, key: String) throws {
+        guard let actual = value else {
+            return
         }
+        let result = try actual.toJSON()
+        object[key] = result
+    }
+
+    // Enum
+    public func encode<Enum: RawRepresentable>(value: Enum, key: String) throws {
+        guard let compatible = value.rawValue as? JSONCompatible else {
+            return
+        }
+        let result = try compatible.toJSON()
+        object[key] = result
     }
     
-    // required transformable
-    public mutating func encode<EncodedType, DecodedType>(value: DecodedType, key: Key, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
-        guard let encodedValue = transformer.encoding(value) else {
-            throw JSONEncodableError.TransformerFailedError(key: key as! String)
+    // Enum?
+    public func encode<Enum: RawRepresentable>(value: Enum?, key: String) throws {
+        guard let actual = value else {
+            return
         }
-        
-        try encode(encodedValue, key: key)
+        guard let compatible = actual.rawValue as? JSONCompatible else {
+            return
+        }
+        let result = try compatible.toJSON()
+        object[key] = result
+    }
+    
+    // [JSONEncodable]
+    public func encode<Encodable: JSONEncodable>(value: [Encodable], key: String) throws {
+        guard value.count > 0 else {
+            return
+        }
+        let result = try value.toJSON()
+        object[key] = result
+    }
+    private func encode(array: JSONArray, key: String) throws {
+        guard array.count > 0 && array.elementsAreJSONEncodable() else {
+            return
+        }
+        let encodable = array.elementsMadeJSONEncodable()
+        let result = try encodable.toJSON()
+        object[key] = result
+    }
+    
+    // [JSONEncodable]?
+    public func encode<Encodable: JSONEncodable>(value: [Encodable]?, key: String) throws {
+        guard let actual = value else {
+            return
+        }
+        guard actual.count > 0 else {
+            return
+        }
+        let result = try actual.toJSON()
+        object[key] = result
+    }
+    
+    // [Enum]
+    public func encode<Enum: RawRepresentable>(value: [Enum], key: String) throws {
+        guard value.count > 0 else {
+            return
+        }
+        let result = try value.flatMap {
+            try ($0.rawValue as? JSONCompatible)?.toJSON()
+        }
+        object[key] = result
+    }
+    
+    // [Enum]?
+    public func encode<Enum: RawRepresentable>(value: [Enum]?, key: String) throws {
+        guard let actual = value else {
+            return
+        }
+        guard actual.count > 0 else {
+            return
+        }
+        let result = try actual.flatMap {
+            try ($0.rawValue as? JSONCompatible)?.toJSON()
+        }
+        object[key] = result
+    }
+    
+    // [String:JSONEncodable]
+    public func encode<Encodable: JSONEncodable>(value: [String:Encodable], key: String) throws {
+        guard value.count > 0 else {
+            return
+        }
+        let result = try value.toJSON()
+        object[key] = result
+    }
+    private func encode(dictionary: JSONDictionary, key: String) throws {
+        guard dictionary.count > 0 && dictionary.valuesAreJSONEncodable() else {
+            return
+        }
+        let encodable = dictionary.valuesMadeJSONEncodable()
+        let result = try encodable.toJSON()
+        object[key] = result
+    }
+    
+    // [String:JSONEncodable]?
+    public func encode<Encodable: JSONEncodable>(value: [String:Encodable]?, key: String) throws {
+        guard let actual = value else {
+            return
+        }
+        guard actual.count > 0 else {
+            return
+        }
+        let result = try actual.toJSON()
+        object[key] = result
+    }
+    
+    // JSONTransformable
+    public func encode<EncodedType, DecodedType>(value: DecodedType, key: String, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
+        guard let result = transformer.encoding(value) else {
+            throw JSONEncodableError.TransformerFailedError(key: key)
+        }
+        object[key] = (result as! AnyObject)
+    }
+    
+    // JSONTransformable?
+    public func encode<EncodedType, DecodedType>(value: DecodedType?, key: String, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
+        guard let actual = value else {
+            return
+        }
+        guard let result = transformer.encoding(actual) else {
+            return
+        }
+        object[key] = (result as! AnyObject)
     }
 }

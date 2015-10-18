@@ -6,19 +6,24 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
+// Convenience
+
+public typealias JSONObject = [String: AnyObject]
+
 // Dictionary handling
 
 protocol JSONDictionary {
-    func dictionaryIsJSONEncodable() -> Bool
-    func dictionaryMadeJSONEncodable() -> [String: JSONEncodable]
+    var count: Int { get } 
+    func valuesAreJSONEncodable() -> Bool
+    func valuesMadeJSONEncodable() -> [String: JSONEncodable]
 }
 
 extension Dictionary : JSONDictionary {
-    func dictionaryIsJSONEncodable() -> Bool {
+    func valuesAreJSONEncodable() -> Bool {
 		return Key.self is String.Type && (Value.self is JSONEncodable.Type || Value.self is JSONEncodable.Protocol)
     }
     
-    func dictionaryMadeJSONEncodable() -> [String: JSONEncodable] {
+    func valuesMadeJSONEncodable() -> [String: JSONEncodable] {
         var dict: [String: JSONEncodable] = [:]
         for (k, v) in self {
             dict[String(k)] = v as? JSONEncodable
@@ -44,7 +49,6 @@ extension Array: JSONArray {
         return self.map {$0 as! JSONEncodable}
     }
 }
-
 
 // Optional handling
 
