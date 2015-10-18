@@ -13,6 +13,7 @@
 		9E455C051BCE1D0700070A4F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C041BCE1D0700070A4F /* User.swift */; settings = {ASSET_TAGS = (); }; };
 		9E455C091BCE1DE100070A4F /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C081BCE1DE100070A4F /* Company.swift */; settings = {ASSET_TAGS = (); }; };
 		9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C0A1BCE1F0100070A4F /* RegularTests.swift */; settings = {ASSET_TAGS = (); }; };
+		9E8E07241BD3F15800F98421 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8E07231BD3F15800F98421 /* Food.swift */; settings = {ASSET_TAGS = (); }; };
 		9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00BF1BCE251B008D557C /* TransformerTests.swift */; settings = {ASSET_TAGS = (); }; };
 		9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C11BCF6E43008D557C /* ImageAsset.swift */; settings = {ASSET_TAGS = (); }; };
 		9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C31BCF82F5008D557C /* HelperTests.swift */; settings = {ASSET_TAGS = (); }; };
@@ -50,6 +51,7 @@
 		9E455C041BCE1D0700070A4F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9E455C081BCE1DE100070A4F /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
 		9E455C0A1BCE1F0100070A4F /* RegularTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = RegularTests.swift; sourceTree = "<group>"; };
+		9E8E07231BD3F15800F98421 /* Food.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Food.swift; sourceTree = "<group>"; };
 		9ECF00BF1BCE251B008D557C /* TransformerTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TransformerTests.swift; sourceTree = "<group>"; };
 		9ECF00C11BCF6E43008D557C /* ImageAsset.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageAsset.swift; sourceTree = "<group>"; };
 		9ECF00C31BCF82F5008D557C /* HelperTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HelperTests.swift; sourceTree = "<group>"; };
@@ -105,6 +107,7 @@
 			isa = PBXGroup;
 			children = (
 				9E455C021BCE1C1E00070A4F /* Fruit.swift */,
+				9E8E07231BD3F15800F98421 /* Food.swift */,
 				9E455C041BCE1D0700070A4F /* User.swift */,
 				9E455C081BCE1DE100070A4F /* Company.swift */,
 				9ECF00C11BCF6E43008D557C /* ImageAsset.swift */,
@@ -313,6 +316,7 @@
 				9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */,
 				9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */,
 				9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */,
+				9E8E07241BD3F15800F98421 /* Food.swift in Sources */,
 				9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */,
 				9E455C051BCE1D0700070A4F /* User.swift in Sources */,
 				9E455C091BCE1DE100070A4F /* Company.swift in Sources */,

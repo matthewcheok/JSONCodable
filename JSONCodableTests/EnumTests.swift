@@ -13,6 +13,9 @@ class EnumTests: XCTestCase {
     let encodedValue = ["name": "apple", "color": "Red"]
     let decodedValue = Fruit(name: "apple", color: FruitColor.Red)
     
+    let encodedValue2 = ["name": "Seaweed Pasta", "cuisines": ["Italian", "Japanese"]]
+    let decodedValue2 = Food(name: "Seaweed Pasta", cuisines: [.Italian, .Japanese])
+    
     func testDecodingEnum() {
         guard let fruit = Fruit(JSONDictionary: encodedValue) else {
             XCTFail()
@@ -20,6 +23,13 @@ class EnumTests: XCTestCase {
         }
         
         XCTAssertEqual(fruit, decodedValue)
+        
+        guard let food = Food(JSONDictionary: encodedValue2) else {
+            XCTFail()
+            return
+        }
+        
+        XCTAssertEqual(food, decodedValue2)
     }
     
     func testEncodingEnum() {
@@ -34,6 +44,13 @@ class EnumTests: XCTestCase {
         }
         
         XCTAssertEqual(castedJSON, encodedValue)
+        
+        guard let json2 = try? decodedValue2.toJSON() else {
+            XCTFail()
+            return
+        }
+        
+        print(json2, encodedValue2)
     }
     
 }

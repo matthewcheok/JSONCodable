@@ -213,6 +213,31 @@ public class JSONEncoder {
         object[key] = result
     }
     
+    // [Enum]
+    public func encode<Enum: RawRepresentable>(value: [Enum], key: String) throws {
+        guard value.count > 0 else {
+            return
+        }
+        let result = try value.flatMap {
+            try ($0.rawValue as? JSONCompatible)?.toJSON()
+        }
+        object[key] = result
+    }
+    
+    // [Enum]?
+    public func encode<Enum: RawRepresentable>(value: [Enum]?, key: String) throws {
+        guard let actual = value else {
+            return
+        }
+        guard actual.count > 0 else {
+            return
+        }
+        let result = try actual.flatMap {
+            try ($0.rawValue as? JSONCompatible)?.toJSON()
+        }
+        object[key] = result
+    }
+    
     // [String:JSONEncodable]
     public func encode<Encodable: JSONEncodable>(value: [String:Encodable], key: String) throws {
         guard value.count > 0 else {

@@ -199,6 +199,28 @@ public class JSONDecoder {
         return array.flatMap {Element(JSONDictionary: $0)}
     }
     
+    // [Enum]
+    public func decode<Enum: RawRepresentable>(key: String) throws -> [Enum] {
+        guard let value = get(key) else {
+            return []
+        }
+        guard let array = value as? [Enum.RawValue] else {
+            throw JSONDecodableError.ArrayTypeExpectedError(key: key, elementType: value.dynamicType)
+        }
+        return array.flatMap { Enum(rawValue: $0) }
+    }
+    
+    // [Enum]?
+    public func decode<Enum: RawRepresentable>(key: String) throws -> [Enum]? {
+        guard let value = get(key) else {
+            return nil
+        }
+        guard let array = value as? [Enum.RawValue] else {
+            throw JSONDecodableError.ArrayTypeExpectedError(key: key, elementType: value.dynamicType)
+        }
+        return array.flatMap { Enum(rawValue: $0) }
+    }
+    
     // [String:JSONCompatible]
     public func decode<Value: JSONCompatible>(key: String) throws -> [String: Value] {
         guard let value = get(key) else {
