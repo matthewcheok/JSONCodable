@@ -29,11 +29,14 @@ github "matthewcheok/JSONCodable"
 
 and then run `carthage update`
 
-**Swift 2.0 Required**
-This project uses a variety of Swift features including *Protocol Extensions* and *Error Handling* available in Swift 2.0
+**TLDR**
+- Uses Protocol Extensions
+- Error Handling
+- Supports `let` properties
+- Supports `enum` properties backed by compatible values
 
-**Breaking Change**
-`JSONCodable` now supports `let` properties. You now implement `init?(JSONDictionary: [String:AnyObject])` instead of `func JSONDecode()` and `func toJSON()` instead of `func JSONEncode()`.
+**Change Log**
+- Moved encoding and decoding methods to a helper class
 
 ---
 
@@ -64,13 +67,13 @@ Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 ```swift
 extension User: JSONEncodable {
     func toJSON() throws -> AnyObject {
-        var result: [String: AnyObject] = [:]
-        try result.encode(id, key: "id")
-        try result.encode(name, key: "full_name")
-        try result.encode(email, key: "email")
-        try result.encode(company, key: "company")
-        try result.encode(friends, key: "friends")
-        return result
+        return try JSONEncoder.create({ (encoder) -> Void in
+            try encoder.encode(id, key: "id")
+            try encoder.encode(name, key: "full_name")
+            try encoder.encode(email, key: "email")
+            try encoder.encode(company, key: "company")
+            try encoder.encode(friends, key: "friends")
+        })
     }
 }
 
@@ -111,36 +114,36 @@ Result:
 Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
 ```swift
 extension User: JSONDecodable {
-    init?(JSONDictionary: [String:AnyObject]) {
+    init?(JSONDictionary: JSONObject) {
+        let decoder = JSONDecoder(object: JSONDictionary)
         do {
-            id = try JSONDictionary.decode("id")
-            name = try JSONDictionary.decode("full_name")
-            email = try JSONDictionary.decode("email")
-            company = try JSONDictionary.decode("company")
-            friends = try JSONDictionary.decode("friends")
+            id = try decoder.decode("id")
+            name = try decoder.decode("full_name")
+            email = try decoder.decode("email")
+            company = try decoder.decode("company")
+            friends = try decoder.decode("friends")
         }
         catch {
-            print(error)
             return nil
         }
     }
 }
 
 extension Company: JSONDecodable {
-    init?(JSONDictionary: [String:AnyObject]) {
+    init?(JSONDictionary: JSONObject) {
+        let decoder = JSONDecoder(object: JSONDictionary)
         do {
-            name = try JSONDictionary.decode("name")
-            address = try JSONDictionary.decode("address")
+            name = try decoder.decode("name")
+            address = try decoder.decode("address")
         }
         catch {
-            print(error)
             return nil
         }
     }
 }
 ```
 
-Simply provide the implementations for `init?(JSONDictionary: [String:AnyObject])`.
+Simply provide the implementations for `init?(JSONDictionary: [JSONObject])` where `JSONObject` is a typealias for `[String:AnyObject]`.
 As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
 
 ```swift
@@ -225,8 +228,7 @@ Feel free to suggest more!
 
 ## Example code
 
-Refer to the `Demo` project in the workspace for more information.
-You might experience issues executing the playground in Xcode 7.0 Beta.
+Refer to the included playground in the workspace for more details.
 
 ## License
 

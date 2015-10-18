@@ -32,20 +32,20 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 
 extension User: JSONEncodable {
     func toJSON() throws -> AnyObject {
-        var result = [String: AnyObject]()
-        try result.encode(id, key: "id")
-        try result.encode(name, key: "full_name")
-        try result.encode(email, key: "email")
-        try result.encode(company, key: "company")
-        try result.encode(friends, key: "friends")
-        return result
+        return try JSONEncoder.create({ (encoder) -> Void in
+            try encoder.encode(id, key: "id")
+            try encoder.encode(name, key: "full_name")
+            try encoder.encode(email, key: "email")
+            try encoder.encode(company, key: "company")
+            try encoder.encode(friends, key: "friends")
+        })
     }
 }
 
 extension Company: JSONEncodable {}
 
 /*:
-The default implementation of `func JSONEncode()` inspects the properties of your type using reflection. (Like in `Company`.) If you need a different mapping, you can provide your own implementation (like in `User`.)
+The default implementation of `func toJSON()` inspects the properties of your type using reflection. (Like in `Company`.) If you need a different mapping, you can provide your own implementation (like in `User`.)
 */
 
 /*:
@@ -54,13 +54,14 @@ We'll add conformance to `JSONDecodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONDecodable {
-    init?(JSONDictionary: [String:AnyObject]) {
+    init?(JSONDictionary: JSONObject) {
+        let decoder = JSONDecoder(object: JSONDictionary)
         do {
-            id = try JSONDictionary.decode("id")
-            name = try JSONDictionary.decode("full_name")
-            email = try JSONDictionary.decode("email")
-            company = try JSONDictionary.decode("company")
-            friends = try JSONDictionary.decode("friends")
+            id = try decoder.decode("id")
+            name = try decoder.decode("full_name")
+            email = try decoder.decode("email")
+            company = try decoder.decode("company")
+            friends = try decoder.decode("friends")
         }
         catch {
             return nil
@@ -69,10 +70,11 @@ extension User: JSONDecodable {
 }
 
 extension Company: JSONDecodable {
-    init?(JSONDictionary: [String:AnyObject]) {
+    init?(JSONDictionary: JSONObject) {
+        let decoder = JSONDecoder(object: JSONDictionary)
         do {
-            name = try JSONDictionary.decode("name")
-            address = try JSONDictionary.decode("address")
+            name = try decoder.decode("name")
+            address = try decoder.decode("address")
         }
         catch {
             return nil
@@ -81,7 +83,7 @@ extension Company: JSONDecodable {
 }
 
 /*:
-Simply provide the implementations for `init?(JSONDictionary: [String:AnyObject])`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
+Simply provide the implementations for `init?(JSONDictionary: JSONObject)`. As before, you can use this to configure the mapping between keys in the `Dictionary` to properties in your structs and classes.
 */
 
 /*:
@@ -109,7 +111,7 @@ print("Initial JSON:\n\(JSON)\n\n")
 
 /*:
 We can instantiate `User` using one of provided initializers:
-- `init(JSONDictionary: [String: AnyObject])`
+- `init(JSONDictionary: JSONObject)`
 - `init?(JSONString: String)`
 */
 
@@ -125,7 +127,7 @@ And encode it to JSON using one of the provided methods:
 
 do {
     let dict = try user.toJSON()
-    print("Encoded: \n\(dict as! [String: AnyObject])\n\n")
+    print("Encoded: \n\(dict as! JSONObject)\n\n")
 }
 catch {
     print("Error: \(error)")
