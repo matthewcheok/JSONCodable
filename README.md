@@ -22,12 +22,20 @@ Hassle-free JSON encoding and decoding in Swift
 
 ### Installation
 
-Simply add the following to your `Cartfile`:
+- Simply add the following to your [`Cartfile`](https://github.com/Carthage/Carthage) and run `carthage update`:
 ```
 github "matthewcheok/JSONCodable"
 ```
 
-and then run `carthage update`
+- or add the following to your [`Podfile`](http://cocoapods.org/) and run `pod install`:
+```
+pod 'JSONCodable', '~> 2.0'
+```
+
+- or clone as a git submodule,
+
+- or just copy files in the ```JSONCodable``` folder into your project.
+
 
 **TLDR**
 - Uses Protocol Extensions
@@ -143,7 +151,7 @@ extension Company: JSONDecodable {
 }
 ```
 
-Simply provide the implementations for `init?(JSONDictionary: [JSONObject])` where `JSONObject` is a typealias for `[String:AnyObject]`.
+Simply provide the implementations for `init?(JSONDictionary: JSONObject)` where `JSONObject` is a typealias for `[String:AnyObject]`.
 As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
 
 ```swift
@@ -203,19 +211,22 @@ struct User {
   var website: NSURL?
 }
 
-init?(JSONDictionary: [String : AnyObject]) {
+init?(JSONDictionary: JSONObject) {
+    let decoder = JSONDecoder(object: JSONDictionary)
     do {
         ...
         website = try JSONDictionary.decode("website", transformer: JSONTransformerStringToNSURL)
     }
-    ...
+    catch {
+        return nil
+    }
 }
 
 func toJSON() throws -> AnyObject {
-    var result = [String: AnyObject]()
-    ...
-    try result.encode(website, key: "website", transformer: JSONTransformerStringToNSURL)
-    return result
+    return try JSONEncoder.create({ (encoder) -> Void in
+        ...
+        try result.encode(website, key: "website", transformer: JSONTransformerStringToNSURL)
+    })
 }
 ```
 
