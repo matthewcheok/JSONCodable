@@ -23,6 +23,12 @@ class HelperTests: XCTestCase {
 
 		let notEncodableArray:[NotEncodable] = [NotEncodable()]
 		XCTAssert(!notEncodableArray.elementsAreJSONEncodable(), "Array of type [NotEncodable] should not be encodable")
+
+		let encoded = try? JSONEncoder.create({ (encoder) -> Void in
+			try encoder.encode(intArray, key: "intArray")
+			try encoder.encode(encodableArray, key: "encodableArray")
+		})
+
 	}
 
 	func testDictionaryIsEncodable() {
@@ -35,6 +41,10 @@ class HelperTests: XCTestCase {
 		let notEncodableDict:[String:NotEncodable] = ["a":NotEncodable()]
 		XCTAssert(!notEncodableDict.valuesAreJSONEncodable(), "Dictionary of type [String:NotEncodable] should not be encodable")
 
+		let encoded = try? JSONEncoder.create({ (encoder) -> Void in
+			try encoder.encode(intDict, key: "intArray")
+			try encoder.encode(encodableDict, key: "encodableArray")
+		})
 	}
     
 }
