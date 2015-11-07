@@ -8,15 +8,15 @@
 
 /* Begin PBXBuildFile section */
 		9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455BF91BCE185B00070A4F /* EnumTests.swift */; };
-		9E455BFC1BCE185B00070A4F /* JSONCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EDB39231B59D01D00C63019 /* JSONCodable.framework */; settings = {ASSET_TAGS = (); }; };
-		9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C021BCE1C1E00070A4F /* Fruit.swift */; settings = {ASSET_TAGS = (); }; };
-		9E455C051BCE1D0700070A4F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C041BCE1D0700070A4F /* User.swift */; settings = {ASSET_TAGS = (); }; };
-		9E455C091BCE1DE100070A4F /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C081BCE1DE100070A4F /* Company.swift */; settings = {ASSET_TAGS = (); }; };
-		9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C0A1BCE1F0100070A4F /* RegularTests.swift */; settings = {ASSET_TAGS = (); }; };
-		9E8E07241BD3F15800F98421 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8E07231BD3F15800F98421 /* Food.swift */; settings = {ASSET_TAGS = (); }; };
-		9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00BF1BCE251B008D557C /* TransformerTests.swift */; settings = {ASSET_TAGS = (); }; };
-		9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C11BCF6E43008D557C /* ImageAsset.swift */; settings = {ASSET_TAGS = (); }; };
-		9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C31BCF82F5008D557C /* HelperTests.swift */; settings = {ASSET_TAGS = (); }; };
+		9E455BFC1BCE185B00070A4F /* JSONCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EDB39231B59D01D00C63019 /* JSONCodable.framework */; };
+		9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C021BCE1C1E00070A4F /* Fruit.swift */; };
+		9E455C051BCE1D0700070A4F /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C041BCE1D0700070A4F /* User.swift */; };
+		9E455C091BCE1DE100070A4F /* Company.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C081BCE1DE100070A4F /* Company.swift */; };
+		9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C0A1BCE1F0100070A4F /* RegularTests.swift */; };
+		9E8E07241BD3F15800F98421 /* Food.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E8E07231BD3F15800F98421 /* Food.swift */; };
+		9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00BF1BCE251B008D557C /* TransformerTests.swift */; };
+		9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C11BCF6E43008D557C /* ImageAsset.swift */; };
+		9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ECF00C31BCF82F5008D557C /* HelperTests.swift */; };
 		9EDB390A1B59D00B00C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		9EDB39431B59D0AF00C63019 /* JSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393C1B59D0AF00C63019 /* JSONCodable.swift */; };
 		9EDB39441B59D0AF00C63019 /* JSONCodable.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393C1B59D0AF00C63019 /* JSONCodable.swift */; };
@@ -250,7 +250,7 @@
 		9EDF80101B59CFCE00E4A2D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0700;
+				LastUpgradeCheck = 0710;
 				TargetAttributes = {
 					9E455BF61BCE185B00070A4F = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -668,8 +668,10 @@
 		9EDF80141B59CFCE00E4A2D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				ENABLE_TESTABILITY = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
+				ONLY_ACTIVE_ARCH = YES;
 			};
 			name = Debug;
 		};

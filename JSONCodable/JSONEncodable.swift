@@ -185,11 +185,18 @@ public class JSONEncoder {
     }
     
     // [JSONEncodable]
-    public func encode<Encodable: JSONEncodable>(value: [Encodable], key: String) throws {
-        guard value.count > 0 else {
+    public func encode<Encodable: JSONEncodable>(array: [Encodable], key: String) throws {
+        guard array.count > 0 else {
             return
         }
-        let result = try value.toJSON()
+        let result = try array.toJSON()
+        object[key] = result
+    }
+    public func encode(array: [JSONEncodable], key: String) throws {
+        guard array.count > 0 else {
+            return
+        }
+        let result = try array.toJSON()
         object[key] = result
     }
     private func encode(array: JSONArray, key: String) throws {
@@ -239,11 +246,18 @@ public class JSONEncoder {
     }
     
     // [String:JSONEncodable]
-    public func encode<Encodable: JSONEncodable>(value: [String:Encodable], key: String) throws {
-        guard value.count > 0 else {
+    public func encode<Encodable: JSONEncodable>(dictionary: [String:Encodable], key: String) throws {
+        guard dictionary.count > 0 else {
             return
         }
-        let result = try value.toJSON()
+        let result = try dictionary.toJSON()
+        object[key] = result
+    }
+    public func encode(dictionary: [String:JSONEncodable], key: String) throws {
+        guard dictionary.count > 0 else {
+            return
+        }
+        let result = try dictionary.toJSON()
         object[key] = result
     }
     private func encode(dictionary: JSONDictionary, key: String) throws {
