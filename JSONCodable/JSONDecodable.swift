@@ -48,7 +48,17 @@ public enum JSONDecodableError: ErrorType, CustomStringConvertible {
 // Dictionary -> Struct
 
 public protocol JSONDecodable {
-    init(JSONDictionary: JSONObject) throws
+    init(object: JSONObject) throws
+}
+
+public extension JSONDecodable {
+    init?(JSONDictionary: JSONObject) {
+        do {
+            try self.init(object: JSONDictionary)
+        } catch {
+            return nil
+        }
+    }
 }
 
 public extension Array where Element: JSONDecodable {
@@ -57,7 +67,7 @@ public extension Array where Element: JSONDecodable {
             guard let json = $0 as? [String : AnyObject] else {
                 throw JSONDecodableError.DictionaryTypeExpectedError(key: "[inarray]", elementType: $0.dynamicType)
             }
-            return try Element(JSONDictionary: json)
+            return try Element(object: json)
             })
     }
 }
@@ -110,7 +120,7 @@ public class JSONDecoder {
         guard let object = value as? JSONObject else {
             throw JSONDecodableError.DictionaryTypeExpectedError(key: key, elementType: value.dynamicType)
         }
-        return try Decodable(JSONDictionary: object)
+        return try Decodable(object: object)
     }
     
     // JSONDecodable?
@@ -121,7 +131,7 @@ public class JSONDecoder {
         guard let object = value as? JSONObject else {
             throw JSONDecodableError.DictionaryTypeExpectedError(key: key, elementType: value.dynamicType)
         }
-        return try Decodable(JSONDictionary: object)
+        return try Decodable(object: object)
     }
     
     // Enum
@@ -182,7 +192,7 @@ public class JSONDecoder {
         guard let array = value as? [JSONObject] else {
             throw JSONDecodableError.ArrayTypeExpectedError(key: key, elementType: value.dynamicType)
         }
-        return try array.flatMap { try Element(JSONDictionary: $0)}
+        return try array.flatMap { try Element(object: $0)}
     }
     
     // [JSONDecodable]?
@@ -193,7 +203,7 @@ public class JSONDecoder {
         guard let array = value as? [JSONObject] else {
             throw JSONDecodableError.ArrayTypeExpectedError(key: key, elementType: value.dynamicType)
         }
-        return try array.flatMap { try Element(JSONDictionary: $0)}
+        return try array.flatMap { try Element(object: $0)}
     }
     
     // [Enum]

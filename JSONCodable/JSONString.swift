@@ -67,7 +67,7 @@ public extension JSONDecodable {
             throw JSONDecodableError.DictionaryTypeExpectedError(key: "n/a", elementType: result.dynamicType)
         }
         
-        try self.init(JSONDictionary: converted)
+        try self.init(object: converted)
     }
 }
 
