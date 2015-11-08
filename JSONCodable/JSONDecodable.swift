@@ -55,7 +55,7 @@ public extension Array where Element: JSONDecodable {
     init(JSONArray: [AnyObject]) throws {
         self.init(try JSONArray.flatMap {
             guard let json = $0 as? [String : AnyObject] else {
-                throw JSONDecodableError.DictionaryTypeExpectedError(key: "[inarray]", elementType: $0.dynamicType)
+                throw JSONDecodableError.DictionaryTypeExpectedError(key: "n/a", elementType: $0.dynamicType)
             }
             return try Element(JSONDictionary: json)
             })
