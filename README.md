@@ -237,6 +237,30 @@ The following transformers are provided by default:
 
 Feel free to suggest more!
 
+## Extending JSONCodable (thanks to @raylillywhite)
+
+This allows for JSONDecoder extensions that allow the type system to better aid in decoding. For example, you could do:
+
+```swift
+extension JSONDecoder {
+    public func decode(key: String) throws -> NSURL {
+        return decode(key, JSONTransformers.StringToNSURL)
+    }
+}
+```
+
+then you only need to do:
+
+```swift
+try url = decoder.decode("url")
+```
+
+instead of
+
+```swift
+try url = decoder.decode("url", JSONTransformers.StringToNSURL)
+```
+
 ## Example code
 
 Refer to the included playground in the workspace for more details.
