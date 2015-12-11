@@ -56,45 +56,33 @@ public extension Optional where Wrapped: JSONEncodable {
 }
 
 public extension JSONDecodable {
-    init?(JSONString: String) {
+    init(JSONString: String) throws {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
-            return nil
+            throw JSONDecodableError.IncompatibleTypeError(key: "n/a", elementType: JSONString.dynamicType, expectedType: String.self)
         }
         
-        let result: AnyObject
-        do {
-            result = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
-        }
-        catch {
-            return nil
-        }
-        
+        let result: AnyObject = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+
         guard let converted = result as? [String: AnyObject] else {
-            return nil
+            throw JSONDecodableError.DictionaryTypeExpectedError(key: "n/a", elementType: result.dynamicType)
         }
         
-        self.init(JSONDictionary: converted)
+        try self.init(object: converted)
     }
 }
 
 public extension Array where Element: JSONDecodable {
-    init?(JSONString: String) {
+    init(JSONString: String) throws {
         guard let data = JSONString.dataUsingEncoding(NSUTF8StringEncoding) else {
-            return nil
+            throw JSONDecodableError.IncompatibleTypeError(key: "n/a", elementType: JSONString.dynamicType, expectedType: String.self)
         }
         
-        let result: AnyObject
-        do {
-            result = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
-        }
-        catch {
-            return nil
-        }
-        
+        let result: AnyObject  = try NSJSONSerialization.JSONObjectWithData(data, options: NSJSONReadingOptions(rawValue: 0))
+
         guard let converted = result as? [AnyObject] else {
-            return nil
+            throw JSONDecodableError.ArrayTypeExpectedError(key: "n/a", elementType: result.dynamicType)
         }
         
-        self.init(JSONArray: converted)
+        try self.init(JSONArray: converted)
     }
 }
