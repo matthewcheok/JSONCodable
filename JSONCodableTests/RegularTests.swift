@@ -34,7 +34,7 @@ class RegularTests: XCTestCase {
         ])
 
     func testDecodingRegular() {
-        guard let user = User(JSONDictionary: encodedValue) else {
+        guard let user = User(optional: encodedValue) else {
             XCTFail()
             return
         }

@@ -32,15 +32,10 @@ func ==(lhs: Food, rhs: Food) -> Bool {
 }
 
 extension Food: JSONCodable {
-    init?(JSONDictionary: JSONObject) {
-        let decoder = JSONDecoder(object: JSONDictionary)
-        do {
-            name = try decoder.decode("name")
-            cuisines = try decoder.decode("cuisines")
-        }
-        catch {
-            return nil
-        }
+    init(object: JSONObject) throws {
+        let decoder = JSONDecoder(object: object)
+        name = try decoder.decode("name")
+        cuisines = try decoder.decode("cuisines")
     }
     
     func toJSON() throws -> AnyObject {

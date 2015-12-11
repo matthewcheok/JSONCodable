@@ -28,14 +28,9 @@ extension ImageAsset: JSONEncodable {
 }
 
 extension ImageAsset: JSONDecodable {
-    init?(JSONDictionary: JSONObject) {
-        let decoder = JSONDecoder(object: JSONDictionary)
-        do {
-            name = try decoder.decode("name")
-            uri = try decoder.decode("uri", transformer: JSONTransformers.StringToNSURL)
-        }
-        catch {
-            return nil
-        }
+    init(object: JSONObject) throws {
+        let decoder = JSONDecoder(object: object)
+        name = try decoder.decode("name")
+        uri = try decoder.decode("uri", transformer: JSONTransformers.StringToNSURL)
     }
 }

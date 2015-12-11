@@ -52,9 +52,9 @@ public protocol JSONDecodable {
 }
 
 public extension JSONDecodable {
-    init?(JSONDictionary: JSONObject) {
+    public init?(optional: JSONObject) {
         do {
-            try self.init(object: JSONDictionary)
+            try self.init(object: optional)
         } catch {
             return nil
         }

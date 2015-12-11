@@ -21,14 +21,9 @@ func ==(lhs: Company, rhs: Company) -> Bool {
 extension Company: JSONEncodable {}
 
 extension Company: JSONDecodable {
-    init?(JSONDictionary: JSONObject) {
-        let decoder = JSONDecoder(object: JSONDictionary)
-        do {
-            name = try decoder.decode("name")
-            address = try decoder.decode("address")
-        }
-        catch {
-            return nil
-        }
+    init(object: JSONObject) throws {
+        let decoder = JSONDecoder(object: object)
+        name = try decoder.decode("name")
+        address = try decoder.decode("address")
     }
 }

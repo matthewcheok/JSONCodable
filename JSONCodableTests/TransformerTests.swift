@@ -20,7 +20,7 @@ class TransformerTests: XCTestCase {
     )
     
     func testDecodingTransformer() {
-        guard let asset = ImageAsset(JSONDictionary: encodedValue) else {
+        guard let asset = ImageAsset(optional: encodedValue) else {
             XCTFail()
             return
         }
