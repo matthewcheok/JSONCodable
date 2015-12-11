@@ -71,7 +71,7 @@ public class JSONDecoder {
         self.object = object
     }
     
-    private func get(key: String) -> AnyObject? {
+    public func get(key: String) -> AnyObject? {
         let keys = key.componentsSeparatedByString(".")
         
         let result = keys.reduce(object as AnyObject?) {
