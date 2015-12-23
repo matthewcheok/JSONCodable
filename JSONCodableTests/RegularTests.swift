@@ -34,14 +34,14 @@ class RegularTests: XCTestCase {
         ])
 
     func testDecodingRegular() {
-        guard let user = User(optional: encodedValue) else {
+        guard let user = try? User(object: encodedValue) else {
             XCTFail()
             return
         }
 
         XCTAssertEqual(user, decodedValue)
     }
-    
+  
     func testEncodingRegular() {
         guard let json = try? decodedValue.toJSON() else {
             XCTFail()
