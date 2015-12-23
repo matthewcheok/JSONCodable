@@ -38,17 +38,12 @@ extension User: JSONEncodable {
 }
 
 extension User: JSONDecodable {
-    init?(JSONDictionary: JSONObject) {
-        let decoder = JSONDecoder(object: JSONDictionary)        
-        do {
-            id = try decoder.decode("id")
-            name = try decoder.decode("full_name")
-            email = try decoder.decode("email")
-            company = try decoder.decode("company")
-            friends = try decoder.decode("friends")
-        }
-        catch {
-            return nil
-        }
+    init(object: JSONObject) throws {
+        let decoder = JSONDecoder(object: object)        
+        id = try decoder.decode("id")
+        name = try decoder.decode("full_name")
+        email = try decoder.decode("email")
+        company = try decoder.decode("company")
+        friends = try decoder.decode("friends")
     }
 }

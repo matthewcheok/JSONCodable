@@ -17,14 +17,14 @@ class EnumTests: XCTestCase {
     let decodedValue2 = Food(name: "Seaweed Pasta", cuisines: [.Italian, .Japanese])
     
     func testDecodingEnum() {
-        guard let fruit = Fruit(JSONDictionary: encodedValue) else {
+        guard let fruit = try? Fruit(object: encodedValue) else {
             XCTFail()
             return
         }
         
         XCTAssertEqual(fruit, decodedValue)
         
-        guard let food = Food(JSONDictionary: encodedValue2) else {
+        guard let food = try? Food(object: encodedValue2) else {
             XCTFail()
             return
         }
