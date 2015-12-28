@@ -165,7 +165,7 @@ public class JSONDecoder {
     // [JSONCompatible]
     public func decode<Element: JSONCompatible>(key: String) throws -> [Element] {
         guard let value = get(key) else {
-            throw JSONDecodableError.MissingTypeError(key: key)
+            return []
         }
         guard let array = value as? [Element] else {
             throw JSONDecodableError.IncompatibleTypeError(key: key, elementType: value.dynamicType, expectedType: [Element].self)
