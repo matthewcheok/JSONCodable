@@ -6,6 +6,8 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
+import Foundation
+
 // Decoding Errors
 
 public enum JSONDecodableError: ErrorType, CustomStringConvertible {
