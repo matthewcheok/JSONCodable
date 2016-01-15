@@ -105,7 +105,7 @@ We can instantiate `User` using one of provided initializers:
 - `init?(JSONString: String)`
 */
 
-let user = User(JSONDictionary: JSON)!
+var user = try! User(object: JSON)
 
 print("Decoded: \n\(user)\n\n")
 
