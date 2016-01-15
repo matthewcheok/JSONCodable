@@ -46,10 +46,15 @@ public enum JSONEncodableError: ErrorType, CustomStringConvertible {
 
 public protocol JSONEncodable {
     func toJSON() throws -> AnyObject
+    func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject
 }
 
 public extension JSONEncodable {
     func toJSON() throws -> AnyObject {
+        return try toJSON(encodeNulls: false)
+    }
+    
+    func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
         let mirror = Mirror(reflecting: self)
         
         guard let style = mirror.displayStyle where style == .Struct || style == .Class else {
@@ -57,6 +62,7 @@ public extension JSONEncodable {
         }
         
         return try JSONEncoder.create({ (encoder) -> Void in
+            encoder.encodeNullValues = encodeNulls
             // loop through all properties (instance variables)
             for (labelMaybe, valueMaybe) in mirror.children {
                 guard let label = labelMaybe else {
@@ -94,11 +100,11 @@ public extension JSONEncodable {
 public extension Array {//where Element: JSONEncodable {
     private var wrapped: [Any] { return self.map{$0} }
     
-    public func toJSON() throws -> AnyObject {
+    public func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
         var results: [AnyObject] = []
         for item in self.wrapped {
             if let item = item as? JSONEncodable {
-                results.append(try item.toJSON())
+                results.append(try item.toJSON(encodeNulls: encodeNulls))
             }
             else {
                 throw JSONEncodableError.ArrayIncompatibleTypeError(elementType: item.dynamicType)
@@ -111,11 +117,11 @@ public extension Array {//where Element: JSONEncodable {
 // Dictionary convenience methods
 
 public extension Dictionary {//where Key: String, Value: JSONEncodable {
-    public func toJSON() throws -> AnyObject {
+    public func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
         var result: [String: AnyObject] = [:]
         for (k, item) in self {
             if let item = item as? JSONEncodable {
-                result[String(k)] = try item.toJSON()
+                result[String(k)] = try item.toJSON(encodeNulls: encodeNulls)
             }
             else {
                 throw JSONEncodableError.DictionaryIncompatibleTypeError(elementType: item.dynamicType)
@@ -129,6 +135,7 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
 
 public class JSONEncoder {
     var object = JSONObject()
+    public var encodeNullValues = false
     
     public static func create(@noescape setup: (encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
         let encoder = JSONEncoder()
@@ -146,20 +153,21 @@ public class JSONEncoder {
     
     // JSONEncodable
     public func encode<Encodable: JSONEncodable>(value: Encodable, key: String) throws {
-        let result = try value.toJSON()
+        let result = try value.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     private func encode(value: JSONEncodable, key: String) throws {
-        let result = try value.toJSON()
+        let result = try value.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
 
     // JSONEncodable?
     public func encode<Encodable: JSONEncodable>(value: Encodable?, key: String) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
-        let result = try actual.toJSON()
+        let result = try actual.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
 
@@ -168,19 +176,20 @@ public class JSONEncoder {
         guard let compatible = value.rawValue as? JSONCompatible else {
             return
         }
-        let result = try compatible.toJSON()
+        let result = try compatible.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
     // Enum?
     public func encode<Enum: RawRepresentable>(value: Enum?, key: String) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
         guard let compatible = actual.rawValue as? JSONCompatible else {
             return
         }
-        let result = try compatible.toJSON()
+        let result = try compatible.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
@@ -189,14 +198,14 @@ public class JSONEncoder {
         guard array.count > 0 else {
             return
         }
-        let result = try array.toJSON()
+        let result = try array.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     public func encode(array: [JSONEncodable], key: String) throws {
         guard array.count > 0 else {
             return
         }
-        let result = try array.toJSON()
+        let result = try array.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     private func encode(array: JSONArray, key: String) throws {
@@ -204,19 +213,20 @@ public class JSONEncoder {
             return
         }
         let encodable = array.elementsMadeJSONEncodable()
-        let result = try encodable.toJSON()
+        let result = try encodable.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
     // [JSONEncodable]?
     public func encode<Encodable: JSONEncodable>(value: [Encodable]?, key: String) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
         guard actual.count > 0 else {
             return
         }
-        let result = try actual.toJSON()
+        let result = try actual.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
@@ -226,7 +236,7 @@ public class JSONEncoder {
             return
         }
         let result = try value.flatMap {
-            try ($0.rawValue as? JSONCompatible)?.toJSON()
+            try ($0.rawValue as? JSONCompatible)?.toJSON(encodeNulls: encodeNullValues)
         }
         object[key] = result
     }
@@ -234,13 +244,14 @@ public class JSONEncoder {
     // [Enum]?
     public func encode<Enum: RawRepresentable>(value: [Enum]?, key: String) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
         guard actual.count > 0 else {
             return
         }
         let result = try actual.flatMap {
-            try ($0.rawValue as? JSONCompatible)?.toJSON()
+            try ($0.rawValue as? JSONCompatible)?.toJSON(encodeNulls: encodeNullValues)
         }
         object[key] = result
     }
@@ -250,14 +261,14 @@ public class JSONEncoder {
         guard dictionary.count > 0 else {
             return
         }
-        let result = try dictionary.toJSON()
+        let result = try dictionary.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     public func encode(dictionary: [String:JSONEncodable], key: String) throws {
         guard dictionary.count > 0 else {
             return
         }
-        let result = try dictionary.toJSON()
+        let result = try dictionary.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     private func encode(dictionary: JSONDictionary, key: String) throws {
@@ -265,19 +276,20 @@ public class JSONEncoder {
             return
         }
         let encodable = dictionary.valuesMadeJSONEncodable()
-        let result = try encodable.toJSON()
+        let result = try encodable.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
     // [String:JSONEncodable]?
     public func encode<Encodable: JSONEncodable>(value: [String:Encodable]?, key: String) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
         guard actual.count > 0 else {
             return
         }
-        let result = try actual.toJSON()
+        let result = try actual.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     
@@ -292,6 +304,7 @@ public class JSONEncoder {
     // JSONTransformable?
     public func encode<EncodedType, DecodedType>(value: DecodedType?, key: String, transformer: JSONTransformer<EncodedType, DecodedType>) throws {
         guard let actual = value else {
+            if encodeNullValues { object[key] = NSNull() }
             return
         }
         guard let result = transformer.encoding(actual) else {

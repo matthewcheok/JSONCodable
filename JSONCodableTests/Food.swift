@@ -38,8 +38,9 @@ extension Food: JSONCodable {
         cuisines = try decoder.decode("cuisines")
     }
     
-    func toJSON() throws -> AnyObject {
+    func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
         return try JSONEncoder.create({ (encoder) -> Void in
+            encoder.encodeNullValues = encodeNulls
             try encoder.encode(name, key: "name")
             try encoder.encode(cuisines, key: "cuisines")
         })
