@@ -29,7 +29,7 @@ class TransformerTests: XCTestCase {
     }
     
     func testEncodingTransformer() {
-        guard let json = try? decodedValue.toJSON() else {
+        guard let json = try? decodedValue.toJSON([]) else {
             XCTFail()
             return
         }

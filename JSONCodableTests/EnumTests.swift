@@ -33,7 +33,7 @@ class EnumTests: XCTestCase {
     }
     
     func testEncodingEnum() {
-        guard let json = try? decodedValue.toJSON() else {
+        guard let json = try? decodedValue.toJSON([]) else {
             XCTFail()
             return
         }
@@ -45,7 +45,7 @@ class EnumTests: XCTestCase {
         
         XCTAssertEqual(castedJSON, encodedValue)
         
-        guard let json2 = try? decodedValue2.toJSON() else {
+        guard let json2 = try? decodedValue2.toJSON([]) else {
             XCTFail()
             return
         }

@@ -22,7 +22,7 @@ extension Int: JSONCompatible {}
 extension NSNull: JSONCompatible {}
 
 extension JSONCompatible {
-    public func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
+    public func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
         return self as! AnyObject
     }
 }

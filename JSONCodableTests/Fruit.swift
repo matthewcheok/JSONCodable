@@ -30,11 +30,13 @@ extension Fruit: JSONCodable {
         color = try decoder.decode("color")
     }
     
-    func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
-            encoder.encodeNullValues = encodeNulls
+    func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
+        return try JSONEncoder.create(options) { (encoder) -> Void in
+            NSLog("a")
             try encoder.encode(name, key: "name")
+            NSLog("b")
             try encoder.encode(color, key: "color")
-        })
+            NSLog("c")
+        }
     }
 }

@@ -19,8 +19,8 @@ class RegularTests: XCTestCase {
             "address": "1 Infinite Loop, Cupertino, CA"
         ],
         "friends": [
-            ["id": 27, "full_name": "Bob Jefferson"],
-            ["id": 29, "full_name": "Jen Jackson"]
+            ["id": 27, "full_name": "Bob Jefferson", "friends": []],
+            ["id": 29, "full_name": "Jen Jackson", "friends": []]
         ]
     ]
     
@@ -33,8 +33,8 @@ class RegularTests: XCTestCase {
             "address": "1 Infinite Loop, Cupertino, CA"
         ],
         "friends": [
-            ["id": 27, "full_name": "Bob Jefferson", "email": NSNull(), "company": NSNull()],
-            ["id": 29, "full_name": "Jen Jackson", "email": NSNull(), "company": NSNull()]
+            ["id": 27, "full_name": "Bob Jefferson", "email": NSNull(), "company": NSNull(), "friends": []],
+            ["id": 29, "full_name": "Jen Jackson", "email": NSNull(), "company": NSNull(), "friends": []]
         ]
     ]
     let decodedValue = User(
@@ -57,7 +57,7 @@ class RegularTests: XCTestCase {
     }
   
     func testEncodingRegular() {
-        guard let json = try? decodedValue.toJSON() else {
+        guard let json = try? decodedValue.toJSON([]) else {
             XCTFail()
             return
         }
@@ -66,7 +66,7 @@ class RegularTests: XCTestCase {
     }
     
     func testNullEncoding() {
-        guard let json = try? decodedValue.toJSON(encodeNulls: true) else {
+        guard let json = try? decodedValue.toJSON([.EncodeNulls]) else {
             XCTFail()
             return
         }

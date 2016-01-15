@@ -31,14 +31,14 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONEncodable {
-    func toJSON() throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
+    func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
+        return try JSONEncoder.create(options) { (encoder) -> Void in
             try encoder.encode(id, key: "id")
             try encoder.encode(name, key: "full_name")
             try encoder.encode(email, key: "email")
             try encoder.encode(company, key: "company")
             try encoder.encode(friends, key: "friends")
-        })
+        }
     }
 }
 
@@ -116,7 +116,7 @@ And encode it to JSON using one of the provided methods:
 */
 
 do {
-    let dict = try user.toJSON()
+    let dict = try user.toJSON([])
     print("Encoded: \n\(dict as! JSONObject)\n\n")
 }
 catch {

@@ -26,15 +26,14 @@ func ==(lhs: User, rhs: User) -> Bool {
 }
 
 extension User: JSONEncodable {
-    func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
-            encoder.encodeNullValues = encodeNulls
+    func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
+        return try JSONEncoder.create(options) { (encoder) -> Void in
             try encoder.encode(id, key: "id")
             try encoder.encode(name, key: "full_name")
             try encoder.encode(email, key: "email")
             try encoder.encode(company, key: "company")
             try encoder.encode(friends, key: "friends")
-        })
+        }
     }
 }
 
