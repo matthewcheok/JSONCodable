@@ -136,6 +136,7 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
 public class JSONEncoder {
     var object = JSONObject()
     public var encodeNullValues = false
+    public var encodeEmptyCollections = false
     
     public static func create(@noescape setup: (encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
         let encoder = JSONEncoder()
@@ -191,21 +192,21 @@ public class JSONEncoder {
     
     // [JSONEncodable]
     public func encode<Encodable: JSONEncodable>(array: [Encodable], key: String) throws {
-        guard array.count > 0 else {
+        guard array.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try array.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     public func encode(array: [JSONEncodable], key: String) throws {
-        guard array.count > 0 else {
+        guard array.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try array.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
-        guard array.count > 0 && array.elementsAreJSONEncodable() else {
     func encode(array: JSONArray, key: String) throws {
+        guard (array.count > 0 || encodeEmptyCollections) && array.elementsAreJSONEncodable() else {
             return
         }
         let encodable = array.elementsMadeJSONEncodable()
@@ -219,7 +220,7 @@ public class JSONEncoder {
             if encodeNullValues { object[key] = NSNull() }
             return
         }
-        guard actual.count > 0 else {
+        guard actual.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try actual.toJSON(encodeNulls: encodeNullValues)
@@ -228,7 +229,7 @@ public class JSONEncoder {
     
     // [Enum]
     public func encode<Enum: RawRepresentable>(value: [Enum], key: String) throws {
-        guard value.count > 0 else {
+        guard value.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try value.flatMap {
@@ -243,7 +244,7 @@ public class JSONEncoder {
             if encodeNullValues { object[key] = NSNull() }
             return
         }
-        guard actual.count > 0 else {
+        guard actual.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try actual.flatMap {
@@ -254,21 +255,21 @@ public class JSONEncoder {
     
     // [String:JSONEncodable]
     public func encode<Encodable: JSONEncodable>(dictionary: [String:Encodable], key: String) throws {
-        guard dictionary.count > 0 else {
+        guard dictionary.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try dictionary.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
     public func encode(dictionary: [String:JSONEncodable], key: String) throws {
-        guard dictionary.count > 0 else {
+        guard dictionary.count > 0  || encodeEmptyCollections else {
             return
         }
         let result = try dictionary.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
-        guard dictionary.count > 0 && dictionary.valuesAreJSONEncodable() else {
     func encode(dictionary: JSONDictionary, key: String) throws {
+        guard (dictionary.count > 0 || encodeEmptyCollections) && dictionary.valuesAreJSONEncodable() else {
             return
         }
         let encodable = dictionary.valuesMadeJSONEncodable()
@@ -282,7 +283,7 @@ public class JSONEncoder {
             if encodeNullValues { object[key] = NSNull() }
             return
         }
-        guard actual.count > 0 else {
+        guard actual.count > 0 || encodeEmptyCollections else {
             return
         }
         let result = try actual.toJSON(encodeNulls: encodeNullValues)
