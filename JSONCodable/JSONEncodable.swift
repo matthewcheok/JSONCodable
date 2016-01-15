@@ -204,8 +204,8 @@ public class JSONEncoder {
         let result = try array.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
-    private func encode(array: JSONArray, key: String) throws {
         guard array.count > 0 && array.elementsAreJSONEncodable() else {
+    func encode(array: JSONArray, key: String) throws {
             return
         }
         let encodable = array.elementsMadeJSONEncodable()
@@ -267,8 +267,8 @@ public class JSONEncoder {
         let result = try dictionary.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
-    private func encode(dictionary: JSONDictionary, key: String) throws {
         guard dictionary.count > 0 && dictionary.valuesAreJSONEncodable() else {
+    func encode(dictionary: JSONDictionary, key: String) throws {
             return
         }
         let encodable = dictionary.valuesMadeJSONEncodable()
