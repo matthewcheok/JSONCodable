@@ -19,6 +19,7 @@ extension Double: JSONCompatible {}
 extension Float: JSONCompatible {}
 extension Bool: JSONCompatible {}
 extension Int: JSONCompatible {}
+extension NSNull: JSONCompatible {}
 
 extension JSONCompatible {
     public func toJSON(encodeNulls encodeNulls: Bool) throws -> AnyObject {
