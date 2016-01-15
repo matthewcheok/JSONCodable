@@ -152,11 +152,7 @@ public class JSONEncoder {
     */
     
     // JSONEncodable
-    public func encode<Encodable: JSONEncodable>(value: Encodable, key: String) throws {
-        let result = try value.toJSON(encodeNulls: encodeNullValues)
-        object[key] = result
-    }
-    private func encode(value: JSONEncodable, key: String) throws {
+    public func encode(value: JSONEncodable, key: String) throws {
         let result = try value.toJSON(encodeNulls: encodeNullValues)
         object[key] = result
     }
