@@ -252,6 +252,36 @@ public class JSONDecoder {
         return dictionary
     }
     
+    // [String:JSONDecodable]
+    public func decode<Element: JSONDecodable>(key: String) throws -> [String: Element] {
+        guard let value = get(key) else {
+            throw JSONDecodableError.MissingTypeError(key: key)
+        }
+        guard let dictionary = value as? [String: JSONObject] else {
+            throw JSONDecodableError.IncompatibleTypeError(key: key, elementType: value.dynamicType, expectedType: [String: Element].self)
+        }
+        var decoded = [String: Element]()
+        try dictionary.forEach {
+            decoded[$0] = try Element(object: $1)
+        }
+        return decoded
+    }
+    
+    // [String:JSONDecodable]?
+    public func decode<Element: JSONDecodable>(key: String) throws -> [String: Element]? {
+        guard let value = get(key) else {
+            return nil
+        }
+        guard let dictionary = value as? [String: JSONObject] else {
+            throw JSONDecodableError.IncompatibleTypeError(key: key, elementType: value.dynamicType, expectedType: [String: Element].self)
+        }
+        var decoded = [String: Element]()
+        try dictionary.forEach {
+            decoded[$0] = try Element(object: $1)
+        }
+        return decoded
+    }
+    
     // JSONTransformable
     public func decode<EncodedType, DecodedType>(key: String, transformer: JSONTransformer<EncodedType, DecodedType>) throws -> DecodedType {
         guard let value = get(key) else {
