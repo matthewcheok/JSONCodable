@@ -15,6 +15,7 @@ struct User: Equatable {
     var email: String?
     var company: Company?
     var friends: [User] = []    
+    var friendsLookup: [String: User]?
 }
 
 func ==(lhs: User, rhs: User) -> Bool {
@@ -33,6 +34,7 @@ extension User: JSONEncodable {
             try encoder.encode(email, key: "email")
             try encoder.encode(company, key: "company")
             try encoder.encode(friends, key: "friends")
+            try encoder.encode(friendsLookup, key: "friendsLookup")
         })
     }
 }
@@ -45,5 +47,6 @@ extension User: JSONDecodable {
         email = try decoder.decode("email")
         company = try decoder.decode("company")
         friends = try decoder.decode("friends")
+        friendsLookup = try decoder.decode("friendsLookup")
     }
 }
