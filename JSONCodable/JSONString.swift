@@ -16,7 +16,7 @@ public extension JSONEncodable {
         case is Bool, is Int, is Float, is Double:
             return String(self)
         default:
-            let json = try toJSON()
+            let json = try toJSON([])
             let data = try NSJSONSerialization.dataWithJSONObject(json, options: NSJSONWritingOptions(rawValue: 0))
             guard let string = NSString(data: data, encoding: NSUTF8StringEncoding) else {
                 return ""

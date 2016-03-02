@@ -38,10 +38,10 @@ extension Food: JSONCodable {
         cuisines = try decoder.decode("cuisines")
     }
     
-    func toJSON() throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
+    func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
+        return try JSONEncoder.create(options) { (encoder) -> Void in
             try encoder.encode(name, key: "name")
             try encoder.encode(cuisines, key: "cuisines")
-        })
+        }
     }
 }

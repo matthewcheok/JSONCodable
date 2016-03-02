@@ -19,9 +19,10 @@ extension Double: JSONCompatible {}
 extension Float: JSONCompatible {}
 extension Bool: JSONCompatible {}
 extension Int: JSONCompatible {}
+extension NSNull: JSONCompatible {}
 
 extension JSONCompatible {
-    public func toJSON() throws -> AnyObject {
+    public func toJSON(options: JSONEncodingOptions) throws -> AnyObject {
         return self as! AnyObject
     }
 }
