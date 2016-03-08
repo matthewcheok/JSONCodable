@@ -83,17 +83,42 @@ public class JSONDecoder {
         self.object = object
     }
     
+    /// Get index from `"[0]"` formatted `String`
+    /// returns `nil` if invalid format (i.e. no brackets or contents not an `Int`)
+    internal func parseArrayIndex(key:String) -> Int? {
+        var chars = key.characters
+        let first = chars.popFirst()
+        let last = chars.popLast()
+        if first == "[" && last == "]" {
+            return Int(String(chars))
+        } else {
+            return nil
+        }
+    }
+    
     private func get(key: String) -> AnyObject? {
-        let keys = key.componentsSeparatedByString(".")
+        let keys = key.stringByReplacingOccurrencesOfString("[", withString: ".[")
+                      .componentsSeparatedByString(".")
         
         let result = keys.reduce(object as AnyObject?) {
             value, key in
             
-            guard let dict = value as? [String: AnyObject] else {
-                return nil
+            switch value {
+                case let dict as [String: AnyObject]:
+                    return dict[key]
+                
+                case let arr as [AnyObject]:
+                    guard let index = parseArrayIndex(key) else {
+                        return nil
+                    }
+                    guard (0..<arr.count) ~= index else {
+                        return nil
+                    }
+                    return arr[index]
+                
+                default:
+                    return nil
             }
-            
-            return dict[key]
         }
         return (result ?? object[key]).flatMap{$0 is NSNull ? nil : $0}
     }

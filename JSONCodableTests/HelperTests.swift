@@ -28,7 +28,6 @@ class HelperTests: XCTestCase {
 			try encoder.encode(intArray, key: "intArray")
 			try encoder.encode(encodableArray, key: "encodableArray")
 		})
-
 	}
 
 	func testDictionaryIsEncodable() {
