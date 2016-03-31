@@ -8,7 +8,7 @@
 
 // Encoding Errors
 
-public enum JSONEncodableError: ErrorType, CustomStringConvertible {
+public enum JSONEncodableError: ErrorProtocol, CustomStringConvertible {
     case IncompatibleTypeError(
         elementType: Any.Type
     )
@@ -52,9 +52,15 @@ public extension JSONEncodable {
     func toJSON() throws -> AnyObject {
         let mirror = Mirror(reflecting: self)
         
+        #if !swift(>=3.0)
         guard let style = mirror.displayStyle where style == .Struct || style == .Class else {
             throw JSONEncodableError.IncompatibleTypeError(elementType: self.dynamicType)
         }
+        #else
+        guard let style = mirror.displayStyle where style == .`struct` || style == .`class` else {
+            throw JSONEncodableError.IncompatibleTypeError(elementType: self.dynamicType)
+        }
+        #endif
         
         return try JSONEncoder.create({ (encoder) -> Void in
             // loop through all properties (instance variables)

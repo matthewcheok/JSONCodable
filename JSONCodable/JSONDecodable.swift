@@ -6,11 +6,9 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
-import Foundation
-
 // Decoding Errors
 
-public enum JSONDecodableError: ErrorType, CustomStringConvertible {
+public enum JSONDecodableError: ErrorProtocol, CustomStringConvertible {
     case MissingTypeError(
         key: String
     )
@@ -97,8 +95,12 @@ public class JSONDecoder {
     }
     
     private func get(key: String) -> AnyObject? {
+        #if !swift(>=3.0)
         let keys = key.stringByReplacingOccurrencesOfString("[", withString: ".[")
-                      .componentsSeparatedByString(".")
+            .componentsSeparatedByString(".")
+        #else
+        let keys = key.replacingOccurrences(of: "[", with: ".[").componentsSeparated(by: ".")
+        #endif
         
         let result = keys.reduce(object as AnyObject?) {
             value, key in

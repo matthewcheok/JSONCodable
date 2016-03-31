@@ -25,3 +25,9 @@ extension JSONCompatible {
         return self as! AnyObject
     }
 }
+
+// Swift 2 Shims
+
+#if !swift(>=3.0)
+  typealias ErrorProtocol = ErrorType
+#endif

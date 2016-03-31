@@ -37,8 +37,13 @@ public struct JSONTransformers {
         decoding: {NSURL(string: $0)},
         encoding: {$0.absoluteString})
 
+    #if !swift(>=3.0)
     public static let StringToNSDate = JSONTransformer<String, NSDate>(
         decoding: {dateTimeFormatter.dateFromString($0)},
         encoding: {dateTimeFormatter.stringFromDate($0)})
-
+    #else
+    public static let StringToNSDate = JSONTransformer<String, NSDate>(
+        decoding: {dateTimeFormatter.date(from: $0)},
+        encoding: {dateTimeFormatter.string(from: $0)})
+    #endif
 }
