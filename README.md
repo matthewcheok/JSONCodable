@@ -48,27 +48,107 @@ pod 'JSONCodable', '~> 2.1'
 
 ---
 
-`JSONCodable` is made of two separate protocols `JSONEncodable` and `JSONDecodable`.
-`JSONEncodable` allows your structs and classes to generate `NSDictionary` or `[String: AnyObject]` equivalents for use with `NSJSONSerialization`.
-`JSONDecodable` allows you to generate structs from `NSDictionary` coming in from a network request for example.
+**JSONCodable** is made of two separate protocols `JSONEncodable` and `JSONDecodable`.
 
-We'll use the following models in this example:
+- `JSONEncodable` allows your structs and classes to generate `NSDictionary` or `[String: AnyObject]` equivalents for use with `NSJSONSerialization`.
+
+- `JSONDecodable` allows you to generate structs from `NSDictionary` coming in from a network request for example.
+
+
+
+
+##Decoding JSON
+Take these two types for example:
+
+```swift    
+ struct User {    
+     let id: Int    
+     let name: String   
+     var email: String?   
+     var company: Company?    
+     var friends: [User] = []   
+ }    
+    
+ struct Company {   
+     let name: String   
+     var address: String?   
+ }    
+```
+
+You'd simply add conformance to `JSONDecodable` (or to `JSONCodable`):
+
 ```swift
-struct User {
-    let id: Int
-    let name: String
-    var email: String?
-    var company: Company?
-    var friends: [User] = []
+extension User: JSONDecodable {
+  init(object: JSONObject) throws {
+      let decoder = JSONDecoder(object: object)        
+      id = try decoder.decode("id")
+      name = try decoder.decode("full_name")
+      email = try decoder.decode("email")
+      company = try decoder.decode("company")
+      friends = try decoder.decode("friends")
+  }
 }
 
-struct Company {
-    let name: String
-    var address: String?
+extension Company: JSONDecodable {
+  init(object: JSONObject) throws {
+      let decoder = JSONDecoder(object: object)
+      name = try decoder.decode("name")
+      address = try decoder.decode("address")
+  }
 }
 ```
 
-## Using JSONEncodable
+**Note on Class Extensions:** After the update to Swift 2.2 adding an initializer in an extension for classes is no longer supported.  The current suggested work around for this is to just add the initializer in the class definition. For structs extensions still work as that had previously in this case.
+
+-
+
+Then provide the implementations for `init(object: JSONObject) throws` where `JSONObject` is a typealias for `[String:AnyObject]`.
+As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
+
+```swift
+let user = try User(object: JSON)
+print("\(user)")
+```
+
+Result:
+```swift
+User(
+  id: 24,
+  name: "John Appleseed",
+  email: Optional("john@appleseed.com"),
+  company: Optional(Company(
+    name: "Apple",
+    address: Optional("1 Infinite Loop, Cupertino, CA")
+  )),
+  friends: [
+    User(
+      id: 27,
+      name: "Bob Jefferson",
+      email: nil,
+      company: nil,
+      friends: []
+    ),
+    User(
+      id: 29,
+      name: "Jen Jackson",
+      email: nil,
+      company: nil,
+      friends: []
+    )
+  ]
+)
+```
+
+## Decoding Nested Arrays and Dictionary
+
+Decoding also supports retrieving values using `.` separators for dictionaries and `[index]` for arrays. See below example:
+
+```
+name = try decoder.decode("value[0].properties.name")
+```
+
+
+## Encoding JSON
 
 Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 
@@ -116,68 +196,6 @@ Result:
     }
 )]
 ```
-
-##Using JSONDecodable
-
-Simply add conformance to `JSONDecodable` (or to `JSONCodable`):
-```swift
-extension User: JSONDecodable {
-  init(object: JSONObject) throws {
-      let decoder = JSONDecoder(object: object)        
-      id = try decoder.decode("id")
-      name = try decoder.decode("full_name")
-      email = try decoder.decode("email")
-      company = try decoder.decode("company")
-      friends = try decoder.decode("friends")
-  }
-}
-
-extension Company: JSONDecodable {
-  init(object: JSONObject) throws {
-      let decoder = JSONDecoder(object: object)
-      name = try decoder.decode("name")
-      address = try decoder.decode("address")
-  }
-}
-```
-
-Simply provide the implementations for `init(object: JSONObject) throws` where `JSONObject` is a typealias for `[String:AnyObject]`.
-As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
-
-```swift
-let user = try! User(object: JSON)
-print("\(user)")
-```
-
-Result:
-```swift
-User(
-  id: 24,
-  name: "John Appleseed",
-  email: Optional("john@appleseed.com"),
-  company: Optional(Company(
-    name: "Apple",
-    address: Optional("1 Infinite Loop, Cupertino, CA")
-  )),
-  friends: [
-    User(
-      id: 27,
-      name: "Bob Jefferson",
-      email: nil,
-      company: nil,
-      friends: []
-    ),
-    User(
-      id: 29,
-      name: "Jen Jackson",
-      email: nil,
-      company: nil,
-      friends: []
-    )
-  ]
-)
-```
-
 ## Working with JSON Strings
 The convenience initializer `init?(JSONString: String)` is provided on `JSONDecodable`. You may also use `func toJSONString() throws -> String` to obtain a string equivalent of your types.
 
