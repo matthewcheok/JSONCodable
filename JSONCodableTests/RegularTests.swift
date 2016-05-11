@@ -11,7 +11,23 @@ import XCTest
 class RegularTests: XCTestCase {
 
     let nestedCodableArray = ["areas" : [[10.0,10.5,12.5]],
-                              "places":[["Tokyo","New York", "El Cerrito"]]]
+                              "places":[["Tokyo","New York", "El Cerrito"]],
+                              "business" : [[
+                                [ "name": "Apple",
+                                  "address": "1 Infinite Loop, Cupertino, CA"
+                                ],
+                                [ "name": "Propeller",
+                                  "address": "1212 broadway, Oakland, CA"
+                                ]
+                              ]],
+                              "assets": [[
+                                [ "name": "image-name",
+                                  "uri": "http://www.example.com/image.png"
+                                ],
+                                [ "name": "image2-name",
+                                  "uri": "http://www.example.com/image2.png"
+                                ]
+                               ]]]
     
     let encodedNestedArray = [
         "id": 99,
@@ -55,10 +71,25 @@ class RegularTests: XCTestCase {
             XCTFail()
             return
         }
+        print("nested=",nested)
         let places = nested.places ?? [[]]
         let areas = nested.areas
-        XCTAssert( places == [["Tokyo","New York", "El Cerrito"]], "\(nestedCodableArray))")
-        XCTAssert( areas == [[10.0,10.5,12.5]], "\(nestedCodableArray))")
+        let business = nested.business
+        let assets = nested.assets ?? [[]]
+        XCTAssert(places == [["Tokyo","New York", "El Cerrito"]], "\(nestedCodableArray))")
+        XCTAssert(areas == [[10.0,10.5,12.5]], "\(nestedCodableArray))")
+
+        XCTAssert(business.map{ $0.map{ $0.name } } == [[try! Company(object:["name": "Apple",
+                                "address": "1 Infinite Loop, Cupertino, CA"]),
+                              try! Company(object:[ "name": "Propeller",
+                                "address": "1212 broadway, Oakland, CA"])].map{ $0.name }],
+        "\(nestedCodableArray))")
+
+        XCTAssert(assets.map{ $0.map{ $0.name } } == [[try! ImageAsset(object:[ "name": "image-name",
+            "uri": "http://www.example.com/image.png"]),
+            try! ImageAsset(object: ["name": "image2-name",
+                "uri": "http://www.example.com/image2.png"])].map{ $0.name }],
+        "\(nestedCodableArray))")
     }
     
     func testDecodingNestedArray() {
