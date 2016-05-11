@@ -234,6 +234,39 @@ public class JSONDecoder {
         }
         return try array.flatMap { try Element(object: $0)}
     }
+
+    // [[JSONDecodable]]
+    public func decode<Element: JSONDecodable>(key: String) throws -> [[Element]] {
+        guard let value = get(key) else {
+            return []
+        }
+        guard let array = value as? [[JSONObject]] else {
+            throw JSONDecodableError.ArrayTypeExpectedError(key: key, elementType: value.dynamicType)
+        }
+        var res:[[Element]] = []
+
+        for x in array {
+            let nested = try x.flatMap { try Element(object: $0)}
+            res.append(nested)
+        }
+        return res
+    }
+
+    // [[JSONCompatible]]
+    public func decode<Element: JSONCompatible>(key: String) throws -> [[Element]] {
+        guard let value = get(key) else {
+            return []
+        }
+        guard let array = value as? [[Element]] else {
+            throw JSONDecodableError.IncompatibleTypeError(key: key, elementType: value.dynamicType, expectedType: [Element].self)
+        }
+        var res:[[Element]] = []
+
+        for x in array {
+            res.append(x)
+        }
+        return res
+    }
     
     // [Enum]
     public func decode<Enum: RawRepresentable>(key: String) throws -> [Enum] {

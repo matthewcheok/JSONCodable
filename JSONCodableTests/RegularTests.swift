@@ -9,6 +9,9 @@
 import XCTest
 
 class RegularTests: XCTestCase {
+
+    let nestedCodableArray = ["areas" : [[10.0,10.5,12.5]],
+                              "places":[["Tokyo","New York", "El Cerrito"]]]
     
     let encodedNestedArray = [
         "id": 99,
@@ -47,6 +50,17 @@ class RegularTests: XCTestCase {
         friendsLookup: ["Bob Jefferson":  User(id: 27, likes:0, name: "Bob Jefferson", email: nil, company: nil, friends: [], friendsLookup: nil)]
     )
 
+    func testDecodeNestedCodableArray() {
+        guard let nested = try? NestItem(object: nestedCodableArray) else {
+            XCTFail()
+            return
+        }
+        let places = nested.places ?? [[]]
+        let areas = nested.areas
+        XCTAssert( places == [["Tokyo","New York", "El Cerrito"]], "\(nestedCodableArray))")
+        XCTAssert( areas == [[10.0,10.5,12.5]], "\(nestedCodableArray))")
+    }
+    
     func testDecodingNestedArray() {
         guard let user = try? User(object: encodedNestedArray) else {
             XCTFail()
