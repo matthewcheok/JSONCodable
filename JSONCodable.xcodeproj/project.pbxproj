@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211CD091CE2EBFB0097F255 /* NestItem.swift */; };
 		52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E8F44E1C9087D200F40F7F /* UtilityTests.swift */; };
 		9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455BF91BCE185B00070A4F /* EnumTests.swift */; };
 		9E455BFC1BCE185B00070A4F /* JSONCodable.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EDB39231B59D01D00C63019 /* JSONCodable.framework */; };
@@ -45,6 +46,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		5211CD091CE2EBFB0097F255 /* NestItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestItem.swift; sourceTree = "<group>"; };
 		52E8F44E1C9087D200F40F7F /* UtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityTests.swift; sourceTree = "<group>"; };
 		9E455BF71BCE185B00070A4F /* JSONCodableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSONCodableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E455BF91BCE185B00070A4F /* EnumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTests.swift; sourceTree = "<group>"; };
@@ -108,6 +110,7 @@
 		9E455C061BCE1D0B00070A4F /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				5211CD091CE2EBFB0097F255 /* NestItem.swift */,
 				9E455C021BCE1C1E00070A4F /* Fruit.swift */,
 				9E8E07231BD3F15800F98421 /* Food.swift */,
 				9E455C041BCE1D0700070A4F /* User.swift */,
@@ -315,6 +318,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */,
+				5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */,
 				9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */,
 				9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */,
 				9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */,
