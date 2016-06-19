@@ -33,11 +33,11 @@ private let dateTimeFormatter: DateFormatter = {
 }()
 
 public struct JSONTransformers {
-  public static let StringToNSURL = JSONTransformer<String, URL>(
+  public static let StringToURL = JSONTransformer<String, URL>(
     decoding: {URL(string: $0)},
     encoding: {$0.absoluteString})
   
-  public static let StringToNSDate = JSONTransformer<String, Date>(
+  public static let StringToDate = JSONTransformer<String, Date>(
     decoding: {dateTimeFormatter.date(from: $0)},
     encoding: {dateTimeFormatter.string(from: $0)})
 }

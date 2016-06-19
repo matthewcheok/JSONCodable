@@ -16,7 +16,7 @@ class TransformerTests: XCTestCase {
   ]
   let decodedValue = ImageAsset(
     name: "image-name",
-    uri: NSURL(string: "http://www.example.com/image.png")
+    uri: URL(string: "http://www.example.com/image.png")
   )
   
   func testDecodingTransformer() {
