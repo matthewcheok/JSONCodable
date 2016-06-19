@@ -136,12 +136,15 @@ public class JSONEncoder {
     return encoder.object
   }
   
-  private func update(object: JSONObject, keys: [String], value: AnyObject) -> JSONObject
-  {
+  private func update(object: JSONObject, keys: [String], value: AnyObject) -> JSONObject {
+    if keys.isEmpty {
+        return object
+    }
     var newObject = object
     var newKeys = keys
-    
+
     let firstKey = newKeys.removeFirst()
+
     if newKeys.count > 0 {
       let innerObject = object[firstKey] as? JSONObject ?? JSONObject()
       newObject[firstKey] = update(object: innerObject, keys: newKeys, value: value)
