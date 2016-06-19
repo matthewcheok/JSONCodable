@@ -136,6 +136,21 @@ public class JSONEncoder {
     return encoder.object
   }
   
+  private func update(object: JSONObject, keys: [String], value: AnyObject) -> JSONObject
+  {
+    var newObject = object
+    var newKeys = keys
+    
+    let firstKey = newKeys.removeFirst()
+    if newKeys.count > 0 {
+      let innerObject = object[firstKey] as? JSONObject ?? JSONObject()
+      newObject[firstKey] = update(object: innerObject, keys: newKeys, value: value)
+    } else {
+      newObject[firstKey] = value
+    }
+    return newObject
+  }
+  
   /*
    Note:
    There is some duplication because methods with generic constraints need to
@@ -147,11 +162,11 @@ public class JSONEncoder {
   // JSONEncodable
   public func encode<Encodable: JSONEncodable>(_ value: Encodable, key: String) throws {
     let result = try value.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   private func encode(_ value: JSONEncodable, key: String) throws {
     let result = try value.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // JSONEncodable?
@@ -160,7 +175,7 @@ public class JSONEncoder {
       return
     }
     let result = try actual.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // Enum
@@ -169,7 +184,7 @@ public class JSONEncoder {
       return
     }
     let result = try compatible.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // Enum?
@@ -181,7 +196,7 @@ public class JSONEncoder {
       return
     }
     let result = try compatible.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [JSONEncodable]
@@ -190,14 +205,14 @@ public class JSONEncoder {
       return
     }
     let result = try array.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   public func encode(_ array: [JSONEncodable], key: String) throws {
     guard array.count > 0 else {
       return
     }
     let result = try array.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   private func encode(_ array: JSONArray, key: String) throws {
     guard array.count > 0 && array.elementsAreJSONEncodable() else {
@@ -205,7 +220,7 @@ public class JSONEncoder {
     }
     let encodable = array.elementsMadeJSONEncodable()
     let result = try encodable.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [JSONEncodable]?
@@ -217,7 +232,7 @@ public class JSONEncoder {
       return
     }
     let result = try actual.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [Enum]
@@ -228,7 +243,7 @@ public class JSONEncoder {
     let result = try value.flatMap {
       try ($0.rawValue as? JSONCompatible)?.toJSON()
     }
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [Enum]?
@@ -242,7 +257,7 @@ public class JSONEncoder {
     let result = try actual.flatMap {
       try ($0.rawValue as? JSONCompatible)?.toJSON()
     }
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [String:JSONEncodable]
@@ -251,7 +266,7 @@ public class JSONEncoder {
       return
     }
     let result = try dictionary.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   public func encode(_ dictionary: [String:JSONEncodable], key: String) throws {
     guard dictionary.count > 0 else {
@@ -266,7 +281,7 @@ public class JSONEncoder {
     }
     let encodable = dictionary.valuesMadeJSONEncodable()
     let result = try encodable.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // [String:JSONEncodable]?
@@ -278,7 +293,7 @@ public class JSONEncoder {
       return
     }
     let result = try actual.toJSON()
-    object[key] = result
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result)
   }
   
   // JSONTransformable
@@ -286,7 +301,7 @@ public class JSONEncoder {
     guard let result = transformer.encoding(value) else {
       throw JSONEncodableError.transformerFailedError(key: key)
     }
-    object[key] = (result as! AnyObject)
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result as! AnyObject)
   }
   
   // JSONTransformable?
@@ -297,6 +312,6 @@ public class JSONEncoder {
     guard let result = transformer.encoding(actual) else {
       return
     }
-    object[key] = (result as! AnyObject)
+    object = update(object: object, keys: key.components(separatedBy: "."), value: result as! AnyObject)
   }
 }
