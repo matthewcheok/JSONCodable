@@ -6,7 +6,6 @@
 //
 //
 
-import Foundation
 import JSONCodable
 
 enum Cuisine: String {

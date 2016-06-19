@@ -6,7 +6,6 @@
 //
 //
 
-import Foundation
 import JSONCodable
 
 struct NestItem {
@@ -28,5 +27,4 @@ extension NestItem: JSONDecodable {
       fatalError("\(error)")
     }
   }
-  
 }
