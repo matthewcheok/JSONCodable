@@ -64,7 +64,7 @@ public extension JSONEncodable {
         
         return try JSONEncoder.create({ (encoder) -> Void in
             // loop through all properties (instance variables)
-            for (labelMaybe, valueMaybe) in mirror.children {
+            for (labelMaybe, valueMaybe) in mirror.getAllProperties() {
                 guard let label = labelMaybe else {
                     continue
                 }
