@@ -8,7 +8,7 @@
 
 // Decoding Errors
 
-public enum JSONDecodableError: ErrorProtocol, CustomStringConvertible {
+public enum JSONDecodableError: Error, CustomStringConvertible {
     case missingTypeError(
         key: String
     )

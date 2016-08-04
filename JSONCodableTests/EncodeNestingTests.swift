@@ -23,8 +23,8 @@ class EncodeNestingTests: XCTestCase {
 
     func testEncodeNestedPropertyItem() {
         guard let pItem = try? PropertyItem(object: propertyItemArray),
-            json = try? pItem.toJSON(),
-            json1 = json as? JSONObject else {
+            let json = try? pItem.toJSON(),
+            let json1 = json as? JSONObject else {
             XCTFail()
             return
         }
