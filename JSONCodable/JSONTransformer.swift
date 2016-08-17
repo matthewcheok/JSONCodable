@@ -32,7 +32,7 @@ private let dateTimeFormatter: NSDateFormatter = {
     return formatter
 }()
 
-struct JSONTransformers {
+public struct JSONTransformers {
     static let StringToNSURL = JSONTransformer<String, NSURL>(
         decoding: {NSURL(string: $0)},
         encoding: {$0.absoluteString})
@@ -49,11 +49,11 @@ struct JSONTransformers {
 }
 
 public extension JSONTransformer {
-    static func stringToURL() -> JSONTransformer<String, NSURL>{
+    static var stringToURL: JSONTransformer<String, NSURL>{
         return JSONTransformers.StringToNSURL
     }
     
-    static func stringToDate() -> JSONTransformer<String, NSDate>{
+    static var stringToDate: JSONTransformer<String, NSDate>{
         return JSONTransformers.StringToNSDate
     }
 }
