@@ -33,16 +33,16 @@ private let dateTimeFormatter: NSDateFormatter = {
 }()
 
 public struct JSONTransformers {
-    static let StringToNSURL = JSONTransformer<String, NSURL>(
+    public static let StringToNSURL = JSONTransformer<String, NSURL>(
         decoding: {NSURL(string: $0)},
         encoding: {$0.absoluteString})
 
     #if !swift(>=3.0)
-    static let StringToNSDate = JSONTransformer<String, NSDate>(
+    public static let StringToNSDate = JSONTransformer<String, NSDate>(
         decoding: {dateTimeFormatter.dateFromString($0)},
         encoding: {dateTimeFormatter.stringFromDate($0)})
     #else
-    static let StringToNSDate = JSONTransformer<String, NSDate>(
+    public static let StringToNSDate = JSONTransformer<String, NSDate>(
         decoding: {dateTimeFormatter.date(from: $0)},
         encoding: {dateTimeFormatter.string(from: $0)})
     #endif
