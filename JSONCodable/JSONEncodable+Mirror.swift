@@ -9,7 +9,7 @@
 public extension Mirror {
     /**
      Builds an array of all properties from current class and all super classes
-
+     
      - returns: array of Tuples containing the label and value for each property
      */
     public func getAllProperties() -> [(label: String?, value: Any)] {

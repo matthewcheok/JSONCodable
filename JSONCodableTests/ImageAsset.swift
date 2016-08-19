@@ -18,7 +18,7 @@ func ==(lhs: ImageAsset, rhs: ImageAsset) -> Bool {
 }
 
 extension ImageAsset: JSONEncodable {
-  func toJSON() throws -> AnyObject {
+  func toJSON() throws -> Any {
     return try JSONEncoder.create{ (encoder) -> Void in
       try encoder.encode(name, key: "name")
       try encoder.encode(uri, key: "uri", transformer: JSONTransformers.StringToURL)

@@ -35,11 +35,11 @@ extension MessageComplex: JSONDecodable {
 //Transforms for returning JSONObject & [JSONObject]
 
 extension JSONTransformers {
-
+    
     static let JSONObjectType = JSONTransformer<JSONObject,JSONObject>(
         decoding: { $0 },
         encoding: { $0 })
-
+    
     static let JSONObjectArray = JSONTransformer<[JSONObject],[JSONObject]>(
         decoding: { $0 },
         encoding: { $0 })

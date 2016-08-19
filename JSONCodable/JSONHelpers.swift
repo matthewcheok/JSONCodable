@@ -59,3 +59,4 @@ protocol JSONOptional {
 extension Optional: JSONOptional {
   var wrapped: Any? { return self }
 }
+
