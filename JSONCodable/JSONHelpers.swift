@@ -26,7 +26,7 @@ extension Dictionary : JSONDictionary {
   func valuesMadeJSONEncodable() -> [String: JSONEncodable] {
     var dict: [String: JSONEncodable] = [:]
     for (k, v) in self {
-      dict[String(k)] = v as? JSONEncodable
+        dict[String(describing:k)] = v as? JSONEncodable
     }
     return dict
   }

@@ -58,7 +58,7 @@ public extension JSONEncodable {
             }
         #else
             guard let style = mirror.displayStyle , style == .`struct` || style == .`class` else {
-                throw JSONEncodableError.incompatibleTypeError(elementType: self.dynamicType)
+                throw JSONEncodableError.incompatibleTypeError(elementType: type(of: self))
             }
         #endif
         
@@ -90,7 +90,7 @@ public extension JSONEncodable {
                 case let value as JSONDictionary:
                     try encoder.encode(value, key: label)
                 default:
-                    throw JSONEncodableError.childIncompatibleTypeError(key: label, elementType: value.dynamicType)
+                    throw JSONEncodableError.childIncompatibleTypeError(key: label, elementType: type(of: value))
                 }
                 
             }
@@ -110,7 +110,7 @@ public extension Array { //where Element: JSONEncodable {
                 results.append(try item.toJSON())
             }
             else {
-                throw JSONEncodableError.arrayIncompatibleTypeError(elementType: item.dynamicType)
+                throw JSONEncodableError.arrayIncompatibleTypeError(elementType: type(of: item))
             }
         }
         return results
@@ -124,10 +124,10 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
         var result: [String: AnyObject] = [:]
         for (k, item) in self {
             if let item = item as? JSONEncodable {
-                result[String(k)] = try item.toJSON()
+                result[String(describing:k)] = try item.toJSON()
             }
             else {
-                throw JSONEncodableError.dictionaryIncompatibleTypeError(elementType: item.dynamicType)
+                throw JSONEncodableError.dictionaryIncompatibleTypeError(elementType: type(of: item))
             }
         }
         return result
@@ -139,9 +139,9 @@ public extension Dictionary {//where Key: String, Value: JSONEncodable {
 public class JSONEncoder {
     var object = JSONObject()
     
-    public static func create(_ setup: @noescape (encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
+    public static func create(_ setup: (_ encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
         let encoder = JSONEncoder()
-        try setup(encoder: encoder)
+        try setup(encoder)
         return encoder.object
     }
     
