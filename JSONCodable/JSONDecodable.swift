@@ -69,9 +69,9 @@ public extension JSONDecodable {
 }
 
 public extension Array where Element: JSONDecodable {
-    init(JSONArray: [AnyObject]) throws {
+    init(JSONArray: [Any]) throws {
         self.init(try JSONArray.flatMap {
-            guard let json = $0 as? [String : AnyObject] else {
+            guard let json = $0 as? [String : Any] else {
                 throw JSONDecodableError.dictionaryTypeExpectedError(key: "n/a", elementType: type(of: $0))
             }
             return try Element(object: json)
