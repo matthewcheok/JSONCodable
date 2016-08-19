@@ -8,7 +8,7 @@
 
 // Convenience
 
-public typealias JSONObject = [String: AnyObject]
+public typealias JSONObject = [String: Any]
 
 // Dictionary handling
 

@@ -45,11 +45,12 @@ public enum JSONEncodableError: Error, CustomStringConvertible {
 // Struct -> Dictionary
 
 public protocol JSONEncodable {
-    func toJSON() throws -> AnyObject
+    func toJSON() throws -> Any
 }
 
 public extension JSONEncodable {
-    func toJSON() throws -> AnyObject {
+    
+    func toJSON() throws -> Any {
         let mirror = Mirror(reflecting: self)
         
         #if !swift(>=3.0)
@@ -62,7 +63,7 @@ public extension JSONEncodable {
             }
         #endif
         
-        return try JSONEncoder.create({ (encoder) -> Void in
+        return try JSONEncoder.create { encoder in
             // loop through all properties (instance variables)
             for (labelMaybe, valueMaybe) in mirror.children {
                 guard let label = labelMaybe else {
@@ -94,7 +95,7 @@ public extension JSONEncodable {
                 }
                 
             }
-        })
+        }
     }
 }
 
@@ -103,8 +104,8 @@ public extension JSONEncodable {
 public extension Array { //where Element: JSONEncodable {
     private var wrapped: [Any] { return self.map{$0} }
     
-    public func toJSON() throws -> AnyObject {
-        var results: [AnyObject] = []
+    public func toJSON() throws -> Any {
+        var results: [Any] = []
         for item in self.wrapped {
             if let item = item as? JSONEncodable {
                 results.append(try item.toJSON())
@@ -120,8 +121,8 @@ public extension Array { //where Element: JSONEncodable {
 // Dictionary convenience methods
 
 public extension Dictionary {//where Key: String, Value: JSONEncodable {
-    public func toJSON() throws -> AnyObject {
-        var result: [String: AnyObject] = [:]
+    public func toJSON() throws -> Any {
+        var result: [String: Any] = [:]
         for (k, item) in self {
             if let item = item as? JSONEncodable {
                 result[String(describing:k)] = try item.toJSON()
@@ -145,7 +146,7 @@ public class JSONEncoder {
         return encoder.object
     }
     
-    private func update(object: JSONObject, keys: [String], value: AnyObject) -> JSONObject {
+    private func update(object: JSONObject, keys: [String], value: Any) -> JSONObject {
         if keys.isEmpty {
             return object
         }
@@ -176,13 +177,13 @@ public class JSONEncoder {
         let result = try value.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
-    private func encode(_ value: JSONEncodable, key: String) throws {
+    fileprivate func encode(_ value: JSONEncodable, key: String) throws {
         let result = try value.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
     
     // JSONEncodable?
-    public func encode<Encodable: JSONEncodable>(_ value: Encodable?, key: String) throws {
+    public func encode(_ value: JSONEncodable?, key: String) throws {
         guard let actual = value else {
             return
         }
@@ -226,7 +227,8 @@ public class JSONEncoder {
         let result = try array.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
-    private func encode(_ array: JSONArray, key: String) throws {
+    
+    fileprivate func encode(_ array: JSONArray, key: String) throws {
         guard array.count > 0 && array.elementsAreJSONEncodable() else {
             return
         }
@@ -287,7 +289,7 @@ public class JSONEncoder {
         let result = try dictionary.toJSON()
         object[key] = result
     }
-    private func encode(_ dictionary: JSONDictionary, key: String) throws {
+    fileprivate func encode(_ dictionary: JSONDictionary, key: String) throws {
         guard dictionary.count > 0 && dictionary.valuesAreJSONEncodable() else {
             return
         }
@@ -313,7 +315,7 @@ public class JSONEncoder {
         guard let result = transformer.encoding(value) else {
             throw JSONEncodableError.transformerFailedError(key: key)
         }
-        object = update(object: object, keys: key.components(separatedBy: "."), value: result as! AnyObject)
+        object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
     
     // JSONTransformable?
@@ -324,6 +326,6 @@ public class JSONEncoder {
         guard let result = transformer.encoding(actual) else {
             return
         }
-        object = update(object: object, keys: key.components(separatedBy: "."), value: result as! AnyObject)
+        object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
 }

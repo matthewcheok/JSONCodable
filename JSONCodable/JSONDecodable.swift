@@ -101,16 +101,16 @@ public class JSONDecoder {
         }
     }
     
-    private func get(_ key: String) -> AnyObject? {
+    private func get(_ key: String) -> Any? {
         let keys = key.replacingOccurrences(of: "[", with: ".[").components(separatedBy: ".")
-        let result = keys.reduce(object as AnyObject?) {
+        let result = keys.reduce(object as Any?) {
             value, key in
             
             switch value {
-            case let dict as [String: AnyObject]:
+            case let dict as [String: Any]:
                 return dict[key]
                 
-            case let arr as [AnyObject]:
+            case let arr as [Any]:
                 guard let index = parseArrayIndex(key) else {
                     return nil
                 }
