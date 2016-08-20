@@ -28,6 +28,6 @@ class EncodeNestingTests: XCTestCase {
                 XCTFail()
                 return
         }
-        XCTAssert(String(json1) == String(propertyItemArray), "failed to convert to \(propertyItemArray)")
+        XCTAssert(String(describing:json1) == String(describing:propertyItemArray), "failed to convert to \(propertyItemArray)")
     }
 }

@@ -31,7 +31,7 @@ We'll add conformance to `JSONEncodable`. You may also add conformance to `JSONC
 */
 
 extension User: JSONEncodable {
-  func toJSON() throws -> AnyObject {
+  func toJSON() throws -> Any {
     return try JSONEncoder.create({ (encoder) -> Void in
       try encoder.encode(id, key: "id")
       try encoder.encode(name, key: "full_name")
@@ -83,7 +83,7 @@ You can open the console and see the output using `CMD + SHIFT + Y` or ⇧⌘Y.
 Let's work with an incoming JSON Dictionary:
 */
 
-let JSON = [
+let JSON: [String: Any] = [
     "id": 24,
     "full_name": "John Appleseed",
     "email": "john@appleseed.com",
@@ -113,6 +113,8 @@ And encode it to JSON using one of the provided methods:
 - `func JSONEncode() throws -> AnyObject`
 - `func JSONString() throws -> String`
 */
+
+try! 1.toJSON()
 
 let dict = try! user.toJSON()
 print("Encoded: \n\(dict as! JSONObject)\n\n")

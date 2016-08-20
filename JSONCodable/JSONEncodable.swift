@@ -184,6 +184,7 @@ public class JSONEncoder {
         let result = try value.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
+    
     fileprivate func encode(_ value: JSONEncodable, key: String) throws {
         let result = try value.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)

@@ -8,26 +8,35 @@
 
 import XCTest
 
+func ==<T:Equatable>(lhs: [[T]], rhs: [[T]]) -> Bool {
+    return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }
+}
+
+func ==<T: Equatable>(lhs: [String: T], rhs: [String: T]) -> Bool {
+    
+}
+
 class RegularTests: XCTestCase {
     
-    let nestedCodableArray = ["areas" : [[10.0,10.5,12.5]],
-                              "places":[["Tokyo","New York", "El Cerrito"]],
-                              "business" : [[
-                                [ "name": "Apple",
-                                  "address": "1 Infinite Loop, Cupertino, CA"
-                                ],
-                                [ "name": "Propeller",
-                                  "address": "1212 broadway, Oakland, CA"
-                                ]
-                                ]],
-                              "assets": [[
-                                [ "name": "image-name",
-                                  "uri": "http://www.example.com/image.png"
-                                ],
-                                [ "name": "image2-name",
-                                  "uri": "http://www.example.com/image2.png"
-                                ]
-                                ]]]
+    let nestedCodableArray: [String: Any] = [
+        "areas" : [[10.0,10.5,12.5]],
+        "places": [["Tokyo","New York", "El Cerrito"]],
+        "business" : [[
+            [ "name": "Apple",
+              "address": "1 Infinite Loop, Cupertino, CA"
+            ],
+            [ "name": "Propeller",
+              "address": "1212 broadway, Oakland, CA"
+            ]
+            ]],
+        "assets": [[
+            [ "name": "image-name",
+              "uri": "http://www.example.com/image.png"
+            ],
+            [ "name": "image2-name",
+              "uri": "http://www.example.com/image2.png"
+            ]
+            ]]]
     
     let encodedNestedArray: [String : Any] = [
         "id": 99,
@@ -75,7 +84,8 @@ class RegularTests: XCTestCase {
         let places = nested.places ?? [[]]
         let areas = nested.areas
         let business = nested.business
-        let assets = nested.assets ?? [[]]
+        let assets = nested.assets ?? [[]]        
+        
         XCTAssert(places == [["Tokyo","New York", "El Cerrito"]], "\(nestedCodableArray))")
         XCTAssert(areas == [[10.0,10.5,12.5]], "\(nestedCodableArray))")
         
@@ -109,11 +119,12 @@ class RegularTests: XCTestCase {
     }
     
     func testEncodingRegular() {
-        guard let json = try? decodedValue.toJSON() else {
+        guard let json = (try? decodedValue.toJSON()) as? NSDictionary else {
             XCTFail()
             return
         }
         
-        XCTAssertEqual(json as [String : Any], encodedValue)
+        XCTAssert(json == (encodedValue as NSDictionary))
+                
     }
 }
