@@ -58,9 +58,16 @@ public extension JSONEncodable {
             throw JSONEncodableError.IncompatibleTypeError(elementType: self.dynamicType)
             }
         #else
-            guard let style = mirror.displayStyle , style == .`struct` || style == .`class` else {
+            
+            // Since Xcode8 beta 6, displayStyle is nil for the Swift default type
+            // So now
+            guard self is JSONCompatible else {
                 throw JSONEncodableError.incompatibleTypeError(elementType: type(of: self))
             }
+            
+//            guard let style = mirror.displayStyle , style == .`struct` || style == .`class` else {
+//                throw JSONEncodableError.incompatibleTypeError(elementType: type(of: self))
+//            }
         #endif
         
         return try JSONEncoder.create { encoder in
