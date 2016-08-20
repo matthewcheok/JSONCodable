@@ -10,24 +10,24 @@ import XCTest
 import JSONCodable
 
 class EncodeNestingTests: XCTestCase {
-
+    
     let propertyItemArray: JSONObject = [
         "class": "propertyType",
         "rel": "propertyType",
         "properties":
-        [ "name": "person",
-          "location": [ "coord": [
+            [ "name": "person",
+              "location": [ "coord": [
                 "lat": 37.790770,
                 "long": -122.402015
-        ]]]]
-
+                ]]]]
+    
     func testEncodeNestedPropertyItem() {
         guard let pItem = try? PropertyItem(object: propertyItemArray),
-            json = try? pItem.toJSON(),
-            json1 = json as? JSONObject else {
-            XCTFail()
-            return
+            let json = try? pItem.toJSON(),
+            let json1 = json as? JSONObject else {
+                XCTFail()
+                return
         }
-        XCTAssert(String(json1) == String(propertyItemArray), "failed to convert to \(propertyItemArray)")
+        XCTAssert(String(describing:json1) == String(describing:propertyItemArray), "failed to convert to \(propertyItemArray)")
     }
 }

@@ -33,6 +33,10 @@
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
 		9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
 		9EDB39511B59D15400C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
+		A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
+		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
+		A1B71C801D37E982006DA33A /* ClassInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7F1D37E982006DA33A /* ClassInheritance.swift */; };
+		A1B71C811D37EA92006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
 		BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */; };
 		BD885BC01D173A0700CA767A /* PropertyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBF1D173A0700CA767A /* PropertyItem.swift */; };
 		BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD667CB1D1F3572003F94D7 /* Messages.swift */; };
@@ -72,6 +76,9 @@
 		9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONHelpers.swift; sourceTree = "<group>"; };
 		9EDB39411B59D0AF00C63019 /* JSONString.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONString.swift; sourceTree = "<group>"; };
 		9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONTransformer.swift; sourceTree = "<group>"; };
+		A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JSONEncodable+Mirror.swift"; sourceTree = "<group>"; };
+		A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MirrorTests.swift; sourceTree = "<group>"; };
+		A1B71C7F1D37E982006DA33A /* ClassInheritance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassInheritance.swift; sourceTree = "<group>"; };
 		BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncodeNestingTests.swift; sourceTree = "<group>"; };
 		BD885BBF1D173A0700CA767A /* PropertyItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyItem.swift; sourceTree = "<group>"; };
 		BDD667CB1D1F3572003F94D7 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
@@ -124,6 +131,7 @@
 				9E455C041BCE1D0700070A4F /* User.swift */,
 				9E455C081BCE1DE100070A4F /* Company.swift */,
 				9ECF00C11BCF6E43008D557C /* ImageAsset.swift */,
+				A1B71C7F1D37E982006DA33A /* ClassInheritance.swift */,
 			);
 			name = Models;
 			sourceTree = "<group>";
@@ -137,6 +145,7 @@
 				BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */,
 				9E455BF91BCE185B00070A4F /* EnumTests.swift */,
 				9ECF00BF1BCE251B008D557C /* TransformerTests.swift */,
+				A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -169,6 +178,7 @@
 				9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */,
 				9EDB39411B59D0AF00C63019 /* JSONString.swift */,
 				9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */,
+				A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */,
 			);
 			path = JSONCodable;
 			sourceTree = "<group>";
@@ -328,7 +338,9 @@
 			buildActionMask = 2147483647;
 			files = (
 				52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */,
+				A1B71C801D37E982006DA33A /* ClassInheritance.swift in Sources */,
 				5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */,
+				A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */,
 				9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */,
 				9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */,
 				9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */,
@@ -351,6 +363,7 @@
 				9EDB39431B59D0AF00C63019 /* JSONCodable.swift in Sources */,
 				9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */,
 				9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */,
+				A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */,
 				9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */,
 				9EDB39451B59D0AF00C63019 /* JSONDecodable.swift in Sources */,
 				9EDB39471B59D0AF00C63019 /* JSONEncodable.swift in Sources */,
@@ -361,6 +374,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A1B71C811D37EA92006DA33A /* JSONEncodable+Mirror.swift in Sources */,
 				9EDB39441B59D0AF00C63019 /* JSONCodable.swift in Sources */,
 				9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */,
 				9EDB394A1B59D0AF00C63019 /* JSONHelpers.swift in Sources */,
@@ -426,6 +440,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -467,6 +482,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -522,6 +538,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -545,7 +562,8 @@
 				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				COPY_PHASE_STRIP = NO;
 				CURRENT_PROJECT_VERSION = 1;
 				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
@@ -573,6 +591,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";

@@ -21,7 +21,7 @@ extension Bool: JSONCompatible {}
 extension Int: JSONCompatible {}
 
 extension JSONCompatible {
-  public func toJSON() throws -> AnyObject {
-    return self as! AnyObject
+  public func toJSON() throws -> Any {
+    return self
   }
 }

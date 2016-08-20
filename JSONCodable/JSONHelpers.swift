@@ -8,7 +8,7 @@
 
 // Convenience
 
-public typealias JSONObject = [String: AnyObject]
+public typealias JSONObject = [String: Any]
 
 // Dictionary handling
 
@@ -26,7 +26,7 @@ extension Dictionary : JSONDictionary {
   func valuesMadeJSONEncodable() -> [String: JSONEncodable] {
     var dict: [String: JSONEncodable] = [:]
     for (k, v) in self {
-      dict[String(k)] = v as? JSONEncodable
+        dict[String(describing:k)] = v as? JSONEncodable
     }
     return dict
   }
@@ -59,3 +59,4 @@ protocol JSONOptional {
 extension Optional: JSONOptional {
   var wrapped: Any? { return self }
 }
+
