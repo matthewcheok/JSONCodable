@@ -9,7 +9,7 @@
 import JSONCodable
 
 struct NestItem {
-    let areas: [[Float]]
+    let areas: [[Double]]
     var places: [[String]]?
     var business: [[Company]]
     var assets: [[ImageAsset]]?

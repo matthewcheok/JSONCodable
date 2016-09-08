@@ -13,7 +13,7 @@ public struct JSONTransformer<EncodedType, DecodedType>: CustomStringConvertible
     let encoding: ((DecodedType) -> EncodedType?)
     
     // needs public accessor
-    public init(decoding: ((EncodedType) -> DecodedType?), encoding: ((DecodedType) -> EncodedType?)) {
+    public init(decoding: @escaping ((EncodedType) -> DecodedType?), encoding: @escaping ((DecodedType) -> EncodedType?)) {
         self.decoding = decoding
         self.encoding = encoding
     }

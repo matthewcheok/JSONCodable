@@ -70,7 +70,7 @@ class TransformerTests: XCTestCase {
             XCTAssert(false, "could not create Messages object")
             return
         }
-        XCTAssert(messageIds == testMessageJSON,
+        XCTAssert(messageIds as NSObject == testMessageJSON  as NSObject,
                   "message Id were not converted to Messages type correcrtly")
         
         guard let messageComplexIds = try? MessageComplex.init(object: testMessageComplexJSON).id else {
@@ -81,10 +81,10 @@ class TransformerTests: XCTestCase {
             XCTAssert(false, "could not create MessageComplex object")
             return
         }
-        XCTAssert(String(messageComplexIds) == String(testMessageComplexJSON[0]),
+        XCTAssert(String(describing: messageComplexIds)  == String(describing: testMessageComplexJSON[0]),
                   "message Ids were not converted to MessageComplex type Ids property correcrtly")
         
-        XCTAssert(String(messageComplexNestedId) == String(testMessageComplexJSON[1]["ID"]!),
+        XCTAssert(String(messageComplexNestedId) == String(describing: testMessageComplexJSON[1]["ID"]!),
                   "item from [1][ID] was not converted to MessageComplex type nestedId property correcrtly")
     }
 }

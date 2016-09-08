@@ -8,13 +8,6 @@
 
 import XCTest
 
-func ==<T:Equatable>(lhs: [[T]], rhs: [[T]]) -> Bool {
-    return lhs.count == rhs.count && !zip(lhs, rhs).contains { $0 != $1 }
-}
-
-func ==<T: Equatable>(lhs: [String: T], rhs: [String: T]) -> Bool {
-    
-}
 
 class RegularTests: XCTestCase {
     
@@ -86,19 +79,19 @@ class RegularTests: XCTestCase {
         let business = nested.business
         let assets = nested.assets ?? [[]]        
         
-        XCTAssert(places == [["Tokyo","New York", "El Cerrito"]], "\(nestedCodableArray))")
-        XCTAssert(areas == [[10.0,10.5,12.5]], "\(nestedCodableArray))")
+        XCTAssert(places as NSObject == [["Tokyo","New York", "El Cerrito"]] as NSObject, "\(nestedCodableArray))")
+        XCTAssert(areas as NSObject == [[10.0,10.5,12.5]] as NSObject, "\(nestedCodableArray))")
         
-        XCTAssert(business.map{ $0.map{ $0.name } } == [[try! Company(object:["name": "Apple",
+        XCTAssert(business.map{ $0.map{ $0.name } } as NSObject == [[try! Company(object:["name": "Apple",
                                                                               "address": "1 Infinite Loop, Cupertino, CA"]),
                                                          try! Company(object:[ "name": "Propeller",
-                                                                               "address": "1212 broadway, Oakland, CA"])].map{ $0.name }],
+                                                                               "address": "1212 broadway, Oakland, CA"])].map{ $0.name }] as NSObject,
                   "\(nestedCodableArray))")
         
-        XCTAssert(assets.map{ $0.map{ $0.name } } == [[try! ImageAsset(object:[ "name": "image-name",
+        XCTAssert(assets.map{ $0.map{ $0.name } } as NSObject == [[try! ImageAsset(object:[ "name": "image-name",
                                                                                 "uri": "http://www.example.com/image.png"]),
                                                        try! ImageAsset(object: ["name": "image2-name",
-                                                                                "uri": "http://www.example.com/image2.png"])].map{ $0.name }],
+                                                                                "uri": "http://www.example.com/image2.png"])].map{ $0.name }] as NSObject,
                   "\(nestedCodableArray))")
     }
     
