@@ -4,7 +4,4 @@
    <FileRef
       location = "group:JSONCodable.xcodeproj">
    </FileRef>
-   <FileRef
-      location = "group:JSONCodable.playground">
-   </FileRef>
 </Workspace>
