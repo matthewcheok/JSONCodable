@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name = 'JSONCodable'
-  s.version = '2.2'
+  s.version = '3.0'
   s.ios.deployment_target = '8.0'
   s.osx.deployment_target = '10.10'
   s.license  = { :type => 'MIT', :file => 'LICENSE' }
