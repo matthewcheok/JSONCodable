@@ -6,7 +6,6 @@
 //
 //
 
-import Foundation
 import JSONCodable
 
 struct Company: Equatable {

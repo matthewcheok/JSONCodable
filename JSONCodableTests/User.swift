@@ -6,7 +6,6 @@
 //
 //
 
-import Foundation
 import JSONCodable
 
 struct User: Equatable {
@@ -28,21 +27,21 @@ func ==(lhs: User, rhs: User) -> Bool {
 }
 
 extension User: JSONEncodable {
-    func toJSON() throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
+    func toJSON() throws -> Any {
+        return try JSONEncoder.create { (encoder) -> Void in
             try encoder.encode(id, key: "id")
             try encoder.encode(name, key: "full_name")
             try encoder.encode(email, key: "email")
             try encoder.encode(company, key: "company")
             try encoder.encode(friends, key: "friends")
             try encoder.encode(friendsLookup, key: "friendsLookup")
-        })
+        }
     }
 }
 
 extension User: JSONDecodable {
     init(object: JSONObject) throws {
-        let decoder = JSONDecoder(object: object)        
+        let decoder = JSONDecoder(object: object)
         id = try decoder.decode("id")
         likes = try decoder.decode("properties[0].likes")
         name = try decoder.decode("full_name")

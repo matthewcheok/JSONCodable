@@ -37,6 +37,9 @@
 		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
 		A1B71C801D37E982006DA33A /* ClassInheritance.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7F1D37E982006DA33A /* ClassInheritance.swift */; };
 		A1B71C811D37EA92006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
+		BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */; };
+		BD885BC01D173A0700CA767A /* PropertyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBF1D173A0700CA767A /* PropertyItem.swift */; };
+		BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD667CB1D1F3572003F94D7 /* Messages.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -76,6 +79,9 @@
 		A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = "JSONEncodable+Mirror.swift"; sourceTree = "<group>"; };
 		A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MirrorTests.swift; sourceTree = "<group>"; };
 		A1B71C7F1D37E982006DA33A /* ClassInheritance.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassInheritance.swift; sourceTree = "<group>"; };
+		BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncodeNestingTests.swift; sourceTree = "<group>"; };
+		BD885BBF1D173A0700CA767A /* PropertyItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyItem.swift; sourceTree = "<group>"; };
+		BDD667CB1D1F3572003F94D7 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +124,8 @@
 			isa = PBXGroup;
 			children = (
 				5211CD091CE2EBFB0097F255 /* NestItem.swift */,
+				BDD667CB1D1F3572003F94D7 /* Messages.swift */,
+				BD885BBF1D173A0700CA767A /* PropertyItem.swift */,
 				9E455C021BCE1C1E00070A4F /* Fruit.swift */,
 				9E8E07231BD3F15800F98421 /* Food.swift */,
 				9E455C041BCE1D0700070A4F /* User.swift */,
@@ -134,6 +142,7 @@
 				9ECF00C31BCF82F5008D557C /* HelperTests.swift */,
 				52E8F44E1C9087D200F40F7F /* UtilityTests.swift */,
 				9E455C0A1BCE1F0100070A4F /* RegularTests.swift */,
+				BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */,
 				9E455BF91BCE185B00070A4F /* EnumTests.swift */,
 				9ECF00BF1BCE251B008D557C /* TransformerTests.swift */,
 				A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */,
@@ -266,7 +275,7 @@
 		9EDF80101B59CFCE00E4A2D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0710;
+				LastUpgradeCheck = 0800;
 				TargetAttributes = {
 					9E455BF61BCE185B00070A4F = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -276,6 +285,7 @@
 					};
 					9EDB39221B59D01D00C63019 = {
 						CreatedOnToolsVersion = 7.0;
+						LastSwiftMigration = 0800;
 					};
 				};
 			};
@@ -335,10 +345,13 @@
 				9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */,
 				9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */,
 				9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */,
+				BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */,
 				9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */,
 				9E8E07241BD3F15800F98421 /* Food.swift in Sources */,
+				BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */,
 				9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */,
 				9E455C051BCE1D0700070A4F /* User.swift in Sources */,
+				BD885BC01D173A0700CA767A /* PropertyItem.swift in Sources */,
 				9E455C091BCE1DE100070A4F /* Company.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -427,6 +440,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
 		};
@@ -467,6 +481,8 @@
 				PRODUCT_BUNDLE_IDENTIFIER = com.matthewcheok.JSONCodableTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 			};
 			name = Release;
 		};
@@ -522,6 +538,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
@@ -573,6 +590,8 @@
 				PRODUCT_NAME = JSONCodable;
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
 				VALIDATE_PRODUCT = YES;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -633,6 +652,7 @@
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -683,6 +703,8 @@
 				PRODUCT_NAME = JSONCodable;
 				SDKROOT = macosx;
 				SKIP_INSTALL = YES;
+				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
+				SWIFT_VERSION = 3.0;
 				VERSIONING_SYSTEM = "apple-generic";
 				VERSION_INFO_PREFIX = "";
 			};
@@ -691,7 +713,22 @@
 		9EDF80141B59CFCE00E4A2D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				ONLY_ACTIVE_ARCH = YES;
@@ -701,6 +738,21 @@
 		9EDF80151B59CFCE00E4A2D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 8.0;
 				MACOSX_DEPLOYMENT_TARGET = 10.10;
 			};

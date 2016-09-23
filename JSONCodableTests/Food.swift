@@ -6,7 +6,6 @@
 //
 //
 
-import Foundation
 import JSONCodable
 
 enum Cuisine: String {
@@ -38,7 +37,7 @@ extension Food: JSONCodable {
         cuisines = try decoder.decode("cuisines")
     }
     
-    func toJSON() throws -> AnyObject {
+    func toJSON() throws -> Any {
         return try JSONEncoder.create({ (encoder) -> Void in
             try encoder.encode(name, key: "name")
             try encoder.encode(cuisines, key: "cuisines")

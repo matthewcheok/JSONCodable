@@ -13,7 +13,7 @@ class EnumTests: XCTestCase {
     let encodedValue = ["name": "apple", "color": "Red"]
     let decodedValue = Fruit(name: "apple", color: FruitColor.Red)
     
-    let encodedValue2 = ["name": "Seaweed Pasta", "cuisines": ["Italian", "Japanese"]]
+    let encodedValue2: [String: Any] = ["name": "Seaweed Pasta", "cuisines": ["Italian", "Japanese"]]
     let decodedValue2 = Food(name: "Seaweed Pasta", cuisines: [.Italian, .Japanese])
     
     func testDecodingEnum() {
