@@ -41,13 +41,3 @@ public struct JSONTransformers {
         decoding: {dateTimeFormatter.date(from: $0)},
         encoding: {dateTimeFormatter.string(from: $0)})
 }
-
-public extension JSONTransformer {
-    static var stringToURL: JSONTransformer<String, NSURL>{
-        return JSONTransformers.StringToNSURL
-    }
-    
-    static var stringToDate: JSONTransformer<String, NSDate>{
-        return JSONTransformers.StringToNSDate
-    }
-}

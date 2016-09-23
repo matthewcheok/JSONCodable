@@ -67,7 +67,17 @@ class RegularTests: XCTestCase {
         ],
         friendsLookup: ["Bob Jefferson":  User(id: 27, likes:0, name: "Bob Jefferson", email: nil, company: nil, friends: [], friendsLookup: nil)]
     )
-    
+
+    func testArrayOfUsers() {
+        let userArray = [encodedValue, encodedValue]
+        guard let users = try? [User](JSONArray: userArray) else {
+            XCTFail()
+            return
+        }
+        XCTAssertEqual(users[0], decodedValue)
+        XCTAssertEqual(users[1], decodedValue)
+    }
+
     func testDecodeNestedCodableArray() {
         guard let nested = try? NestItem(object: nestedCodableArray) else {
             XCTFail()
