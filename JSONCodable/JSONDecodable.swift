@@ -139,7 +139,7 @@ public class JSONDecoder {
     
     // JSONCompatible?
     public func decode<Compatible: JSONCompatible>(_ key: String) throws -> Compatible? {
-        return (get(key) ?? object[key]) as? Compatible
+        return (get(key) ?? object[key] as Any) as? Compatible
     }
     
     // JSONDecodable
