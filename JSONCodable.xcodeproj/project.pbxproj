@@ -7,6 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		520B867D1DCEA60900885504 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B867C1DCEA60900885504 /* ArrayTests.swift */; };
+		520B867F1DCEB6A300885504 /* PropertyCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B867E1DCEB6A300885504 /* PropertyCompany.swift */; };
 		5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211CD091CE2EBFB0097F255 /* NestItem.swift */; };
 		52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E8F44E1C9087D200F40F7F /* UtilityTests.swift */; };
 		9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455BF91BCE185B00070A4F /* EnumTests.swift */; };
@@ -53,6 +55,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		520B867C1DCEA60900885504 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
+		520B867E1DCEB6A300885504 /* PropertyCompany.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyCompany.swift; sourceTree = "<group>"; };
 		5211CD091CE2EBFB0097F255 /* NestItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestItem.swift; sourceTree = "<group>"; };
 		52E8F44E1C9087D200F40F7F /* UtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityTests.swift; sourceTree = "<group>"; };
 		9E455BF71BCE185B00070A4F /* JSONCodableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSONCodableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -124,6 +128,7 @@
 			isa = PBXGroup;
 			children = (
 				5211CD091CE2EBFB0097F255 /* NestItem.swift */,
+				520B867E1DCEB6A300885504 /* PropertyCompany.swift */,
 				BDD667CB1D1F3572003F94D7 /* Messages.swift */,
 				BD885BBF1D173A0700CA767A /* PropertyItem.swift */,
 				9E455C021BCE1C1E00070A4F /* Fruit.swift */,
@@ -140,6 +145,7 @@
 			isa = PBXGroup;
 			children = (
 				9ECF00C31BCF82F5008D557C /* HelperTests.swift */,
+				520B867C1DCEA60900885504 /* ArrayTests.swift */,
 				52E8F44E1C9087D200F40F7F /* UtilityTests.swift */,
 				9E455C0A1BCE1F0100070A4F /* RegularTests.swift */,
 				BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */,
@@ -343,11 +349,13 @@
 				A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */,
 				9ECF00C41BCF82F5008D557C /* HelperTests.swift in Sources */,
 				9ECF00C21BCF6E43008D557C /* ImageAsset.swift in Sources */,
+				520B867D1DCEA60900885504 /* ArrayTests.swift in Sources */,
 				9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */,
 				9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */,
 				BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */,
 				9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */,
 				9E8E07241BD3F15800F98421 /* Food.swift in Sources */,
+				520B867F1DCEB6A300885504 /* PropertyCompany.swift in Sources */,
 				BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */,
 				9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */,
 				9E455C051BCE1D0700070A4F /* User.swift in Sources */,
