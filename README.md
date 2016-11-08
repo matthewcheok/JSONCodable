@@ -24,12 +24,12 @@ Hassle-free JSON encoding and decoding in Swift
 
 - Simply add the following to your [`Cartfile`](https://github.com/Carthage/Carthage) and run `carthage update`:
 ```
-github "matthewcheok/JSONCodable" ~> 3.0
+github "matthewcheok/JSONCodable" ~> 3.0.1
 ```
 
 - or add the following to your [`Podfile`](http://cocoapods.org/) and run `pod install`:
 ```
-pod 'JSONCodable', '~> 3.0'
+pod 'JSONCodable', '~> 3.0.1'
 ```
 
 - or clone as a git submodule,
