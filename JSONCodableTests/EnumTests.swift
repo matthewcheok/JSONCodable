@@ -19,7 +19,7 @@ class EnumTests: XCTestCase {
     func testDecodingEnum() {
         guard let fruit = try? Fruit(object: encodedValue) else {
             XCTFail()
-            return
+            return 
         }
         
         XCTAssertEqual(fruit, decodedValue)

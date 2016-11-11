@@ -18,16 +18,12 @@ struct PropertyItem {
 
 extension PropertyItem: JSONDecodable {
     init(object: JSONObject) throws {
-        do {
-            let decoder = JSONDecoder(object: object)
-            rel = try decoder.decode("rel")
-            type = try decoder.decode("class")
-            name = try decoder.decode("properties.name")
-            long = try decoder.decode("properties.location.coord.long")
-            lat = try decoder.decode("properties.location.coord.lat")
-        }catch{
-            fatalError("\(error)")
-        }
+        let decoder = JSONDecoder(object: object)
+        rel = try decoder.decode("rel")
+        type = try decoder.decode("class")
+        name = try decoder.decode("properties.name")
+        long = try decoder.decode("properties.location.coord.long")
+        lat = try decoder.decode("properties.location.coord.lat")
     }
 }
 
