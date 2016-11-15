@@ -16,7 +16,7 @@
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "9EDB39051B59D00B00C63019"
                BuildableName = "JSONCodable.framework"
-               BlueprintName = "JSONCodable iOS"
+               BlueprintName = "JSONCodable"
                ReferencedContainer = "container:JSONCodable.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -38,13 +38,23 @@
                ReferencedContainer = "container:JSONCodable.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9E455BF61BCE185B00070A4F"
+               BuildableName = "JSONCodableTests.xctest"
+               BlueprintName = "JSONCodableTests"
+               ReferencedContainer = "container:JSONCodable.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9EDB39051B59D00B00C63019"
             BuildableName = "JSONCodable.framework"
-            BlueprintName = "JSONCodable iOS"
+            BlueprintName = "JSONCodable"
             ReferencedContainer = "container:JSONCodable.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -66,7 +76,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9EDB39051B59D00B00C63019"
             BuildableName = "JSONCodable.framework"
-            BlueprintName = "JSONCodable iOS"
+            BlueprintName = "JSONCodable"
             ReferencedContainer = "container:JSONCodable.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
@@ -84,7 +94,7 @@
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "9EDB39051B59D00B00C63019"
             BuildableName = "JSONCodable.framework"
-            BlueprintName = "JSONCodable iOS"
+            BlueprintName = "JSONCodable"
             ReferencedContainer = "container:JSONCodable.xcodeproj">
          </BuildableReference>
       </MacroExpansion>
