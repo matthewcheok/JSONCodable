@@ -9,11 +9,11 @@
 // Converting between types
 
 public struct JSONTransformer<EncodedType, DecodedType>: CustomStringConvertible {
-    let decoding: (EncodedType -> DecodedType?)
-    let encoding: (DecodedType -> EncodedType?)
+    let decoding: ((EncodedType) -> DecodedType?)
+    let encoding: ((DecodedType) -> EncodedType?)
     
-    // needs public accessor 
-    public init(decoding: (EncodedType -> DecodedType?), encoding: (DecodedType -> EncodedType?)) {
+    // needs public accessor
+    public init(decoding: @escaping ((EncodedType) -> DecodedType?), encoding: @escaping ((DecodedType) -> EncodedType?)) {
         self.decoding = decoding
         self.encoding = encoding
     }
@@ -24,26 +24,20 @@ public struct JSONTransformer<EncodedType, DecodedType>: CustomStringConvertible
 }
 
 import Foundation
-private let dateTimeFormatter: NSDateFormatter = {
-    let formatter = NSDateFormatter()
+private let dateTimeFormatter: DateFormatter = {
+    let formatter = DateFormatter()
     formatter.dateFormat = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
-    formatter.timeZone = NSTimeZone(forSecondsFromGMT: 0)
-    formatter.locale = NSLocale(localeIdentifier: "en_US_POSIX")
+    formatter.timeZone = TimeZone(secondsFromGMT:0)
+    formatter.locale = Locale(identifier: "en_US_POSIX")
     return formatter
 }()
 
 public struct JSONTransformers {
-    public static let StringToNSURL = JSONTransformer<String, NSURL>(
-        decoding: {NSURL(string: $0)},
+    public static let StringToURL = JSONTransformer<String, URL>(
+        decoding: {URL(string: $0)},
         encoding: {$0.absoluteString})
-
-    #if !swift(>=3.0)
-    public static let StringToNSDate = JSONTransformer<String, NSDate>(
-        decoding: {dateTimeFormatter.dateFromString($0)},
-        encoding: {dateTimeFormatter.stringFromDate($0)})
-    #else
-    public static let StringToNSDate = JSONTransformer<String, NSDate>(
+    
+    public static let StringToDate = JSONTransformer<String, Date>(
         decoding: {dateTimeFormatter.date(from: $0)},
         encoding: {dateTimeFormatter.string(from: $0)})
-    #endif
 }

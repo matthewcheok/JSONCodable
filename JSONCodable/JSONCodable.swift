@@ -21,13 +21,7 @@ extension Bool: JSONCompatible {}
 extension Int: JSONCompatible {}
 
 extension JSONCompatible {
-    public func toJSON() throws -> AnyObject {
-        return self as! AnyObject
-    }
+  public func toJSON() throws -> Any {
+    return self
+  }
 }
-
-// Swift 2 Shims
-
-#if !swift(>=3.0)
-  typealias ErrorProtocol = ErrorType
-#endif
