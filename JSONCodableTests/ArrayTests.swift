@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import JSONCodable
 
 class ArrayTests: XCTestCase {
 
@@ -41,6 +42,20 @@ class ArrayTests: XCTestCase {
         ["name": "SoftwareInc",
          "address": "1313 place st Oakland, CA"]
         ]
+    
+    func testParseArray_WithInt() {
+        //Given
+        
+        let integers = ["array": [1, 2, 3]]
+        let parser = JSONDecoder(object: integers)
+        
+        //When
+        let parsed: Array<Int>? = try? parser.decode("array")
+        
+        //Then
+        XCTAssertNotNil(parsed)
+        XCTAssertEqual(parsed?.count, 3)
+    }
 
     func testMixedItemsInArray() {
         do {
