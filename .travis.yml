@@ -1,0 +1,11 @@
+language: objective-c
+osx_image: xcode8.1
+
+env:
+  - ACTION=test  PLATFORM=Mac     DESTINATION='platform=OS X' COVERAGE='-enableCodeCoverage NO'
+  - ACTION=test  PLATFORM=iOS     DESTINATION='platform=iOS Simulator,name=iPhone SE' COVERAGE='-enableCodeCoverage NO'
+  - ACTION=build PLATFORM=watchOS DESTINATION='platform=watchOS Simulator,name=Apple Watch - 38mm' COVERAGE=''
+  - ACTION=test  PLATFORM=tvOS    DESTINATION='platform=tvOS Simulator,name=Apple TV 1080p' COVERAGE='-enableCodeCoverage NO'
+
+script:
+  - set -o pipefail && xcodebuild -scheme JSONCodable -destination "$DESTINATION" $ACTION CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO $COVERAGE | xcpretty
