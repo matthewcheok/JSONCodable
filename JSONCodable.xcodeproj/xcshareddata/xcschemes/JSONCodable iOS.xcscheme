@@ -38,6 +38,16 @@
                ReferencedContainer = "container:JSONCodable.xcodeproj">
             </BuildableReference>
          </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9E455BF61BCE185B00070A4F"
+               BuildableName = "JSONCodableTests.xctest"
+               BlueprintName = "JSONCodableTests"
+               ReferencedContainer = "container:JSONCodable.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
       </Testables>
       <MacroExpansion>
          <BuildableReference

@@ -42,6 +42,7 @@
 		BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */; };
 		BD885BC01D173A0700CA767A /* PropertyItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = BD885BBF1D173A0700CA767A /* PropertyItem.swift */; };
 		BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */ = {isa = PBXBuildFile; fileRef = BDD667CB1D1F3572003F94D7 /* Messages.swift */; };
+		C6FD31691DDDC31C00EF5141 /* DictionaryTest.swift in Sources */ = {isa = PBXBuildFile; fileRef = C6FD31681DDDC31C00EF5141 /* DictionaryTest.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -86,6 +87,7 @@
 		BD885BBD1D17358E00CA767A /* EncodeNestingTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EncodeNestingTests.swift; sourceTree = "<group>"; };
 		BD885BBF1D173A0700CA767A /* PropertyItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyItem.swift; sourceTree = "<group>"; };
 		BDD667CB1D1F3572003F94D7 /* Messages.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Messages.swift; sourceTree = "<group>"; };
+		C6FD31681DDDC31C00EF5141 /* DictionaryTest.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DictionaryTest.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -152,6 +154,7 @@
 				9E455BF91BCE185B00070A4F /* EnumTests.swift */,
 				9ECF00BF1BCE251B008D557C /* TransformerTests.swift */,
 				A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */,
+				C6FD31681DDDC31C00EF5141 /* DictionaryTest.swift */,
 			);
 			name = Tests;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */,
+				C6FD31691DDDC31C00EF5141 /* DictionaryTest.swift in Sources */,
 				A1B71C801D37E982006DA33A /* ClassInheritance.swift in Sources */,
 				5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */,
 				A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */,

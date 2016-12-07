@@ -13,6 +13,7 @@ class ArrayTests: XCTestCase {
 
     let mixedArrayJSON = [
         [
+        "idList": [1,2,3],
         "class": "propertyType",
         "rel": "propertyType",
         "properties":
@@ -24,6 +25,7 @@ class ArrayTests: XCTestCase {
         ["name": "CompanyInc",
          "address": "1414 place st Los Angeles, CA"],
         [
+            "idList": [1,2,3],
         "class": "propertyType",
         "rel": "propertyType",
         "properties":
@@ -65,8 +67,8 @@ class ArrayTests: XCTestCase {
                 XCTFail()
                 return
             }
-            XCTAssert(companiesEncoded.count == 2, "encoding invalid")
-            XCTAssert(companiesJSON.count == 2, "companies mapping invalid")
+            XCTAssertEqual(companiesEncoded.count, 2, "encoding invalid")
+            XCTAssertEqual(companiesJSON.count, 2, "companies mapping invalid")
             XCTAssert(companiesEncoded[0] == companiesJSON[0], "companies values incorrect")
             XCTAssert(companiesEncoded[1] == companiesJSON[1], "companies values incorrect")
             print(companies)
@@ -94,7 +96,10 @@ class ArrayTests: XCTestCase {
             print(error)
             XCTFail()
         }
-
+        
+    }
+    
+    func testPrimitiveArray() {
         
     }
 }

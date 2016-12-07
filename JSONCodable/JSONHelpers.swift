@@ -42,7 +42,7 @@ protocol JSONArray {
 
 extension Array: JSONArray {
   func elementsAreJSONEncodable() -> Bool {
-    return Element.self is JSONEncodable.Type || Element.self is JSONEncodable.Protocol
+    return Element.self is JSONDecodable.Protocol
   }
   
   func elementsMadeJSONEncodable() -> [JSONEncodable] {

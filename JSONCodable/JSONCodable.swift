@@ -8,17 +8,32 @@
 
 // convenience protocol
 
-public protocol JSONCodable: JSONEncodable, JSONDecodable {}
+public protocol JSONCodable: JSONEncodable, JSONCompatible {}
 
 // JSONCompatible - valid types in JSON
 
 public protocol JSONCompatible: JSONEncodable {}
 
-extension String: JSONCompatible {}
-extension Double: JSONCompatible {}
-extension Float: JSONCompatible {}
-extension Bool: JSONCompatible {}
-extension Int: JSONCompatible {}
+extension String: JSONDecodable, JSONCompatible {
+    public init(object: JSONObject) throws {
+        fatalError()
+    }
+}
+extension Double: JSONDecodable, JSONCompatible {
+    public init(object: JSONObject) throws {
+        fatalError()
+    }
+}
+extension Bool: JSONDecodable, JSONCompatible {
+    public init(object: JSONObject) throws {
+        fatalError()
+    }
+}
+extension Int: JSONDecodable, JSONCompatible {
+    public init(object: JSONObject) throws {
+        fatalError()
+    }
+}
 
 extension JSONCompatible {
   public func toJSON() throws -> Any {

@@ -7,6 +7,7 @@
 //
 
 import XCTest
+import JSONCodable
 
 class EnumTests: XCTestCase {
     
@@ -15,6 +16,18 @@ class EnumTests: XCTestCase {
     
     let encodedValue2: [String: Any] = ["name": "Seaweed Pasta", "cuisines": ["Italian", "Japanese"]]
     let decodedValue2 = Food(name: "Seaweed Pasta", cuisines: [.Italian, .Japanese])
+    
+    func testDecodingEnum_withValidValues() {
+        //Given
+        let values = ["fruitColor": "Red"]
+        let decoder = JSONDecoder(object: values)
+        
+        //When
+        let red: FruitColor = try! decoder.decode("fruitColor")
+        
+        //Then
+        XCTAssertEqual(red, .Red)
+    }
     
     func testDecodingEnum() {
         guard let fruit = try? Fruit(object: encodedValue) else {

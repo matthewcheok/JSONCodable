@@ -26,7 +26,8 @@
       buildConfiguration = "Debug"
       selectedDebuggerIdentifier = "Xcode.DebuggerFoundation.Debugger.LLDB"
       selectedLauncherIdentifier = "Xcode.DebuggerFoundation.Launcher.LLDB"
-      shouldUseLaunchSchemeArgsEnv = "YES">
+      shouldUseLaunchSchemeArgsEnv = "YES"
+      codeCoverageEnabled = "YES">
       <Testables>
          <TestableReference
             skipped = "NO">
@@ -35,6 +36,16 @@
                BlueprintIdentifier = "9EDB392B1B59D01D00C63019"
                BuildableName = "JSONCodable OSX Tests.xctest"
                BlueprintName = "JSONCodable OSX Tests"
+               ReferencedContainer = "container:JSONCodable.xcodeproj">
+            </BuildableReference>
+         </TestableReference>
+         <TestableReference
+            skipped = "NO">
+            <BuildableReference
+               BuildableIdentifier = "primary"
+               BlueprintIdentifier = "9E455BF61BCE185B00070A4F"
+               BuildableName = "JSONCodableTests.xctest"
+               BlueprintName = "JSONCodableTests"
                ReferencedContainer = "container:JSONCodable.xcodeproj">
             </BuildableReference>
          </TestableReference>
