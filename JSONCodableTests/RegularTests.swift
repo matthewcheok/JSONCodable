@@ -34,6 +34,7 @@ class RegularTests: XCTestCase {
     let encodedNestedArray: [String : Any] = [
         "id": 99,
         "full_name": "Jen Jackson",
+        "friends" : [],
         "properties":[
             ["likes":5],
             ["likes":15],
@@ -106,11 +107,13 @@ class RegularTests: XCTestCase {
     }
     
     func testDecodingNestedArray() {
-        guard let user = try? User(object: encodedNestedArray) else {
+        do {
+            let user = try User(object: encodedNestedArray)
+            XCTAssert(user.likes != nil, "\(encodedNestedArray))")
+        } catch {
+            print("error returned as: \(error)")
             XCTFail()
-            return
         }
-        XCTAssert(user.likes != nil, "\(encodedNestedArray))")
     }
     
     func testDecodingRegular() {
