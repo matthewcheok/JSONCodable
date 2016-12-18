@@ -8,13 +8,13 @@
 
 import Foundation
 
-public protocol JSONObjDecodable: JSONDecodable {
-    static func jsonConstruct(object: JSONObject) throws -> Self
+public protocol JSONObjectDecodable: JSONDecodable {
+    static func construct(from object: JSONObject) throws -> Self
 }
 
-extension JSONObjDecodable where Self: AnyObject {
+extension JSONObjectDecodable where Self: AnyObject {
     public init(object: JSONObject) throws {
-        self = try Self.jsonConstruct(object: object)
+        self = try Self.construct(from: object)
     }
 }
 

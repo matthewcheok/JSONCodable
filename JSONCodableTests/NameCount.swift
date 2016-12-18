@@ -17,9 +17,9 @@ class NameCount {
     }
 }
 
-extension NameCount: JSONObjDecodable {
+extension NameCount: JSONObjectDecodable {
 
-    static func jsonConstruct(object: JSONObject) throws -> Self {
+    static func construct(from object: JSONObject) throws -> Self {
         let decoder = JSONDecoder(object: object)
 
         let result = NameCount(name: try decoder.decode("name"),

@@ -18,7 +18,7 @@ class ClassTests: XCTestCase {
 
     func testNameCount() {
         do {
-            let person = try NameCount.jsonConstruct(object: nameCountJson)
+            let person = try NameCount.construct(from: nameCountJson)
             XCTAssertEqual(nameCountJson["count"] as? Int, person.count)
             XCTAssertEqual(nameCountJson["name"] as? String, person.name)
         } catch {
