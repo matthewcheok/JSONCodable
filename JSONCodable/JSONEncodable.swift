@@ -142,6 +142,8 @@ public class JSONEncoder {
     var object = JSONObject()
 
     public static func create(_ setup: (_ encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
+
+//    public static func create(options: JSONEncodingOptions = [] , _ setup: (_ encoder: JSONEncoder) throws -> Void) rethrows -> JSONObject {
         let encoder = JSONEncoder()
         try setup(encoder)
         return encoder.object
