@@ -10,6 +10,9 @@
 		520B867D1DCEA60900885504 /* ArrayTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B867C1DCEA60900885504 /* ArrayTests.swift */; };
 		520B867F1DCEB6A300885504 /* PropertyCompany.swift in Sources */ = {isa = PBXBuildFile; fileRef = 520B867E1DCEB6A300885504 /* PropertyCompany.swift */; };
 		5211CD0A1CE2EBFB0097F255 /* NestItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5211CD091CE2EBFB0097F255 /* NestItem.swift */; };
+		5215DF551E07261A00A0E61A /* NameCount.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215DF541E07261A00A0E61A /* NameCount.swift */; };
+		5215DF571E07267000A0E61A /* ClassTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215DF561E07267000A0E61A /* ClassTests.swift */; };
+		5215DF591E0729FE00A0E61A /* JSONObjectConstructor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5215DF581E0729FE00A0E61A /* JSONObjectConstructor.swift */; };
 		52E8F44F1C9087D200F40F7F /* UtilityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 52E8F44E1C9087D200F40F7F /* UtilityTests.swift */; };
 		9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455BF91BCE185B00070A4F /* EnumTests.swift */; };
 		9E455C031BCE1C1E00070A4F /* Fruit.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E455C021BCE1C1E00070A4F /* Fruit.swift */; };
@@ -27,8 +30,6 @@
 		9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
 		9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39511B59D15400C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A10DFC4C1DF71BF400B7D6D7 /* ClassInheritanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DFC4B1DF71BF400B7D6D7 /* ClassInheritanceTests.swift */; };
 		A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
 		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
@@ -52,6 +53,9 @@
 		520B867C1DCEA60900885504 /* ArrayTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ArrayTests.swift; sourceTree = "<group>"; };
 		520B867E1DCEB6A300885504 /* PropertyCompany.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PropertyCompany.swift; sourceTree = "<group>"; };
 		5211CD091CE2EBFB0097F255 /* NestItem.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NestItem.swift; sourceTree = "<group>"; };
+		5215DF541E07261A00A0E61A /* NameCount.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NameCount.swift; sourceTree = "<group>"; };
+		5215DF561E07267000A0E61A /* ClassTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ClassTests.swift; sourceTree = "<group>"; };
+		5215DF581E0729FE00A0E61A /* JSONObjectConstructor.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JSONObjectConstructor.swift; sourceTree = "<group>"; };
 		52E8F44E1C9087D200F40F7F /* UtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityTests.swift; sourceTree = "<group>"; };
 		9E455BF71BCE185B00070A4F /* JSONCodableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSONCodableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E455BF91BCE185B00070A4F /* EnumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTests.swift; sourceTree = "<group>"; };
@@ -114,6 +118,7 @@
 			isa = PBXGroup;
 			children = (
 				5211CD091CE2EBFB0097F255 /* NestItem.swift */,
+				5215DF541E07261A00A0E61A /* NameCount.swift */,
 				520B867E1DCEB6A300885504 /* PropertyCompany.swift */,
 				BDD667CB1D1F3572003F94D7 /* Messages.swift */,
 				BD885BBF1D173A0700CA767A /* PropertyItem.swift */,
@@ -131,6 +136,7 @@
 			isa = PBXGroup;
 			children = (
 				9ECF00C31BCF82F5008D557C /* HelperTests.swift */,
+				5215DF561E07267000A0E61A /* ClassTests.swift */,
 				520B867C1DCEA60900885504 /* ArrayTests.swift */,
 				52E8F44E1C9087D200F40F7F /* UtilityTests.swift */,
 				9E455C0A1BCE1F0100070A4F /* RegularTests.swift */,
@@ -165,6 +171,7 @@
 			isa = PBXGroup;
 			children = (
 				9EDB393C1B59D0AF00C63019 /* JSONCodable.swift */,
+				5215DF581E0729FE00A0E61A /* JSONObjectConstructor.swift */,
 				9EDB393D1B59D0AF00C63019 /* JSONDecodable.swift */,
 				9EDB393E1B59D0AF00C63019 /* JSONEncodable.swift */,
 				9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */,
@@ -302,7 +309,9 @@
 				9ECF00C01BCE251B008D557C /* TransformerTests.swift in Sources */,
 				BDD667CC1D1F3572003F94D7 /* Messages.swift in Sources */,
 				9E455BFA1BCE185B00070A4F /* EnumTests.swift in Sources */,
+				5215DF571E07267000A0E61A /* ClassTests.swift in Sources */,
 				9E8E07241BD3F15800F98421 /* Food.swift in Sources */,
+				5215DF551E07261A00A0E61A /* NameCount.swift in Sources */,
 				520B867F1DCEB6A300885504 /* PropertyCompany.swift in Sources */,
 				BD885BBE1D17358E00CA767A /* EncodeNestingTests.swift in Sources */,
 				9E455C0B1BCE1F0100070A4F /* RegularTests.swift in Sources */,
@@ -322,6 +331,7 @@
 				9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */,
 				A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */,
 				9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */,
+				5215DF591E0729FE00A0E61A /* JSONObjectConstructor.swift in Sources */,
 				9EDB39451B59D0AF00C63019 /* JSONDecodable.swift in Sources */,
 				9EDB39471B59D0AF00C63019 /* JSONEncodable.swift in Sources */,
 			);
