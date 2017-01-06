@@ -49,7 +49,6 @@ public enum JSONDecodableError: Error, CustomStringConvertible {
 
 public protocol JSONDecodable {
     init(object: JSONObject) throws
-    init(object: [JSONObject]) throws
 }
 
 public extension JSONDecodable {
@@ -87,7 +86,7 @@ public extension Array where Element: JSONDecodable {
 
 // JSONDecoder - provides utility methods for decoding
 
-public class JSONDecoder {
+public final class JSONDecoder {
     let object: JSONObject
     
     public init(object: JSONObject) {
@@ -135,42 +134,26 @@ public class JSONDecoder {
 
     // JSONDecodable
     public func decode<Decodable: JSONDecodable>(_ key: String) throws -> Decodable {
-        guard let value = try decode(key) as Decodable? else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        return value
+        return try gettingTransforms(key: key, transform: Decodable.init)
     }
     
     // JSONDecodable?
     public func decode<Decodable: JSONDecodable>(_ key: String) throws -> Decodable? {
-        guard let value = get(key) else {
-            return nil
-        }
-        if let t = value as? Decodable {
-            return t
-        }
-        guard let object = value as? JSONObject else {
-            throw JSONDecodableError.dictionaryTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return try Decodable(object: object)
+        return try gettingTransformsOptional(key: key, transform: Decodable.init)
     }
 
     
     // Enum
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> Enum {
-        return try gettingTransforms(key: key, transform: { (preResult: Enum.RawValue) in
-            guard let result = Enum(rawValue: preResult) else {
-                throw JSONDecodableError.incompatibleTypeError(key: key, elementType: Enum.RawValue.self, expectedType: Enum.self)
-            }
-            return result
-        })
+        guard let result = try decode(key) as Enum? else {
+            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: Enum.RawValue.self, expectedType: Enum.self)
+        }
+        return result
     }
     
     // Enum?
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> Enum? {
-        return try gettingTransformsOptional(key: key, transform: { (preResult: Enum.RawValue) in
-            return Enum(rawValue: preResult)
-        })
+        return try gettingTransformsOptional(key: key, transform: Enum.init)
     }
     
     // [JSONDecodable]
@@ -215,7 +198,7 @@ public class JSONDecoder {
     // [Enum]
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> [Enum] {
         return try gettingTransforms(key: key, transform: { (preResult: [Enum.RawValue]) in
-            return preResult.flatMap { Enum(rawValue: $0) }
+            return preResult.map { Enum(rawValue: $0)! }
         })
     }
     
@@ -250,9 +233,9 @@ public class JSONDecoder {
     
     // [String:JSONDecodable]
     public func decode<Element: JSONDecodable>(_ key: String) throws -> [String: Element] {
-        return try gettingTransforms(key: key, transform: { (pre: [String: JSONObject]) in
+        return try gettingTransforms(key: key, transform: { (preResult: [String: JSONObject]) in
             var decoded = [String: Element]()
-            try pre.forEach {
+            try preResult.forEach {
                 decoded[$0] = try Element(object: $1)
             }
             return decoded
@@ -261,9 +244,9 @@ public class JSONDecoder {
     
     // [String:JSONDecodable]?
     public func decode<Element: JSONDecodable>(_ key: String) throws -> [String: Element]? {
-        return try gettingTransformsOptional(key: key, transform: { (pre: [String: JSONObject]) in
+        return try gettingTransformsOptional(key: key, transform: { (preResult: [String: JSONObject]) in
             var decoded = [String: Element]()
-            try pre.forEach {
+            try preResult.forEach {
                 decoded[$0] = try Element(object: $1)
             }
             return decoded
