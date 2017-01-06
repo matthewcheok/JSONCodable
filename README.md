@@ -13,8 +13,14 @@
         <img src="https://img.shields.io/badge/Carthage-compatible-4BC51D.svg?style=flat"
              alt="Carthage">
     </a>
+    <a href="https://travis-ci.org/matthewcheok/JSONCodable">
+        <img src="https://travis-ci.org/matthewcheok/JSONCodable.svg?branch=master"
+             alt="Travis CI">
+    </a>
     <img src="https://img.shields.io/badge/license-MIT-000000.svg"
          alt="License">
+        
+         
 </p>
 
 #JSONCodable
