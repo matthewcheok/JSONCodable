@@ -244,9 +244,9 @@ public class JSONEncoder {
         guard let actual = value else {
             return
         }
-        guard actual.count > 0 else {
-            return
-        }
+//        guard actual.count > 0 else {
+//            return
+//        }
         let result = try actual.toJSON()
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
     }
