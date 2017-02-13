@@ -161,13 +161,13 @@ Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 ```swift
 extension User: JSONEncodable {
     func toJSON() throws -> AnyObject {
-        return try JSONEncoder.create({ (encoder) -> Void in
+        return try JSONEncoder.create { (encoder) -> Void in
             try encoder.encode(id, key: "id")
             try encoder.encode(name, key: "full_name")
             try encoder.encode(email, key: "email")
             try encoder.encode(company, key: "company")
             try encoder.encode(friends, key: "friends")
-        })
+        }
     }
 }
 
@@ -231,10 +231,10 @@ init(object: JSONObject) throws {
 }
 
 func toJSON() throws -> AnyObject {
-    return try JSONEncoder.create({ (encoder) -> Void in
+    return try JSONEncoder.create { (encoder) -> Void in
         ...
         try result.encode(website, key: "website", transformer: JSONTransformerStringToNSURL)
-    })
+    }
 }
 ```
 
