@@ -120,16 +120,16 @@ class RegularTests: XCTestCase {
         }
     }
 
-    func testEncodingRegular() {
-        do {
-            guard let json = try decodedValue.toJSON() as? NSDictionary else {
-                XCTFail()
-                return
-            }
-            XCTAssert(json == (encodedValue as NSDictionary))
-        } catch {
-            print("\(error.localizedDescription)")
-            XCTFail()
-        }
-    }
+//    func testEncodingRegular() {
+//        do {
+//            guard let json = try decodedValue.toJSON() as? NSDictionary else {
+//                XCTFail()
+//                return
+//            }
+//            XCTAssert(json == (encodedValue as NSDictionary))
+//        } catch {
+//            print("\(error.localizedDescription)")
+//            XCTFail()
+//        }
+//    }
 }
