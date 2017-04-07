@@ -27,8 +27,6 @@
 		9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
 		9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39511B59D15400C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A10DFC4C1DF71BF400B7D6D7 /* ClassInheritanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DFC4B1DF71BF400B7D6D7 /* ClassInheritanceTests.swift */; };
 		A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
 		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
@@ -435,6 +433,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
@@ -496,6 +495,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				APPLICATION_EXTENSION_API_ONLY = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
 				CLANG_CXX_LIBRARY = "libc++";
 				CLANG_ENABLE_MODULES = YES;
