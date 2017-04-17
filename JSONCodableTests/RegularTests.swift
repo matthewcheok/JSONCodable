@@ -7,7 +7,7 @@
 //
 
 import XCTest
-
+import JSONCodable
 
 class RegularTests: XCTestCase {
 
@@ -51,11 +51,11 @@ class RegularTests: XCTestCase {
             "address": "1 Infinite Loop, Cupertino, CA"
         ],
         "friends": [
-            ["id": 27, "full_name": "Bob Jefferson", "friends" : [], ],
-            ["id": 29, "full_name": "Jen Jackson", "friends" : [],
-             ]
+            ["id": 27, "full_name": "Bob Jefferson", "friends": []],
+            ["id": 29, "full_name": "Jen Jackson", "friends": []]
         ],
-        "friendsLookup": ["Bob Jefferson": ["id": 27,  "friends" : [], "full_name": "Bob Jefferson"]]
+        "friendsLookup": ["Bob Jefferson": ["id": 27, "full_name": "Bob Jefferson", "friends": []]]
+
     ]
     let decodedValue = User(
         id: 24,
@@ -72,12 +72,15 @@ class RegularTests: XCTestCase {
 
     func testArrayOfUsers() {
         let userArray = [encodedValue, encodedValue]
-        guard let users = try? [User](JSONArray: userArray) else {
+        do {
+            let users = try [User](JSONArray: userArray)
+            XCTAssertEqual(users[0], decodedValue)
+            XCTAssertEqual(users[1], decodedValue)
+        } catch let error as JSONDecodableError {
+            XCTFail("Failed with error: \(error.description)")
+        } catch {
             XCTFail()
-            return
         }
-        XCTAssertEqual(users[0], decodedValue)
-        XCTAssertEqual(users[1], decodedValue)
     }
 
     func testDecodeNestedCodableArray() {
@@ -85,7 +88,7 @@ class RegularTests: XCTestCase {
             XCTFail()
             return
         }
-        print("nested=",nested)
+        print("nested=", nested)
         let places = nested.places ?? [[]]
         let areas = nested.areas
         let business = nested.business

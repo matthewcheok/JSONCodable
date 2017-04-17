@@ -18,8 +18,10 @@ class ClassInheritanceTests: XCTestCase {
         
         do {
             //Act
-            let json = try child.toJSON() as? JSONObject
-            let newChild = try Child(object: json!)
+            guard let json = try child.toJSON() as? JSONObject else {
+                return XCTFail("json should not be nil")
+            }
+            let newChild = try Child(object: json)
             
             // Assert
             XCTAssertEqual(child.parentProperty1, newChild.parentProperty1)

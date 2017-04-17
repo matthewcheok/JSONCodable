@@ -13,11 +13,7 @@ public extension Mirror {
      - returns: array of Tuples containing the label and value for each property
      */
     public func getAllProperties() -> [(label: String?, value: Any)] {
-        var children: [(label: String?, value: Any)] = []
-        for element in self.children {
-            children.append(element)
-        }
-        
+        var children = Array(self.children)
         children.append(contentsOf: self.superclassMirror?.getAllProperties() ?? [])
         
         return children

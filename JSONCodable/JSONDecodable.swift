@@ -49,7 +49,6 @@ public enum JSONDecodableError: Error, CustomStringConvertible {
 
 public protocol JSONDecodable {
     init(object: JSONObject) throws
-    init(object: [JSONObject]) throws
 }
 
 public extension JSONDecodable {
@@ -87,7 +86,7 @@ public extension Array where Element: JSONDecodable {
 
 // JSONDecoder - provides utility methods for decoding
 
-public class JSONDecoder {
+public final class JSONDecoder {
     let object: JSONObject
     
     public init(object: JSONObject) {
@@ -131,54 +130,22 @@ public class JSONDecoder {
         }
         return (result ?? object[key]).flatMap{$0 is NSNull ? nil : $0}
     }
-    
-    // JSONCompatible
-    public func decode<Compatible: JSONCompatible>(_ key: String) throws -> Compatible {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let compatible = value as? Compatible else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: Compatible.self)
-        }
-        return compatible
-    }
 
-    // JSONCompatible?
-    public func decode<Compatible: JSONCompatible>(_ key: String) throws -> Compatible? {
-        return (get(key) ?? object[key] as Any) as? Compatible
-    }
 
     // JSONDecodable
     public func decode<Decodable: JSONDecodable>(_ key: String) throws -> Decodable {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let object = value as? JSONObject else {
-            throw JSONDecodableError.dictionaryTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return try Decodable(object: object)
+        return try gettingTransforms(key: key, transform: Decodable.init)
     }
     
     // JSONDecodable?
     public func decode<Decodable: JSONDecodable>(_ key: String) throws -> Decodable? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let object = value as? JSONObject else {
-            throw JSONDecodableError.dictionaryTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return try Decodable(object: object)
+        return try gettingTransformsOptional(key: key, transform: Decodable.init)
     }
+
     
     // Enum
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> Enum {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let raw = value as? Enum.RawValue else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: Enum.RawValue.self)
-        }
-        guard let result = Enum(rawValue: raw) else {
+        guard let result = try decode(key) as Enum? else {
             throw JSONDecodableError.incompatibleTypeError(key: key, elementType: Enum.RawValue.self, expectedType: Enum.self)
         }
         return result
@@ -186,184 +153,104 @@ public class JSONDecoder {
     
     // Enum?
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> Enum? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let raw = value as? Enum.RawValue else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: Enum.RawValue.self)
-        }
-        guard let result = Enum(rawValue: raw) else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: Enum.RawValue.self, expectedType: Enum.self)
-        }
-        return result
-    }
-    
-    // [JSONCompatible]
-    public func decode<Element: JSONCompatible>(_ key: String, filter: Bool = false) throws -> [Element] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let array = value as? [Element] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [Element].self)
-        }
-        return array
-    }
-    
-    // [JSONCompatible]?
-    public func decode<Element: JSONCompatible>(_ key: String) throws -> [Element]? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let array = value as? [Element] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [Element].self)
-        }
-        return array
+        return try gettingTransformsOptional(key: key, transform: Enum.init)
     }
     
     // [JSONDecodable]
     public func decode<Element: JSONDecodable>(_ key: String, filter: Bool = false) throws -> [Element] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let array = value as? [JSONObject] else {
-            throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return try array.flatMap {
-            if filter {
-                return try? Element(object: $0)
-            } else {
-                return try Element(object: $0)
+        return try gettingTransforms(key: key, transform: { (preResult: [JSONObject]) in
+            return try preResult.flatMap {
+                if filter {
+                    return try? Element(object: $0)
+                } else {
+                    return try Element(object: $0)
+                }
             }
-        }
+        })
     }
     
     // [JSONDecodable]?
     public func decode<Element: JSONDecodable>(_ key: String, filter: Bool = false) throws -> [Element]? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let array = value as? [JSONObject] else {
-            throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return try array.flatMap {
-            if filter {
-                return try? Element(object: $0)
-            } else {
-                return try Element(object: $0)
+        return try gettingTransformsOptional(key: key, transform: { (preResult: [JSONObject]) in
+            return try preResult.flatMap {
+                if filter {
+                    return try? Element(object: $0)
+                } else {
+                    return try Element(object: $0)
+                }
             }
-        }
+        })
     }
 
     // [[JSONDecodable]]
     public func decode<Element: JSONDecodable>(_ key: String, filter: Bool = false) throws -> [[Element]] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let array = value as? [[JSONObject]] else {
-            throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        var res:[[Element]] = []
-        
-        for x in array {
-            if filter {
-                let nested = x.flatMap { try? Element(object: $0)}
-                res.append(nested)
-            } else {
-                let nested = try x.flatMap { try Element(object: $0)}
-                res.append(nested)
-            }
-        }
-        return res
-    }
-    
-    // [[JSONCompatible]]
-    public func decode<Element: JSONCompatible>(_ key: String) throws -> [[Element]] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let array = value as? [[Element]] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [Element].self)
-        }
-        var res:[[Element]] = []
-        
-        for x in array {
-            res.append(x)
-        }
-        return res
+        return try gettingTransforms(key: key, transform: { (preResult: [[JSONObject]]) in
+            return try preResult.map({ x in
+                if filter {
+                    return x.flatMap { try? Element(object: $0)}
+                } else {
+                    return try x.flatMap { try Element(object: $0)}
+                }
+            })
+        })
     }
     
     // [Enum]
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> [Enum] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let array = value as? [Enum.RawValue] else {
-            throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return array.flatMap { Enum(rawValue: $0) }
+        return try gettingTransforms(key: key, transform: { (preResult: [Enum.RawValue]) in
+            return preResult.map { Enum(rawValue: $0)! }
+        })
     }
     
     // [Enum]?
     public func decode<Enum: RawRepresentable>(_ key: String) throws -> [Enum]? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let array = value as? [Enum.RawValue] else {
-            throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
-        }
-        return array.flatMap { Enum(rawValue: $0) }
+        return try gettingTransformsOptional(key: key, transform: { (preResult: [Enum.RawValue]) in
+            return preResult.flatMap { Enum(rawValue: $0) }
+        })
     }
     
-    // [String:JSONCompatible]
-    public func decode<Value: JSONCompatible>(_ key: String) throws -> [String: Value] {
-        guard let value = get(key) else {
+
+    private func gettingTransforms<T, PreResult>(key: String, transform: (PreResult) throws -> T) throws -> T {
+        guard let value = try gettingTransformsOptional(key: key, transform: transform) else {
             throw JSONDecodableError.missingTypeError(key: key)
         }
-        guard let dictionary = value as? [String: Value] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [String: Value].self)
-        }
-        return dictionary
+        
+        return value
     }
     
-    // [String:JSONCompatible]?
-    public func decode<Value: JSONCompatible>(_ key: String) throws -> [String: Value]? {
+    private func gettingTransformsOptional<T, PreResult>(key: String, transform: (PreResult) throws -> T?) throws -> T? {
         guard let value = get(key) else {
             return nil
         }
-        guard let dictionary = value as? [String: Value] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [String: Value].self)
+        if let t = value as? T {
+            return t
         }
-        return dictionary
+        guard let preResult = value as? PreResult else {
+            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: PreResult.self)
+        }
+        return try transform(preResult)
     }
     
     // [String:JSONDecodable]
     public func decode<Element: JSONDecodable>(_ key: String) throws -> [String: Element] {
-        guard let value = get(key) else {
-            throw JSONDecodableError.missingTypeError(key: key)
-        }
-        guard let dictionary = value as? [String: JSONObject] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [String: Element].self)
-        }
-        var decoded = [String: Element]()
-        try dictionary.forEach {
-            decoded[$0] = try Element(object: $1)
-        }
-        return decoded
+        return try gettingTransforms(key: key, transform: { (preResult: [String: JSONObject]) in
+            var decoded = [String: Element]()
+            try preResult.forEach {
+                decoded[$0] = try Element(object: $1)
+            }
+            return decoded
+        })
     }
     
     // [String:JSONDecodable]?
     public func decode<Element: JSONDecodable>(_ key: String) throws -> [String: Element]? {
-        guard let value = get(key) else {
-            return nil
-        }
-        guard let dictionary = value as? [String: JSONObject] else {
-            throw JSONDecodableError.incompatibleTypeError(key: key, elementType: type(of: value), expectedType: [String: Element].self)
-        }
-        var decoded = [String: Element]()
-        try dictionary.forEach {
-            decoded[$0] = try Element(object: $1)
-        }
-        return decoded
+        return try gettingTransformsOptional(key: key, transform: { (preResult: [String: JSONObject]) in
+            var decoded = [String: Element]()
+            try preResult.forEach {
+                decoded[$0] = try Element(object: $1)
+            }
+            return decoded
+        })
     }
     
     // JSONTransformable

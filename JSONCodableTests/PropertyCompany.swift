@@ -11,6 +11,7 @@ import JSONCodable
 struct PropertyCompany {
     let properties: [PropertyItem]
     let companies: [Company]
+    let idList: [Int]
 }
 
 extension PropertyCompany: JSONEncodable {}
@@ -20,5 +21,6 @@ extension PropertyCompany: JSONDecodable {
         let decoder = JSONDecoder(object: object)
         properties = try decoder.decode("companies_properties", filter: true)
         companies = try decoder.decode("companies_properties", filter: true)
+        idList = try decoder.decode("idList")
     }
 }
