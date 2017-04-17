@@ -160,7 +160,7 @@ Simply add conformance to `JSONEncodable` (or to `JSONCodable`):
 
 ```swift
 extension User: JSONEncodable {
-    func toJSON() throws -> AnyObject {
+    func toJSON() throws -> Any {
         return try JSONEncoder.create({ (encoder) -> Void in
             try encoder.encode(id, key: "id")
             try encoder.encode(name, key: "full_name")
