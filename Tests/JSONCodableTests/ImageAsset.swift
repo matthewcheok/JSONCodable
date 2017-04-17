@@ -6,6 +6,7 @@
 //
 //
 
+import Foundation
 import JSONCodable
 
 struct ImageAsset: Equatable {

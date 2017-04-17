@@ -27,8 +27,6 @@
 		9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
 		9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39511B59D15400C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A10DFC4C1DF71BF400B7D6D7 /* ClassInheritanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DFC4B1DF71BF400B7D6D7 /* ClassInheritanceTests.swift */; };
 		A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
 		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
@@ -55,7 +53,7 @@
 		52E8F44E1C9087D200F40F7F /* UtilityTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UtilityTests.swift; sourceTree = "<group>"; };
 		9E455BF71BCE185B00070A4F /* JSONCodableTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = JSONCodableTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		9E455BF91BCE185B00070A4F /* EnumTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EnumTests.swift; sourceTree = "<group>"; };
-		9E455BFB1BCE185B00070A4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		9E455BFB1BCE185B00070A4F /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = Info.plist; path = ../Info.plist; sourceTree = "<group>"; };
 		9E455C021BCE1C1E00070A4F /* Fruit.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Fruit.swift; sourceTree = "<group>"; };
 		9E455C041BCE1D0700070A4F /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		9E455C081BCE1DE100070A4F /* Company.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Company.swift; sourceTree = "<group>"; };
@@ -107,7 +105,8 @@
 				9E455C071BCE1D1900070A4F /* Tests */,
 				9E455BFB1BCE185B00070A4F /* Info.plist */,
 			);
-			path = JSONCodableTests;
+			name = JSONCodableTests;
+			path = Tests/JSONCodableTests;
 			sourceTree = "<group>";
 		};
 		9E455C061BCE1D0B00070A4F /* Models */ = {
@@ -172,7 +171,8 @@
 				9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */,
 				A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */,
 			);
-			path = JSONCodable;
+			name = JSONCodable;
+			path = Source;
 			sourceTree = "<group>";
 		};
 		9EDF800F1B59CFCE00E4A2D6 = {
@@ -374,7 +374,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = JSONCodableTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "$(inherited) @executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;
@@ -418,7 +418,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				INFOPLIST_FILE = JSONCodableTests/Info.plist;
+				INFOPLIST_FILE = Tests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks @loader_path/Frameworks";
 				"LD_RUNPATH_SEARCH_PATHS[sdk=macosx*]" = "@executable_path/../Frameworks @loader_path/../Frameworks";
 				MACOSX_DEPLOYMENT_TARGET = 10.11;

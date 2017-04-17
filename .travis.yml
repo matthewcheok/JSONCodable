@@ -1,11 +1,59 @@
-language: objective-c
-osx_image: xcode8.1
-
-env:
-  - ACTION=test  PLATFORM=Mac     DESTINATION='platform=OS X' COVERAGE='-enableCodeCoverage NO'
-  - ACTION=test  PLATFORM=iOS     DESTINATION='platform=iOS Simulator,name=iPhone SE' COVERAGE='-enableCodeCoverage NO'
-  - ACTION=build PLATFORM=watchOS DESTINATION='platform=watchOS Simulator,name=Apple Watch - 38mm' COVERAGE=''
-  - ACTION=test  PLATFORM=tvOS    DESTINATION='platform=tvOS Simulator,name=Apple TV 1080p' COVERAGE='-enableCodeCoverage NO'
-
-script:
-  - set -o pipefail && xcodebuild -scheme JSONCodable -destination "$DESTINATION" $ACTION CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO $COVERAGE | xcpretty
+matrix:
+  allow_failures:
+    - os: linux
+  include:
+    - os: linux
+      dist: trusty
+      sudo: required
+      language: generic
+      before_install:
+        - wget -q -O - https://swift.org/keys/all-keys.asc | gpg --import -
+        - cd ..
+        - export SWIFT_VERSION=swift-3.0.2-RELEASE
+        - wget https://swift.org/builds/swift-3.0.2-release/ubuntu1404/$SWIFT_VERSION/$SWIFT_VERSION-ubuntu14.04.tar.gz
+        - tar xzf $SWIFT_VERSION-ubuntu14.04.tar.gz
+        - export PATH="${PWD}/${SWIFT_VERSION}-ubuntu14.04/usr/bin:${PATH}"
+        - cd JSONCodable
+      script:
+        - swift test --verbose
+    - os: osx
+      osx_image: xcode8.2
+      language: objective-c
+      env: "macOS"
+      script:
+        - set -o pipefail && xcodebuild -scheme JSONCodable -destination 'platform=OS X' test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -enableCodeCoverage NO | xcpretty
+    - os: osx
+      osx_image: xcode8.2
+      language: objective-c
+      env: "iOS"
+      before_install:
+        - export SNAPSHOT_FORCE_DELETE=1
+        - fastlane snapshot reset_simulators
+      script:
+        - set -o pipefail && xcodebuild -scheme JSONCodable -destination 'platform=iOS Simulator,name=iPhone SE,OS=latest' test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -enableCodeCoverage YES | xcpretty
+      after_success:
+        - bash <(curl -s https://codecov.io/bash)
+    - os: osx
+      osx_image: xcode8.2
+      language: objective-c
+      env: "watchOS"
+      before_install:
+        - export SNAPSHOT_FORCE_DELETE=1
+        - fastlane snapshot reset_simulators
+      script:
+        - set -o pipefail && xcodebuild -scheme JSONCodable -destination 'platform=watchOS Simulator,name=Apple Watch - 38mm,OS=latest' build CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO | xcpretty
+    - os: osx
+      osx_image: xcode8.2
+      language: objective-c
+      env: "tvOS"
+      before_install:
+        - export SNAPSHOT_FORCE_DELETE=1
+        - fastlane snapshot reset_simulators
+      script:
+        - set -o pipefail && xcodebuild -scheme JSONCodable -destination 'platform=tvOS Simulator,name=Apple TV 1080p,OS=latest' test CODE_SIGN_IDENTITY="" CODE_SIGNING_REQUIRED=NO -enableCodeCoverage NO | xcpretty
+    - os: osx
+      osx_image: xcode8.2
+      language: objective-c
+      env: "Swift Package Manager"
+      script:
+        - swift build --clean && swift test

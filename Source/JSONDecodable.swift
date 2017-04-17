@@ -129,7 +129,7 @@ public class JSONDecoder {
                 return nil
             }
         }
-        return (result ?? object[key]).flatMap{$0 is NSNull ? nil : $0}
+        return (result ?? object[key])
     }
     
     // JSONCompatible
