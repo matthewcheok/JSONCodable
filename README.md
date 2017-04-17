@@ -108,7 +108,7 @@ extension Company: JSONDecodable {
 
 -
 
-Then provide the implementations for `init(object: JSONObject) throws` where `JSONObject` is a typealias for `[String:AnyObject]`.
+Then provide the implementations for `init(object: JSONObject) throws` where `JSONObject` is a typealias for `[String:Any]`.
 As before, you can use this to configure the mapping between keys in the Dictionary to properties in your structs and classes.
 
 ```swift
