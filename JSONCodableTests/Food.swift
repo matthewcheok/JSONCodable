@@ -30,7 +30,7 @@ func ==(lhs: Food, rhs: Food) -> Bool {
     return lhs.name == rhs.name && lhs.cuisines == rhs.cuisines
 }
 
-extension Food: JSONCodable {
+extension Food: JSONEncodable, JSONDecodable {
     init(object: JSONObject) throws {
         let decoder = JSONDecoder(object: object)
         name = try decoder.decode("name")

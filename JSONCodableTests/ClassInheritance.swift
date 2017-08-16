@@ -9,7 +9,7 @@
 import Foundation
 import JSONCodable
 
-class Parent : JSONCodable
+class Parent : JSONEncodable, JSONDecodable
 {
     var parentProperty1:String = "parent1"
     var parentProperty2:String = "parent2"
