@@ -22,7 +22,7 @@ func ==(lhs: Fruit, rhs: Fruit) -> Bool {
   return lhs.name == rhs.name && lhs.color == rhs.color
 }
 
-extension Fruit: JSONCodable {
+extension Fruit: JSONEncodable, JSONDecodable {
   init(object: JSONObject) throws {
     let decoder = JSONDecoder(object: object)
     name = try decoder.decode("name")

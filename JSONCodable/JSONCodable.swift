@@ -6,10 +6,6 @@
 //  Copyright © 2015 matthewcheok. All rights reserved.
 //
 
-// convenience protocol
-
-public protocol JSONCodable: JSONEncodable, JSONDecodable {}
-
 // JSONCompatible - valid types in JSON
 
 public protocol JSONCompatible: JSONEncodable {}
