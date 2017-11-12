@@ -27,8 +27,6 @@
 		9EDB39491B59D0AF00C63019 /* JSONHelpers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB393F1B59D0AF00C63019 /* JSONHelpers.swift */; };
 		9EDB394D1B59D0AF00C63019 /* JSONString.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39411B59D0AF00C63019 /* JSONString.swift */; };
 		9EDB394F1B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39501B59D0AF00C63019 /* JSONTransformer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDB39421B59D0AF00C63019 /* JSONTransformer.swift */; };
-		9EDB39511B59D15400C63019 /* JSONCodable.h in Headers */ = {isa = PBXBuildFile; fileRef = 9EDB39091B59D00B00C63019 /* JSONCodable.h */; settings = {ATTRIBUTES = (Public, ); }; };
 		A10DFC4C1DF71BF400B7D6D7 /* ClassInheritanceTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A10DFC4B1DF71BF400B7D6D7 /* ClassInheritanceTests.swift */; };
 		A1B71C7C1D37E6BD006DA33A /* JSONEncodable+Mirror.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7B1D37E6BD006DA33A /* JSONEncodable+Mirror.swift */; };
 		A1B71C7E1D37E90B006DA33A /* MirrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = A1B71C7D1D37E90B006DA33A /* MirrorTests.swift */; };
@@ -241,7 +239,7 @@
 		9EDF80101B59CFCE00E4A2D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0910;
 				TargetAttributes = {
 					9E455BF61BCE185B00070A4F = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -384,7 +382,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Debug;
 		};
@@ -427,7 +425,7 @@
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 			};
 			name = Release;
 		};
@@ -483,7 +481,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -538,7 +536,7 @@
 				SDKROOT = iphoneos;
 				SKIP_INSTALL = YES;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";
-				SWIFT_VERSION = 3.0;
+				SWIFT_VERSION = 4.0;
 				TARGETED_DEVICE_FAMILY = "1,2,3,4";
 				TVOS_DEPLOYMENT_TARGET = 9.0;
 				VALIDATE_PRODUCT = YES;
@@ -551,12 +549,18 @@
 		9EDF80141B59CFCE00E4A2D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
@@ -582,12 +586,18 @@
 		9EDF80151B59CFCE00E4A2D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
 				CLANG_WARN_CONSTANT_CONVERSION = YES;
 				CLANG_WARN_EMPTY_BODY = YES;
 				CLANG_WARN_ENUM_CONVERSION = YES;
 				CLANG_WARN_INFINITE_RECURSION = YES;
 				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
 				CLANG_WARN_SUSPICIOUS_MOVE = YES;
 				CLANG_WARN_UNREACHABLE_CODE = YES;
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
