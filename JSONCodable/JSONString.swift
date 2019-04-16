@@ -27,8 +27,8 @@ public extension JSONEncodable {
 }
 
 private func escapeJSONString(_ str: String) -> String {
-    var chars = String.CharacterView("\"")
-    for c in str.characters {
+    var chars = "\""
+    for c in str {
         switch c {
         case "\\":
             chars.append("\\")
@@ -41,7 +41,7 @@ private func escapeJSONString(_ str: String) -> String {
         }
     }
     chars.append("\"")
-    return String(chars)
+    return chars
 }
 
 public extension Optional where Wrapped: JSONEncodable {
