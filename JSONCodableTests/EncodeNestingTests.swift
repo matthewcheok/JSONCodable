@@ -28,6 +28,20 @@ class EncodeNestingTests: XCTestCase {
                 XCTFail()
                 return
         }
-        XCTAssert(String(describing:json1) == String(describing:propertyItemArray), "failed to convert to \(propertyItemArray)")
+
+        XCTAssertEqual(json1["class"] as! String, propertyItemArray["class"] as! String)
+        XCTAssertEqual(json1["class"] as! String, propertyItemArray["class"] as! String)
+
+        let properties = propertyItemArray["properties"] as! [String: Any]
+        let properties1 = json1["properties"] as! [String: Any]
+        XCTAssertEqual(properties1["name"] as! String, properties["name"] as! String)
+
+        let location = properties["location"] as! [String: Any]
+        let location1 = properties1["location"] as! [String: Any]
+
+        let coord = location["coord"] as! [String: Any]
+        let coord1 = location1["coord"] as! [String: Any]
+        XCTAssertEqual(coord["lat"] as! Double, coord1["lat"] as! Double)
+        XCTAssertEqual(coord["long"] as! Double, coord1["long"] as! Double)
     }
 }
