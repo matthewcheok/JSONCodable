@@ -239,7 +239,7 @@
 		9EDF80101B59CFCE00E4A2D6 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1010;
+				LastUpgradeCheck = 1020;
 				TargetAttributes = {
 					9E455BF61BCE185B00070A4F = {
 						CreatedOnToolsVersion = 7.0.1;
@@ -253,10 +253,11 @@
 			};
 			buildConfigurationList = 9EDF80131B59CFCE00E4A2D6 /* Build configuration list for PBXProject "JSONCodable" */;
 			compatibilityVersion = "Xcode 6.3";
-			developmentRegion = English;
+			developmentRegion = en;
 			hasScannedForEncodings = 0;
 			knownRegions = (
 				en,
+				Base,
 			);
 			mainGroup = 9EDF800F1B59CFCE00E4A2D6;
 			productRefGroup = 9EDB39071B59D00B00C63019 /* Products */;
@@ -555,6 +556,7 @@
 		9EDF80141B59CFCE00E4A2D6 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
@@ -594,6 +596,7 @@
 		9EDF80151B59CFCE00E4A2D6 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
 				CLANG_WARN_BOOL_CONVERSION = YES;
 				CLANG_WARN_COMMA = YES;
