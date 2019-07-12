@@ -54,12 +54,12 @@ public protocol JSONDecodable {
 
 public extension JSONDecodable {
     /// initialize with top-level Array JSON data 
-    public init(object: [JSONObject]) throws {
+    init(object: [JSONObject]) throws {
         // use empty string key
         try self.init(object:["": object])
     }
 
-    public init?(optional: JSONObject) {
+    init?(optional: JSONObject) {
         do {
             try self.init(object: optional)
         } catch {
@@ -70,7 +70,7 @@ public extension JSONDecodable {
 
 public extension Array where Element: JSONDecodable {
     init(JSONArray: [Any], filtered: Bool = false) throws {
-        self.init(try JSONArray.flatMap {
+        self.init(try JSONArray.compactMap {
             guard let json = $0 as? [String : Any] else {
                 throw JSONDecodableError.dictionaryTypeExpectedError(key: "n/a", elementType: type(of: $0))
             }
@@ -96,12 +96,13 @@ public class JSONDecoder {
     
     /// Get index from `"[0]"` formatted `String`
     /// returns `nil` if invalid format (i.e. no brackets or contents not an `Int`)
-    internal func parseArrayIndex(_ key:String) -> Int? {
-        var chars = key.characters
-        let first = chars.popFirst()
+    internal func parseArrayIndex(_ key: String) -> Int? {
+        var chars = key
+        let first = chars.first
+        chars = String(chars.dropFirst())
         let last = chars.popLast()
         if first == "[" && last == "]" {
-            return Int(String(chars))
+            return Int(chars)
         } else {
             return nil
         }
@@ -228,7 +229,7 @@ public class JSONDecoder {
         guard let array = value as? [JSONObject] else {
             throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
         }
-        return try array.flatMap {
+        return try array.compactMap {
             if filter {
                 return try? Element(object: $0)
             } else {
@@ -245,7 +246,7 @@ public class JSONDecoder {
         guard let array = value as? [JSONObject] else {
             throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
         }
-        return try array.flatMap {
+        return try array.compactMap {
             if filter {
                 return try? Element(object: $0)
             } else {
@@ -266,10 +267,10 @@ public class JSONDecoder {
         
         for x in array {
             if filter {
-                let nested = x.flatMap { try? Element(object: $0)}
+                let nested = x.compactMap { try? Element(object: $0)}
                 res.append(nested)
             } else {
-                let nested = try x.flatMap { try Element(object: $0)}
+                let nested = try x.compactMap { try Element(object: $0)}
                 res.append(nested)
             }
         }
@@ -300,7 +301,7 @@ public class JSONDecoder {
         guard let array = value as? [Enum.RawValue] else {
             throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
         }
-        return array.flatMap { Enum(rawValue: $0) }
+        return array.compactMap { Enum(rawValue: $0) }
     }
     
     // [Enum]?
@@ -311,7 +312,7 @@ public class JSONDecoder {
         guard let array = value as? [Enum.RawValue] else {
             throw JSONDecodableError.arrayTypeExpectedError(key: key, elementType: type(of: value))
         }
-        return array.flatMap { Enum(rawValue: $0) }
+        return array.compactMap { Enum(rawValue: $0) }
     }
     
     // [String:JSONCompatible]

@@ -105,7 +105,7 @@ public extension JSONEncodable {
 public extension Array { //where Element: JSONEncodable {
     private var wrapped: [Any] { return self.map{$0} }
 
-    public func toJSON() throws -> Any {
+    func toJSON() throws -> Any {
         var results: [Any] = []
         for item in self.wrapped {
             if let item = item as? JSONEncodable {
@@ -122,7 +122,7 @@ public extension Array { //where Element: JSONEncodable {
 // Dictionary convenience methods
 
 public extension Dictionary {//where Key: String, Value: JSONEncodable {
-    public func toJSON() throws -> Any {
+    func toJSON() throws -> Any {
         var result: [String: Any] = [:]
         for (k, item) in self {
             if let item = item as? JSONEncodable {
@@ -246,7 +246,7 @@ public class JSONEncoder {
 
     // [Enum]
     public func encode<Enum: RawRepresentable>(_ value: [Enum], key: String) throws {
-        let result = try value.flatMap {
+        let result = try value.compactMap {
             try ($0.rawValue as? JSONCompatible)?.toJSON()
         }
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
@@ -257,7 +257,7 @@ public class JSONEncoder {
         guard let actual = value else {
             return
         }
-        let result = try actual.flatMap {
+        let result = try actual.compactMap {
             try ($0.rawValue as? JSONCompatible)?.toJSON()
         }
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
