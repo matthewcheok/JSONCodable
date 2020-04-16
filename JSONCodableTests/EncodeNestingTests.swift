@@ -28,6 +28,15 @@ class EncodeNestingTests: XCTestCase {
                 XCTFail()
                 return
         }
-        XCTAssert(String(describing:json1) == String(describing:propertyItemArray), "failed to convert to \(propertyItemArray)")
+        
+        XCTAssert(propertyItemArray.isEqual(to: json1), "failed to convert to \(propertyItemArray)")
     }
+}
+
+private extension JSONObject {
+    
+    func isEqual(to obj: JSONObject) -> Bool {
+        (self as NSDictionary).isEqual(to: obj)
+    }
+        
 }
