@@ -9,7 +9,7 @@
 import Foundation
 
 public extension JSONEncodable {
-    public func toJSONString() throws -> String {
+    func toJSONString() throws -> String {
         switch self {
         case let str as String:
             return escapeJSONString(str)
@@ -45,7 +45,7 @@ private func escapeJSONString(_ str: String) -> String {
 }
 
 public extension Optional where Wrapped: JSONEncodable {
-    public func toJSONString() throws -> String {
+    func toJSONString() throws -> String {
         switch self {
         case let .some(jsonEncodable):
             return try jsonEncodable.toJSONString()

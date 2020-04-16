@@ -54,12 +54,12 @@ public protocol JSONDecodable {
 
 public extension JSONDecodable {
     /// initialize with top-level Array JSON data 
-    public init(object: [JSONObject]) throws {
+    init(object: [JSONObject]) throws {
         // use empty string key
         try self.init(object:["": object])
     }
 
-    public init?(optional: JSONObject) {
+    init?(optional: JSONObject) {
         do {
             try self.init(object: optional)
         } catch {
