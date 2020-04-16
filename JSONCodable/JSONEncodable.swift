@@ -54,8 +54,8 @@ public extension JSONEncodable {
         let mirror = Mirror(reflecting: self)
 
         #if !swift(>=3.0)
-            guard let style = mirror.displayStyle where style == .Struct || style == .Class else {
-            throw JSONEncodableError.IncompatibleTypeError(elementType: self.dynamicType)
+            guard let style = mirror.displayStyle, (style == .Struct || style == .Class) else {
+                throw JSONEncodableError.IncompatibleTypeError(elementType: type(of: self))
             }
         #else
 
@@ -246,7 +246,7 @@ public class JSONEncoder {
 
     // [Enum]
     public func encode<Enum: RawRepresentable>(_ value: [Enum], key: String) throws {
-        let result = try value.flatMap {
+        let result = try value.compactMap {
             try ($0.rawValue as? JSONCompatible)?.toJSON()
         }
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
@@ -257,7 +257,7 @@ public class JSONEncoder {
         guard let actual = value else {
             return
         }
-        let result = try actual.flatMap {
+        let result = try actual.compactMap {
             try ($0.rawValue as? JSONCompatible)?.toJSON()
         }
         object = update(object: object, keys: key.components(separatedBy: "."), value: result)
